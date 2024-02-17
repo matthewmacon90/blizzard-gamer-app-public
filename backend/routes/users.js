@@ -18,7 +18,6 @@ router.get('/:id', verifyToken, async (req, res, next) => {
     try {
         const {id} = req.params;
         const result = await getUserById(id);
-        console.log(result);
         return res.status(200).json(result);
     } catch (err) {
         console.error(err);

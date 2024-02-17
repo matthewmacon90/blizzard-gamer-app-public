@@ -6,12 +6,11 @@ const ExpressError = require('../error-handling/ExpressError.js');
 
 const registerUser = async (username, hashedPassword, email, firstName, lastName) => {
     try {
-        console.log(username, hashedPassword, email, firstName, lastName);
         const result = await db.query(
             `INSERT INTO users (username, password, email, first_name, last_name) 
-             VALUES ($1, $2, $3, $4, $5) RETURNING username, email, first_name AS firstName, last_name AS lastName`, 
+             VALUES ($1, $2, $3, $4, $5) 
+             RETURNING username, email, first_name AS firstName, last_name AS lastName`, 
              [username, hashedPassword, email, firstName, lastName]);
-             console.log(result.rows[0]);
         return result.rows[0]
     } catch (err) {
         console.error(err);
