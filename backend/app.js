@@ -9,6 +9,7 @@ const registerRoutes = require('./authentication/jwt-authentication/register.js'
 const homeRoutes = require('./routes/home.js');
 const userRouter = require('./routes/users.js');
 const authenticateGoogleRoutes = require('./authentication/oauth2-google/authenticateGoogleRoutes.js');
+const ExpressError = require('./error-handling/ExpressError.js');
 
 
 const app = express();
@@ -26,7 +27,10 @@ app.use('/google', authenticateGoogleRoutes);
 app.use('/users', userRouter);
 
 app.use((err, req, res, next) => {
-
+    console.log('err: ', err);
+    const message = err.message;
+    const status = err.status;
+    return new ExpressError(message, status) || new ExpressError('Something went wrong', 500);
 });
 
 module.exports = app;
