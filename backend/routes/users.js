@@ -1,14 +1,27 @@
 const express = require('express');
 const router = express.Router();
-// const db = require('../db/db.js');
-// console.log('db:', db);
+const {getAllUsers, getUserById} = require('../models/usersModel.js');
+const bcrypt = require('bcrypt');
 
 router.get('/', async (req, res, next) => { 
     try {
-        console.log('ON users route');
+        const result = await getAllUsers();
+        return res.status(200).json(result);
     } catch (err) {
         console.error(err);
-        // next(err);
+        next(err);
+    }
+});
+
+router.get('/:id', async (req, res, next) => {
+    try {
+        const {id} = req.params;
+        const result = await getUserById(id);
+        console.log(result);
+        return res.status(200).json(result);
+    } catch (err) {
+        console.error(err);
+        next(err);
     }
 });
 

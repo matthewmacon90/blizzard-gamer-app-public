@@ -3,7 +3,6 @@ const cors = require('cors');
 const morgan = require('morgan');
 
 const userRouter = require('./routes/users.js');
-console.log('userRouter:', userRouter);
 
 const app = express();
 
@@ -13,6 +12,8 @@ app.use(morgan('tiny'));
 
 app.use('/users', userRouter);
 
+app.use((err, req, res, next) => {
 
+});
 
 module.exports = app;
