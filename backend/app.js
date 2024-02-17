@@ -28,9 +28,9 @@ app.use('/users', userRouter);
 
 app.use((err, req, res, next) => {
     console.log('err: ', err);
-    const message = err.message;
-    const status = err.status;
-    return new ExpressError(message, status) || new ExpressError('Something went wrong', 500);
+    const message = err.message || 'Something went wrong';
+    const status = err.status || 500;
+    return new ExpressError(message, status);
 });
 
 module.exports = app;
