@@ -25,4 +25,28 @@ router.get('/:id', async (req, res, next) => {
     }
 });
 
+router.patch('/:id', async (req, res, next) => {
+    try {
+        const {id} = req.params;
+        const {password} = req.body;
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const result = await updateUserPassword(id, hashedPassword);
+        return res.status(200).json(result);
+    } catch (err) {
+        console.error(err);
+        next(err);
+    }
+});
+
+router.delete('/:id', async (req, res, next) => {
+    try {
+        const {id} = req.params;
+        const result = await deleteUser(id);
+        return res.status(200).json(result);
+    } catch (err) {
+        console.error(err);
+        next(err);
+    }
+});
+
 module.exports = router;
