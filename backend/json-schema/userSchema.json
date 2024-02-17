@@ -1,0 +1,70 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "$id": "https://example.com/example.json",
+    "type": "object",
+    "default": {},
+    "title": "Root Schema",
+    "required": [
+        "username",
+        "firstName",
+        "lastName",
+        "email",
+        "password"
+    ],
+    "properties": {
+        "username": {
+            "type": "string",
+            "default": "",
+            "title": "The username Schema",
+            "maxLength": 30,
+            "examples": [
+                "userTest"
+            ]
+        },
+        "firstName": {
+            "type": "string",
+            "default": "",
+            "title": "The firstName Schema",
+            "maxLength": 30,
+            "examples": [
+                "Test"
+            ]
+        },
+        "lastName": {
+            "type": "string",
+            "default": "",
+            "title": "The lastName Schema",
+            "maxLength": 30,
+            "examples": [
+                "User"
+            ]
+        },
+        "email": {
+            "type": "string",
+            "format": "email",
+            "default": "",
+            "title": "The email Schema",
+            "examples": [
+                "testuser@email.com"
+            ]
+        },
+        "password": {
+            "type": "string",
+            "default": "",
+            "title": "The password Schema",
+            "minLength": 12,
+            "pattern": "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\da-zA-Z]).{12,}$",
+            "examples": [
+                "Secure*Pass123"
+            ]
+        }
+    },
+    "additionalProperties": false,
+    "examples": [{
+        "username": "userTest",
+        "firstName": "Test",
+        "lastName": "User",
+        "email": "testuser@email.com",
+        "password": "Secure*Pass123"
+    }]
+}
