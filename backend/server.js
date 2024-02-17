@@ -4,5 +4,3 @@ const {PORT} = require('./db/config');
 app.listen(PORT, function () {
   console.log(`App on port ${PORT}!`);
 });
-
-console.log('app', app);
