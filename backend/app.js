@@ -6,6 +6,7 @@ const morgan = require('morgan');
 
 //Routes
 const registerRoutes = require('./authentication/jwt-authentication/register.js');
+const loginRoutes = require('./authentication/jwt-authentication/login.js');
 const homeRoutes = require('./routes/home.js');
 const userRouter = require('./routes/users.js');
 const authenticateGoogleRoutes = require('./authentication/oauth2-google/authenticateGoogleRoutes.js');
@@ -23,6 +24,7 @@ app.use(passport.session());
 
 app.use('/', homeRoutes);
 app.use('/register', registerRoutes);
+app.use('/login', loginRoutes);
 app.use('/google', authenticateGoogleRoutes);
 app.use('/users', userRouter);
 

@@ -1,12 +1,12 @@
 require('dotenv').config();
 
 const PORT = process.env.PORT;
+const SECRET_KEY = process.env.SECRET_KEY;
 
 
 const getEnvironmentInformation = () => {
     const environment = {
         HOST: process.env.HOST,
-        SECRET_KEY: process.env.SECRET_KEY,
         NODE_ENV: process.env.NODE_ENV,
         DB_NAME: process.env.DB_NAME,
         DB_NAME_TEST: process.env.DB_NAME_TEST,
@@ -26,5 +26,6 @@ const getEnvironmentInformation = () => {
 
 module.exports = {
     getEnvironmentInformation, 
-    PORT
+    PORT,
+    SECRET_KEY
 };

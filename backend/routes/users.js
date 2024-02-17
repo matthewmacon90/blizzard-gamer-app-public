@@ -2,8 +2,9 @@ const express = require('express');
 const router = express.Router();
 const {getAllUsers, getUserById} = require('../models/usersModel.js');
 const bcrypt = require('bcrypt');
+const verifyToken = require('../middleware/verifyToken.js');
 
-router.get('/', async (req, res, next) => { 
+router.get('/', verifyToken, async (req, res, next) => { 
     try {
         const result = await getAllUsers();
         return res.status(200).json(result);
@@ -13,7 +14,7 @@ router.get('/', async (req, res, next) => {
     }
 });
 
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', verifyToken, async (req, res, next) => {
     try {
         const {id} = req.params;
         const result = await getUserById(id);
@@ -25,7 +26,7 @@ router.get('/:id', async (req, res, next) => {
     }
 });
 
-router.patch('/:id', async (req, res, next) => {
+router.patch('/:id', verifyToken, async (req, res, next) => {
     try {
         const {id} = req.params;
         const {password} = req.body;
@@ -38,7 +39,7 @@ router.patch('/:id', async (req, res, next) => {
     }
 });
 
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', verifyToken, async (req, res, next) => {
     try {
         const {id} = req.params;
         const result = await deleteUser(id);

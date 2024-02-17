@@ -1,6 +1,7 @@
 const db = require('../db/db.js');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { SECRET_KEY } = require('../db/config.js');
 const ExpressError = require('../error-handling/ExpressError.js');
 
 const registerUser = async (username, hashedPassword, email, firstName, lastName) => {
@@ -40,28 +41,40 @@ const getUserById = async (id) => {
 const getUserByUsername = async (username) => {
     try {
         const result = await db.query(`
-            SELECT username FROM users
+            SELECT username, password FROM users
             WHERE username = $1
-            RETURNING username
         `, [username]);
+        return result.rows[0];
     } catch (err) {
         return new ExpressError('Authentication failed.', 401)
     }
 };
 
-//Read more on JWT and how to implement it here. 
-//https://dvmhn07.medium.com/jwt-authentication-in-node-js-a-practical-guide-c8ab1b432a49
+const updateLoginTime = async (username) => {
+    try {
+        const result = await db.query(`
+            UPDATE users
+            SET last_login = CURRENT_TIMESTAMP
+            WHERE username = $1
+            RETURNING last_login
+        `, [username]);
+        return result.rows[0];
+    } catch (err) {
+        console.error(err);
+    }
+};
+
 const authenticateUserJWT = async (username, password) => {
     try {
         const userFound = await getUserByUsername(username);
-        if(!userFound) return new ExpressError('Authentication failed.', 401);
+        const passwordMatch = await bcrypt.compare(password, userFound.password);
 
-        const passwordMatch = await bcrypt.compare(password, user.password);
-        if(!passwordMatch) return new ExpressError('Authentication failed.', 401);
+        if(!userFound.username || !passwordMatch) return new ExpressError('Authentication failed.', 401);
 
-        const token = jwt.sign({ userId: user._id }, 'your-secret-key', {expiresIn: '1h',});
+        await updateLoginTime(username);
+        const token = jwt.sign({ user: userFound.username}, SECRET_KEY, {expiresIn: '1h',});
 
-        return res.status(200).json({ token });
+        return token;
     } catch (err) {
         return new ExpressError('Login Failed.', 500);
     }
