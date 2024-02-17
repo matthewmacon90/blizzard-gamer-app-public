@@ -3,6 +3,7 @@ const passport = require('passport');
 const session = require('express-session');
 const cors = require('cors');
 const morgan = require('morgan');
+const {SECRET_KEY} = require('./db/config.js');
 
 //Routes
 const registerRoutes = require('./authentication/jwt-authentication/register.js');
@@ -18,7 +19,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(morgan('tiny'));
-app.use(session({ secret: 'YOUR_SESSION_SECRET', resave: false, saveUninitialized: false, cookie: { secure: true}}));
+app.use(session({ secret: SECRET_KEY, resave: false, saveUninitialized: false, cookie: { secure: true}}));
 app.use(passport.initialize());
 app.use(passport.session());
 
