@@ -1,4 +1,5 @@
 const db = require('../db/db.js');
+const ExpressError = require('../error-handling/ExpressError.js');
 
 const registerUser = async (username, hashedPassword, email, firstName, lastName) => {
     try {
@@ -11,6 +12,7 @@ const registerUser = async (username, hashedPassword, email, firstName, lastName
         return result.rows[0]
     } catch (err) {
         console.error(err);
+        return err.code === '23505' ? new ExpressError('Username or email already exists', 409) : new ExpressError('Internal Server Error', 500);
     }
 };
 
