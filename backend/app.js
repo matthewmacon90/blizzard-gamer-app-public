@@ -4,6 +4,7 @@ const session = require('express-session');
 const cors = require('cors');
 const morgan = require('morgan');
 const {SECRET_KEY} = require('./db/config.js');
+require('./authentication/oauth2-google/googlePassport.js');
 
 //Routes
 const registerRoutes = require('./authentication/jwt-authentication/register.js');
@@ -30,10 +31,9 @@ app.use('/google', authenticateGoogleRoutes);
 app.use('/users', userRouter);
 
 app.use((err, req, res, next) => {
-    console.log('err: ', err);
     const message = err.message || 'Something went wrong';
     const status = err.status || 500;
-    return new ExpressError(message, status);
+    return res.status(status).json({error: message, status: status});
 });
 
 module.exports = app;
