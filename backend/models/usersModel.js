@@ -48,6 +48,15 @@ class User {
         }
    }
 
+   static findUserByEmail (email) {
+    try {
+        const result = db.query('SELECT email FROM users WHERE email = $1', [email]);
+        return result.rows[0]
+    } catch (err) {
+        console.error(err);
+    }
+    }
+
     static async updateLoginTime (username) {
         try {
             const result = await db.query(`UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE username = $1 RETURNING last_login`, [username]);
@@ -71,15 +80,6 @@ class User {
             return token;
         } catch (err) {
             throw new ExpressError('Login Failed.', 500);
-        }
-    }
-
-    static findUserByEmail (email) {
-        try {
-            const result = db.query('SELECT email FROM users WHERE email = $1', [email]);
-            return result.rows[0]
-        } catch (err) {
-            console.error(err);
         }
     }
 
