@@ -3,9 +3,11 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { SECRET_KEY } = require('../db/config.js');
 const ExpressError = require('../error-handling/ExpressError.js');
+const generatePassword = require('generate-password');
+const {generateUsername} = require('unique-username-generator');
 
 class User {
-    async registerUser (username, hashedPassword, email, firstName, lastName) {
+    static async registerUser (username, hashedPassword, email, firstName, lastName) {
         try {
             const result = await db.query(
                 `INSERT INTO users (username, password, email, first_name, last_name) 
@@ -69,6 +71,44 @@ class User {
             return token;
         } catch (err) {
             throw new ExpressError('Login Failed.', 500);
+        }
+    }
+
+    static findUserByEmail (email) {
+        try {
+            const result = db.query('SELECT email FROM users WHERE email = $1', [email]);
+            return result.rows[0]
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    static async findOrCreate (profile) {
+        try {
+            const{_json: { email, given_name, family_name }} = profile;
+            const result = await this.findUserByEmail(email);
+
+            if(!result) {
+                const defaultPassword = generatePassword.generate({
+                    length: 25,
+                    numbers: true,
+                    symbols: true,
+                    uppercase: true,
+                    lowercase: true,
+                    strict: true
+                });
+
+                const hashedPassword = await bcrypt.hash(defaultPassword, 12);
+                let username;
+                do {
+                    username = generateUsername('', 3, 30);
+                } while (await this.getUserByUsername(username));
+
+                await this.registerUser(username, hashedPassword, email, given_name, family_name);
+            }
+        } catch (err) {
+            err.code === '23505' ? new ExpressError('Username or email already exists', 409) : new ExpressError('Internal Server Error', 500);
+            throw err;
         }
     }
 }
