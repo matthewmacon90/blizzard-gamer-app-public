@@ -14,6 +14,7 @@ const homeRoutes = require('./routes/home.js');
 const userRouter = require('./routes/users.js');
 const googleRoutes = require('./authentication/oauth2-google/googleRoutes.js');
 const blizzardRoutes = require('./authentication/oauth2-blizzard/blizzardRoutes.js');
+const wowUserProfile = require('./routes/wowUserProfile.js');
 
 
 const app = express();
@@ -21,7 +22,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(morgan('tiny'));
-app.use(session({ secret: SECRET_KEY, resave: false, saveUninitialized: false, cookie: { secure: true}}));
+app.use(session({ secret: SECRET_KEY, resave: false, saveUninitialized: false, cookie: { secure: false}}));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -31,6 +32,7 @@ app.use('/login', loginRoutes);
 app.use('/google', googleRoutes);
 app.use('/battlenet', blizzardRoutes);
 app.use('/users', userRouter);
+app.use('/wow', wowUserProfile);
 
 app.use((err, req, res, next) => {
     const message = err.message || 'Something went wrong';
