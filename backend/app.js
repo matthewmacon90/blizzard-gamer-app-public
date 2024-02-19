@@ -5,14 +5,15 @@ const cors = require('cors');
 const morgan = require('morgan');
 const {SECRET_KEY} = require('./db/config.js');
 require('./authentication/oauth2-google/googlePassport.js');
+require('./authentication/oauth2-blizzard/blizzardPassport.js');
 
 //Routes
 const registerRoutes = require('./authentication/jwt-authentication/register.js');
 const loginRoutes = require('./authentication/jwt-authentication/login.js');
 const homeRoutes = require('./routes/home.js');
 const userRouter = require('./routes/users.js');
-const authenticateGoogleRoutes = require('./authentication/oauth2-google/authenticateGoogleRoutes.js');
-const ExpressError = require('./error-handling/ExpressError.js');
+const googleRoutes = require('./authentication/oauth2-google/googleRoutes.js');
+const blizzardRoutes = require('./authentication/oauth2-blizzard/blizzardRoutes.js');
 
 
 const app = express();
@@ -27,7 +28,8 @@ app.use(passport.session());
 app.use('/', homeRoutes);
 app.use('/register', registerRoutes);
 app.use('/login', loginRoutes);
-app.use('/google', authenticateGoogleRoutes);
+app.use('/google', googleRoutes);
+app.use('/battlenet', blizzardRoutes);
 app.use('/users', userRouter);
 
 app.use((err, req, res, next) => {

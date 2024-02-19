@@ -2,7 +2,7 @@ const db = require('../db/db.js');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { SECRET_KEY } = require('../db/config.js');
-const ExpressError = require('../error-handling/ExpressError.js');
+const {ExpressError} = require('../error-handling/ExpressError.js');
 const generatePassword = require('generate-password');
 const {generateUsername} = require('unique-username-generator');
 

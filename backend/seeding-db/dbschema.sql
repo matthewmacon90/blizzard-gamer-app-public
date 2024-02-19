@@ -15,5 +15,12 @@ CREATE TABLE IF NOT EXISTS "users" (
     last_login TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS "guilds" (
+    guild_id SERIAL PRIMARY KEY,
+    guild_name VARCHAR(30) UNIQUE NOT NULL,
+    guild_description TEXT NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 ALTER TABLE users
     OWNER TO postgres;
