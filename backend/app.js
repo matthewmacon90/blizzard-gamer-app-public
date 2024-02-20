@@ -14,7 +14,7 @@ const homeRoutes = require('./routes/home.js');
 const userRouter = require('./routes/users.js');
 const googleRoutes = require('./authentication/oauth2-google/googleRoutes.js');
 const blizzardRoutes = require('./authentication/oauth2-blizzard/blizzardRoutes.js');
-const wowUserProfile = require('./routes/wowUserProfile.js');
+const wowProfileRoutes = require('./routes/wowProfileRoutes.js');
 
 
 const app = express();
@@ -32,7 +32,7 @@ app.use('/login', loginRoutes);
 app.use('/google', googleRoutes);
 app.use('/battlenet', blizzardRoutes);
 app.use('/users', userRouter);
-app.use('/wow', wowUserProfile);
+app.use('/my-wow', wowProfileRoutes);
 
 app.use((err, req, res, next) => {
     const message = err.message || 'Something went wrong';

@@ -39,6 +39,15 @@ class User {
         }
     }
 
+    static async getUserByBattleTag (battletag) {
+        try {
+            const result = await db.query('SELECT username, first_name AS firstName, last_name AS lastName FROM users WHERE battletag = $1', [battletag]);
+            return result.rows[0];
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
     static async getUserByUsername (username) {
         try {
             const result = await db.query('SELECT username, password FROM users WHERE username = $1', [username]);
@@ -83,7 +92,16 @@ class User {
         }
     }
 
-    static async findOrCreate (profile) {
+    static async battleNetFindCreate (profile) {
+        try {
+            const {id, battletag, token} = profile;
+            const result = await this.getUserByBattleTag(battletag);
+        } catch (err) {
+            throw new ExpressError('Internal Server Error', 500);
+        }
+    }
+
+    static async googleFindCreate (profile) {
         try {
             const{_json: { email, given_name, family_name }} = profile;
             const result = await this.findUserByEmail(email);
