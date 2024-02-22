@@ -25,6 +25,18 @@ router.get('/:id', verifyToken, async (req, res, next) => {
     }
 });
 
+router.post('/link/battlenet', verifyToken, async (req, res, next) => {
+    try {
+        const {email} = req.body;
+        const result = await User.linkBattleNetAccount(email);
+        console.log('RESULt: ', result);
+        return res.status(200).json(result);
+    } catch (err) {
+        console.error(err);
+        next(err);
+    }
+});
+
 router.patch('/:id', verifyToken, async (req, res, next) => {
     try {
         const {id} = req.params;

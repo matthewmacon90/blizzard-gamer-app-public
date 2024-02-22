@@ -57,7 +57,7 @@ class User {
         }
    }
 
-   static findUserByEmail (email) {
+   static getUserByEmail (email) {
     try {
         const result = db.query('SELECT email FROM users WHERE email = $1', [email]);
         return result.rows[0]
@@ -92,6 +92,7 @@ class User {
         }
     }
 
+    //This method also needs to be finished out.
     static async battleNetFindCreate (profile) {
         try {
             const {id, battletag, token} = profile;
@@ -101,32 +102,12 @@ class User {
         }
     }
 
-    static async googleFindCreate (profile) {
+    //Finish out this method
+    static async linkBattleNetAccount (email) {
         try {
-            const{_json: { email, given_name, family_name }} = profile;
-            const result = await this.findUserByEmail(email);
-
-            if(!result) {
-                const defaultPassword = generatePassword.generate({
-                    length: 25,
-                    numbers: true,
-                    symbols: true,
-                    uppercase: true,
-                    lowercase: true,
-                    strict: true
-                });
-
-                const hashedPassword = await bcrypt.hash(defaultPassword, 12);
-                let username;
-                do {
-                    username = generateUsername('', 3, 30);
-                } while (await this.getUserByUsername(username));
-
-                await this.registerUser(username, hashedPassword, email, given_name, family_name);
-            }
+            
         } catch (err) {
-            err.code === '23505' ? new ExpressError('Username or email already exists', 409) : new ExpressError('Internal Server Error', 500);
-            throw err;
+            throw new ExpressError('Internal Server Error', 500);
         }
     }
 }

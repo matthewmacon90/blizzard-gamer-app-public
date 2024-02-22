@@ -4,7 +4,7 @@ const WoWProfileData = require('../models/wowProfileModel.js');
 //USR5x6aqivyqg1LngKAgaJfR4Gg5NWaevD token for testing purposes
 
 class WoWApi {
-    constructor(token = 'USPJ9RKmPDDg45WMHWCTvhllcJ66dymvay') {
+    constructor(token = 'USDJNLaGCk6F8GI5km3i5ncDtBlylpLzu7') {
         this.token = token;
         this.authorizationHeaders = {headers: {'Authorization': `Bearer ${this.token}`}}
     }
@@ -40,6 +40,18 @@ class WoWApi {
             console.log(error);
         }
     };
+
+    //Not working at the moment.
+    async getGuildProfile(realm, guildName) {
+        try {
+            const result = await axios.get(`https://us.api.blizzard.com/data/wow/guild/${realm}/${guildName.toLowerCase()}?namespace=profile-us`, this.authorizationHeaders);
+            const {headers, data} = result;
+            const apiCallDate = headers.date;
+            return data;
+        } catch (error) {
+            console.log(error);
+        }
+    }
 }
 
 module.exports = WoWApi;
