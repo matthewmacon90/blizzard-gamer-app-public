@@ -1,6 +1,6 @@
 import './App.css';
 import RouteComponent from './components/routes/RoutesComponent';
-import NavBar from './components/NavBar/NavBar';
+import NavBar from './components/navbar/NavBar';
 
 function App() {
   return (

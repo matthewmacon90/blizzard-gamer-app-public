@@ -6,8 +6,12 @@ const Register = () => {
     const [newUser, setNewUser] = useState({});
     console.log('New User: ', newUser); 
 
+    //Test this without async/await function.
     useEffect(() => {
-        Api.registerUser(newUser);
+        async function register() {
+            await Api.registerUser(newUser);
+        };
+        register();
     }, [newUser]);
 
     const submitUserInfo = (userInfo) => {
