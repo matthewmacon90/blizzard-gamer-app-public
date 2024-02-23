@@ -1,27 +1,32 @@
 import RegisterForm from "./RegisterForm";
-import {useState, useEffect } from "react";
+import {useState} from "react";
 import Api from "../../api";
 
 const Register = () => {
-    const [newUser, setNewUser] = useState({});
-    console.log('New User: ', newUser); 
+    const initalState = {
+        username: '',
+        password: '',
+        firstName: '',
+        lastName: '',
+        email: ''
+    };
+
+    const [newUser, setNewUser] = useState(initalState);
 
     //Test this without async/await function.
-    useEffect(() => {
-        async function register() {
-            await Api.registerUser(newUser);
-        };
-        register();
-    }, [newUser]);
+    async function register() {
+        await Api.registerUser(newUser);
+    };
 
     const submitUserInfo = (userInfo) => {
-        console.log('User Info: ', userInfo);
         setNewUser(userInfo);
+        register();
     };
+
     return (
         <div>
             <h1>Register</h1>
-            <RegisterForm submit={submitUserInfo}/>
+            <RegisterForm initalState={initalState} submit={submitUserInfo}/>
         </div>
     );
 };
