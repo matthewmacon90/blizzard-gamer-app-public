@@ -9,7 +9,7 @@ router.get('/', passport.authenticate('bnet'));
 router.get('/callback', passport.authenticate('bnet', { failureRedirect: '/' }),
     function(req, res){
         console.log('REQ USER CALL BACK: ', req.user);
-        res.redirect('/');
+        res.redirect('http://localhost:3000/');
     });
 
 

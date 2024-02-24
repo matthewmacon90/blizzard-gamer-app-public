@@ -2,6 +2,7 @@ import RegisterForm from "./RegisterForm";
 import Api from "../../api";
 import {Link} from "react-router-dom";
 import {useState} from "react";
+import BattleNetAuth from "./BattleNetAuth";
 
 const Register = () => {
     const [message, setMessage] = useState('');
@@ -22,6 +23,7 @@ const Register = () => {
     return (
         <div>
             <h1>Register</h1>
+            <BattleNetAuth />
             <RegisterForm submit={submitUserInfo}/>
             {   message &&
                 <div className="register-message-container"> 

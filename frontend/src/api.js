@@ -35,6 +35,14 @@ class Api {
             return err;
         }
     };
+
+    static async getMyWow(){
+        try {
+            return await this.request(`my-wow`);
+        } catch (err) {
+            return err;
+        }
+    }
 }
 
 export default Api;

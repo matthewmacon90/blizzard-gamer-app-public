@@ -4,7 +4,7 @@ const WoWProfileData = require('../models/wowProfileModel.js');
 //USR5x6aqivyqg1LngKAgaJfR4Gg5NWaevD token for testing purposes
 
 class WoWApi {
-    constructor(token = 'USDJNLaGCk6F8GI5km3i5ncDtBlylpLzu7') {
+    constructor(token = '') {
         this.token = token;
         this.authorizationHeaders = {headers: {'Authorization': `Bearer ${this.token}`}}
     }

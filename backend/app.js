@@ -17,7 +17,7 @@ const wowProfileRoutes = require('./routes/wowProfileRoutes.js');
 
 const app = express();
 
-app.use(cors());
+app.use(cors({}));
 app.use(express.json());
 app.use(morgan('tiny'));
 app.use(session({ secret: SECRET_KEY, resave: false, saveUninitialized: false, cookie: { secure: false}}));
