@@ -24,16 +24,15 @@ class Api {
 
     static async registerUser(newUser) {
         try{
-            console.log('New User: ', newUser);
             let {username, email, password, firstName, lastName} = newUser;
             username = username.trim().toLowerCase();
             email = email.trim().toLowerCase();
             firstName = firstName.trim().toLowerCase();
             lastName = lastName.trim().toLowerCase();
-            const result = await this.request(`register`, {username, email, password, firstName, lastName}, 'post');
-            console.log('Result: ', result);
+            await this.request(`register`, {username, email, password, firstName, lastName}, 'post');
+            return 'You have successfully registered! Please log in to continue.';
         } catch (err) {
-            console.error('ERROR AFTER THE CALL: ', err);
+            return err;
         }
     };
 }

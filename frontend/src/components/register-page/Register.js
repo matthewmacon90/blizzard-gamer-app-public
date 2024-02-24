@@ -1,14 +1,21 @@
 import RegisterForm from "./RegisterForm";
 import Api from "../../api";
+import {Link} from "react-router-dom";
+import {useState} from "react";
 
 const Register = () => {
-    //Test this without async/await function.
+    const [message, setMessage] = useState('');
+
     async function register(userInfo) {
-        await Api.registerUser(userInfo);
+        try {
+            const result = await Api.registerUser(userInfo);
+            setMessage(result);
+        } catch (err) {
+            setMessage(err[0]);
+        }
     };
 
     const submitUserInfo = (userInfo) => {
-        console.log(userInfo);
         register(userInfo);
     };
 
@@ -16,6 +23,14 @@ const Register = () => {
         <div>
             <h1>Register</h1>
             <RegisterForm submit={submitUserInfo}/>
+            {   message &&
+                <div className="register-message-container"> 
+                    <p>{message}</p>
+                </div>
+            }
+            <div className="register-login-container">
+                <p>Already have an account? <Link to="/login" aria-label="Login">Login</Link></p>
+            </div>
         </div>
     );
 };
