@@ -1,50 +1,70 @@
-import { useState } from "react";
-import {useForm} from "react-hook-form";
+import {useForm, FormProvider} from "react-hook-form";
+import Input from "../input-form/Input";
 
-const RegisterForm = ({initalState, submit}) => {
-    const [formData, setFormData] = useState(initalState);
-    const {register, handleSubmit, watch, formState:{errors}} = useForm();
+const RegisterForm = ({submit}) => {
+    const methods = useForm();
+    const {handleSubmit, reset} = methods;
 
-    // console.log('watch', watch('username'));
-    // console.log('FORM: ', formState.errors)
-
-    // const handleChange = (e) => {
-    //     const {name, value} = e.target;
-    //     setFormData({...formData, [name]: value});
-    // };
-
-    const onSubmit = (data) => console.log('data ', data);
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();
-    //     submit(formData);
-    //     setFormData(initalState);
-    // };
-
+    const onSubmit = (data) => {
+        submit(data);
+        reset();
+    };
     return (
         <div>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <label htmlFor="username">Username</label>
-                {/* <input type="text" id="username" name="username" required onChange={handleChange} value={formData.username} /> */}
-                <input id="username" type="text" {...register('username', {maxLength: 30, required: true})} />
+            <FormProvider {...methods}> 
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <label htmlFor="username">Username</label>
+                    <Input id="username" type="text" placeholder="Username" 
+                        validationRules={{
+                            required: 'This is required.',
+                            maxLength: {
+                                value: 30,
+                                message: 'Your username is too long, the max length is 30 characters'
+                            },
+                        }}/>
 
-                <label htmlFor="password">Password</label>
-                {/* <input type="password" id="password" name="password" required onChange={handleChange} value={formData.password} /> */}
-                <input id="password" type="password" {...register('password')} />
+                    <label htmlFor="password">Password</label>
+                    <Input id="password" type="password" placeholder="Password" validationRules={{
+                        required: 'This is required.',
+                        pattern: {
+                            value: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{12,}$/,
+                            message: `Password must have at least 12 characters and contain at least one uppercase letter, one lowercase letter, one number, and one special character`
+                        },
+                        minLength: {
+                            value: 12,
+                            message: `Password must have at least 12 characters and contain at least one uppercase letter, one lowercase letter, one number, and one special character`
+                        }
+                    }}/>
 
-                <label htmlFor="firstName">First Name</label>
-                {/* <input type="text" id="firstName" name="firstName" required onChange={handleChange} value={formData.firstName} /> */}
-                <input id="firstName" type="text" {...register('firstName')} />
+                    <label htmlFor="email">Email</label>
+                    <Input id="email" type="email" placeholder="Email" validationRules={{
+                        required: 'This is required.',
+                        pattern: {
+                            value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                            message: 'Invalid email'
+                        }
+                    }}/>
 
-                <label htmlFor="lastName">Last Name</label>
-                {/* <input type="text" id="lastName" name="lastName" required onChange={handleChange} value={formData.lastName} /> */}
-                <input id="lastName" type="text" {...register('lastName')} />
+                    <label htmlFor="firstName">First Name</label>
+                    <Input id="firstName" type="text" placeholder="First Name" validationRules={{
+                        required: 'This is required.',
+                        maxLength: {
+                            value: 30,
+                            message: 'Your first name is too long, the max length is 30 characters'
+                        }
+                    }}/>
 
-                <label htmlFor="email">Email</label>
-                {/* <input type="email" id="email" name="email" required onChange={handleChange} value={formData.email} /> */}
-                <input id="email" type="email" {...register('email')} />
-
-                <button type="submit">Register</button>
-            </form>
+                    <label htmlFor="lastName">Last Name</label>
+                    <Input id="lastName" type="text" placeholder="Last Name" validationRules={{
+                        required: 'This is required.',
+                        maxLength: {
+                            value: 30,
+                            message: 'Your last name is too long, the max length is 30 characters'
+                        }
+                    }}/>
+                    <button type="submit">Register</button>
+                </form>
+            </FormProvider>
         </div>
     );
 };
