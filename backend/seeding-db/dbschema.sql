@@ -14,8 +14,6 @@ CREATE TABLE IF NOT EXISTS "users" (
     battlenet_id VARCHAR(255) UNIQUE,
     battle_tag VARCHAR(255) UNIQUE,
     battlenet_token VARCHAR(255),
-    google_id VARCHAR(255) UNIQUE,
-    google_token VARCHAR(255),
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     last_login TIMESTAMP
 );

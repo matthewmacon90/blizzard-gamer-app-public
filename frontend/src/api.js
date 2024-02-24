@@ -36,9 +36,32 @@ class Api {
         }
     };
 
+    static async loginUser(userInfo) {
+        try {
+            const {username, password} = userInfo;
+            const token = await this.request(`login`, {username, password}, 'post');
+            this.token = token;
+            return token;
+        } catch (err) {
+            return err;
+        }
+    }
+
+    static async linkBattleNetAccount() {
+        try{
+            const result = await this.request(`wow-user`);
+            console.log('result: ', result);
+            return result;
+        } catch (err) {
+            return err;
+        }
+    };
+
     static async getMyWow(){
         try {
-            return await this.request(`my-wow`);
+            const result = await this.request(`wow-user`);
+            console.log('result get my wow: ', result);
+            return result
         } catch (err) {
             return err;
         }

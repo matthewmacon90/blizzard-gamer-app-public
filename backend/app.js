@@ -4,6 +4,8 @@ const session = require('express-session');
 const cors = require('cors');
 const morgan = require('morgan');
 const {SECRET_KEY} = require('./db/config.js');
+const helmet = require('helmet');
+const cookieParser = require('cookie-parser'); //Do I need this?
 require('./authentication/oauth2-blizzard/blizzardPassport.js');
 
 //Routes
@@ -16,11 +18,12 @@ const wowProfileRoutes = require('./routes/wowProfileRoutes.js');
 
 
 const app = express();
-
+app.use(helmet());
 app.use(cors({}));
 app.use(express.json());
+app.use(cookieParser());
 app.use(morgan('tiny'));
-app.use(session({ secret: SECRET_KEY, resave: false, saveUninitialized: false, cookie: { secure: false}}));
+app.use(session({ secret: SECRET_KEY, resave: false, saveUninitialized: false, cookie: { httpOnly: false, secure: false}})); //Learn more about this.
 app.use(passport.initialize());
 app.use(passport.session());
 
