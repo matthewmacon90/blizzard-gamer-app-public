@@ -1,5 +1,5 @@
 import {useForm, FormProvider} from "react-hook-form";
-import Input from "../input-form/Input";
+import Input from "../../components/input-form/Input";
 import { usernameSchema, passwordSchema, emailSchema, firstNameSchema, lastNameSchema } from "../../form-schema/registerFormSchema";
 
 const RegisterForm = ({submit}) => {

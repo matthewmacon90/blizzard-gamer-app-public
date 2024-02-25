@@ -1,4 +1,4 @@
-import Input from "../input-form/Input";
+import Input from "../../components/input-form/Input";
 import {useForm, FormProvider} from "react-hook-form";
 
 const EditProfileForm = ({fieldToChange, label, type, previousValue, schema}) => {

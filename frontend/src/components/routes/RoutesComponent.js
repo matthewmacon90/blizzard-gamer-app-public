@@ -1,9 +1,9 @@
 import {Routes, Route} from 'react-router-dom';
 import PrivateRoutes from './PrivateRoutes';
-import UserHome from '../user-page/UserHome';
-import HomePage from '../home-page/HomePage';
-import Register from '../register-page/Register';
-import Login from '../login-page/Login';
+import UserHome from '../../pages/user-page/UserHome';
+import HomePage from '../../pages/home-page/HomePage';
+import Register from '../../pages/register-page/Register';
+import Login from '../../pages/login-page/Login';
 
 
 const RoutesComponent = () => {
