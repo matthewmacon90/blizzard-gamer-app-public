@@ -1,7 +1,6 @@
 import Input from "../../components/input-form/Input";
 import {useForm, FormProvider } from "react-hook-form";
 import {usernameSchema, emailSchema, firstNameSchema, lastNameSchema} from "../../form-schema/updateUserSchema";
-import ProfileButton from "./ProfileButton";
 
 const EditProfileForm = ({user, editProfile, edit, updateUser}) => {
     const {username, email, firstname, lastname} = user;
@@ -17,10 +16,8 @@ const EditProfileForm = ({user, editProfile, edit, updateUser}) => {
     const { handleSubmit } = methods;
 
     const onSubmit = (data) => {
-        console.log(data);
         updateUser(data);
         editProfile();
-        // updatedUser(data);
     };
 
     return (

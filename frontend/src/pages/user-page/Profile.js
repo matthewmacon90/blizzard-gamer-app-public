@@ -1,7 +1,6 @@
 import EditProfile from "./EditProfile";
 import { useState } from "react";
 import CurrentProfileData from "./CurrentProfileData";
-import ProfileButton from "./ProfileButton";
 import Api from "../../api";
 
 const Profile = ({ user, setUser }) => {
@@ -10,7 +9,6 @@ const Profile = ({ user, setUser }) => {
 
     async function updateUser(user) {
         try {
-            console.log('updateUser', user);
             const result = await Api.updateUser(user);
             setUser(result);
             setMessage('Profile Updated Successfully!');
@@ -19,7 +17,6 @@ const Profile = ({ user, setUser }) => {
             }, 3000);
             return result;
         } catch (err) {
-            console.error(err);
             setMessage(err);
         }
     };

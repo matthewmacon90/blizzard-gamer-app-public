@@ -5,11 +5,7 @@ const ProfileButton = ({edit, editProfile}) => {
 
     return (
         <div className="profileButton-container">
-            {edit ? 
-                (<button onClick={handleEdit} type="submit">Save Changes</button>) 
-                : 
-                (<button onClick={handleEdit}>Edit Profile</button>)
-            }
+            {edit ? null : (<button onClick={handleEdit}>Edit Profile</button>)}
         </div>
     );
 };

@@ -1,8 +1,6 @@
 import {useState, useEffect} from 'react';
 import Api from '../../api';
 import Profile from './Profile';
-import checkResult from '../../helpers/checkResult.js'
-
 
 const UserHome = () => {
     const [user, setUser] = useState(null);
