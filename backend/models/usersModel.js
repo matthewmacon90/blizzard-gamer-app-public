@@ -27,6 +27,7 @@ class User {
             return result.rows[0];
         } catch (err) {
             console.error(err);
+            throw new ExpressError('Internal Server Error', 500);
         }
     }
 
@@ -93,7 +94,7 @@ class User {
 
             await User.updateLoginTime(username);
 
-            const token = jwt.sign({ user: userFound.username}, SECRET_KEY, {expiresIn: '1h',});
+            const token = jwt.sign({ username: userFound.username}, SECRET_KEY, {expiresIn: '1h',});
 
             return token;
         } catch (err) {

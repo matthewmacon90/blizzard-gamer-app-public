@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require('../models/usersModel.js');
 const bcrypt = require('bcrypt');
 const verifyToken = require('../middleware/verifyToken.js');
+const decodeToken = require('../helpers/decodeToken.js');
 
 router.get('/', verifyToken, async (req, res, next) => { 
     try {
@@ -16,8 +17,9 @@ router.get('/', verifyToken, async (req, res, next) => {
 
 router.get('/profile', verifyToken, async (req, res, next) => {
     try {
-        const {username} = req.body;
-        const result = await User.getUserByUsername(username);
+        const decodedToken = decodeToken(req.headers.authorization.split(' ')[1]);
+        const {username} = decodedToken;
+        const result = await User.getAuthenticatedUserInfo(username);
         return res.status(200).json(result);
     } catch (err) {
         console.error(err);
@@ -40,7 +42,6 @@ router.post('/link/battlenet', verifyToken, async (req, res, next) => {
     try {
         const {email} = req.body;
         const result = await User.linkBattleNetAccount(email);
-        console.log('RESULt: ', result);
         return res.status(200).json(result);
     } catch (err) {
         console.error(err);
