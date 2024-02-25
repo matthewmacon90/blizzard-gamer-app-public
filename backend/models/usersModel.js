@@ -21,6 +21,15 @@ class User {
         }
     };
 
+    static async getAuthenticatedUserInfo (username) {
+        try {
+            const result = await db.query('SELECT username, email, first_name AS firstName, last_name AS lastName FROM users WHERE username = $1', [username]);
+            return result.rows[0];
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
     static async getAllUsers () {
         try {
             const result = await db.query('SELECT username, first_name AS firstName, last_name AS lastName FROM users');

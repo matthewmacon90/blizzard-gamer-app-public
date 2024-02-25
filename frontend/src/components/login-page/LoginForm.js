@@ -1,34 +1,37 @@
-import {useForm, FormProvider } from "react-hook-form";
-import Input from "../input-form/Input";
+import { useState } from "react";
 
-const LoginForm = ({submitLogin}) => {
+const LoginForm = ({error, submitLogin, setError}) => {
     const initalState = {
         username: '',
         password: '',
     };
-    const methods = useForm({defaultValues: initalState});
-    const {handleSubmit, reset} = methods;
+    const [formState, setFormState] = useState(initalState);
 
-    const onSubmit = (data) => {
-        submitLogin(data);
-        reset(initalState);
+    const handleChange = (e) => {
+        const {name, value} = e.target;
+        setError(null);
+        setFormState({...formState, [name]: value});
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        submitLogin(formState);
+        setFormState(initalState);
     };
 
     return (
         <div>
             <h1>Login</h1>
-            <FormProvider {...methods}>
-                <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit}>
                 <label htmlFor={'username'}>Username</label>
-                <Input id={'username'} placeholder={'username'} type={'text'} />
+                <input id={'username'} placeholder={'username'} type={'text'} name="username" value={formState.username} onChange={handleChange}/>
 
                 <label htmlFor={'password'}>Password</label>
-                <Input id={'password'} placeholder={'password'} type={'password'} />
+                <input id={'password'} placeholder={'password'} type={'password'} name="password" value={formState.password} onChange={handleChange}/>
 
                 <button type={'submit'}>Login</button>
-                </form>
-
-            </FormProvider>
+            </form>
+            {error && <p>{error}</p>}
         </div>
     );
 };

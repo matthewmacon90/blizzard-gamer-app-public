@@ -47,6 +47,15 @@ class Api {
         }
     }
 
+    static async getMyProfile() {
+        try{
+            const result = await this.request(`profile`);
+            return result;
+        } catch (err) {
+            return err;
+        }
+    }
+
     static async linkBattleNetAccount() {
         try{
             const result = await this.request(`wow-user`);

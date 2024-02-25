@@ -14,6 +14,17 @@ router.get('/', verifyToken, async (req, res, next) => {
     }
 });
 
+router.get('/profile', verifyToken, async (req, res, next) => {
+    try {
+        const {username} = req.body;
+        const result = await User.getUserByUsername(username);
+        return res.status(200).json(result);
+    } catch (err) {
+        console.error(err);
+        next(err);
+    }
+});
+
 router.get('/:id', verifyToken, async (req, res, next) => {
     try {
         const {id} = req.params;
