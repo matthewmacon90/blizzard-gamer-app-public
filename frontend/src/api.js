@@ -47,6 +47,24 @@ class Api {
         }
     }
 
+    static async updateUser(user) {
+        try {
+            const token = this.token;
+            const headers = { 'authorization': `Bearer ${token}`};
+            let {username, email, firstname, lastname} = user;
+            username = username.trim().toLowerCase();
+            email = email.trim().toLowerCase();
+            firstname = firstname.trim().toLowerCase();
+            lastname = lastname.trim().toLowerCase();
+
+            const result = await this.request(`users/profile/update/`, {username, email, firstname, lastname}, 'patch', headers);
+
+            return result;
+        } catch (err) {
+            throw err;
+        }
+    }
+
     static async getMyProfile() {
         try{
             const token = this.token;

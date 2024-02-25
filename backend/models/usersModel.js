@@ -21,9 +21,9 @@ class User {
         }
     };
 
-    static async getAuthenticatedUserInfo (username) {
+    static async getAuthenticatedUserInfo (id) {
         try {
-            const result = await db.query('SELECT username, email, first_name AS firstName, last_name AS lastName FROM users WHERE username = $1', [username]);
+            const result = await db.query('SELECT username, email, first_name AS firstName, last_name AS lastName FROM users WHERE user_id = $1', [id]);
             return result.rows[0];
         } catch (err) {
             console.error(err);
@@ -60,7 +60,7 @@ class User {
 
     static async getUserByUsername (username) {
         try {
-            const result = await db.query('SELECT username, password FROM users WHERE username = $1', [username]);
+            const result = await db.query('SELECT user_id, username, password FROM users WHERE username = $1', [username]);
             return result.rows[0];
         } catch (err) {
             throw new ExpressError('Authentication failed.', 401)
@@ -85,6 +85,20 @@ class User {
         }
     }
 
+    static async updateUser (id, username, email, firstName, lastName) {
+        try {
+            const result = await db.query(`
+                UPDATE users 
+                SET username = $1, email = $2, first_name = $3, last_name = $4 
+                WHERE user_id = $5 
+                RETURNING username, email, first_name AS firstName, last_name AS lastName`, 
+                [username, email, firstName, lastName, id]);
+            return result.rows[0];
+        } catch (err) {
+            if(err.code === '23505') throw new ExpressError('Username or email already exists', 409);
+        }
+    }
+
     static async authenticateUserJWT (username, password) {
         try {
             const userFound = await User.getUserByUsername(username);
@@ -94,7 +108,7 @@ class User {
 
             await User.updateLoginTime(username);
 
-            const token = jwt.sign({ username: userFound.username}, SECRET_KEY, {expiresIn: '1h',});
+            const token = jwt.sign({id:userFound.user_id, username: userFound.username}, SECRET_KEY, {expiresIn: '1h',});
 
             return token;
         } catch (err) {

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/usersModel.js');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt'); //I will add this to update user later.
 const verifyToken = require('../middleware/verifyToken.js');
 const decodeToken = require('../helpers/decodeToken.js');
 
@@ -18,8 +18,8 @@ router.get('/', verifyToken, async (req, res, next) => {
 router.get('/profile', verifyToken, async (req, res, next) => {
     try {
         const decodedToken = decodeToken(req.headers.authorization.split(' ')[1]);
-        const {username} = decodedToken;
-        const result = await User.getAuthenticatedUserInfo(username);
+        const {id} = decodedToken;
+        const result = await User.getAuthenticatedUserInfo(id);
         return res.status(200).json(result);
     } catch (err) {
         console.error(err);
@@ -29,7 +29,6 @@ router.get('/profile', verifyToken, async (req, res, next) => {
 
 router.get('/:id', verifyToken, async (req, res, next) => {
     try {
-        const {id} = req.params;
         const result = await User.getUserById(id);
         return res.status(200).json(result);
     } catch (err) {
@@ -49,15 +48,15 @@ router.post('/link/battlenet', verifyToken, async (req, res, next) => {
     }
 });
 
-router.patch('/:id', verifyToken, async (req, res, next) => {
+router.patch('/profile/update', verifyToken, async (req, res, next) => {
     try {
-        const {id} = req.params;
-        const {password} = req.body;
-        const hashedPassword = await bcrypt.hash(password, 12);
-        const result = await User.updateUserPassword(id, hashedPassword);
+        const decodedToken = decodeToken(req.headers.authorization.split(' ')[1]);
+        const {id} = decodedToken;
+        const {username, email, firstname, lastname} = req.body;
+        const result = await User.updateUser(id, username, email, firstname, lastname);
+
         return res.status(200).json(result);
     } catch (err) {
-        console.error(err);
         next(err);
     }
 });

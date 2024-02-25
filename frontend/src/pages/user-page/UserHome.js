@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react';
 import Api from '../../api';
 import Profile from './Profile';
+import checkResult from '../../helpers/checkResult.js'
 
 
 const UserHome = () => {
@@ -12,7 +13,7 @@ const UserHome = () => {
                 const result = await Api.getMyProfile();
                 setUser(result);
             } catch (err) {
-                console.error(err);
+                throw err;
             }
         }
         fetchData();
@@ -21,7 +22,7 @@ const UserHome = () => {
     return (
         <div>
             <h1>Welcome to the User Profile Page</h1>
-            {user && <Profile user={user} />}
+            {user && <Profile user={user} setUser={setUser} />}
         </div>
     );
 };

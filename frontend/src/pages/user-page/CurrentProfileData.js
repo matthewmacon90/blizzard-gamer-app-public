@@ -1,4 +1,6 @@
-const CurrentProfileData = ({ user }) => {
+import ProfileButton from "./ProfileButton";
+
+const CurrentProfileData = ({ user, edit, editProfile }) => {
     const { username, email, firstname, lastname } = user;
     return (
         <div>
@@ -6,6 +8,7 @@ const CurrentProfileData = ({ user }) => {
             <p>Email: {email}</p>
             <p>First Name: {firstname}</p>
             <p>Last Name: {lastname}</p>
+            <ProfileButton edit={edit} editProfile={editProfile} />
         </div>
     );
 };

@@ -5,7 +5,7 @@ const Input = ({id, type, placeholder, validationRules}) => {
     const {register, formState:{errors}} = useFormContext();
     return (
         <>
-            <input id={id} type={type} placeholder={placeholder} {...register(id, validationRules)}/>
+            <input id={id} type={type} placeholder={placeholder} {...register(id, {validationRules})}/>
             <ErrorFormDisplay error={errors[id]}/>
         </>
     );
