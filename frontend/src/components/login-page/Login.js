@@ -25,13 +25,9 @@ const Login = () => {
         }
     };
 
-    const submitLogin = (data) => {
-        login(data);
-    };
-
     return (
         <div>
-            {auth.currentUser ? <Navigate to='/my-profile' replace={true}/> : <LoginForm submitLogin={submitLogin} error={error} setError={setError}/> }
+            {auth.currentUser ? <Navigate to='/my-profile' replace={true}/> : <LoginForm login={login} error={error} setError={setError}/> }
         </div>
     );
 };

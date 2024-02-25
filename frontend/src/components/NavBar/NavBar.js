@@ -6,7 +6,7 @@ import logout from "../../helpers/logout";
 const NavBar = () => {
   const auth = useContext(AuthContext);
   const currentUser = auth.currentUser;
-  console.log('currentUser in NAV: ', currentUser)
+
   return (
     <nav>
       <button><Link to="/">Home</Link></button>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const LoginForm = ({error, submitLogin, setError}) => {
+const LoginForm = ({error, login, setError}) => {
     const initalState = {
         username: '',
         password: '',
@@ -15,7 +15,7 @@ const LoginForm = ({error, submitLogin, setError}) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        submitLogin(formState);
+        login(formState);
         setFormState(initalState);
     };
 

@@ -49,7 +49,9 @@ class Api {
 
     static async getMyProfile() {
         try{
-            const result = await this.request(`profile`);
+            const token = this.token;
+            const headers = { 'authorization': `Bearer ${token}`};
+            const result = await this.request(`users/profile`, {}, 'get', headers);
             return result;
         } catch (err) {
             return err;
@@ -59,7 +61,6 @@ class Api {
     static async linkBattleNetAccount() {
         try{
             const result = await this.request(`wow-user`);
-            console.log('result: ', result);
             return result;
         } catch (err) {
             return err;
@@ -69,7 +70,6 @@ class Api {
     static async getMyWow(){
         try {
             const result = await this.request(`wow-user`);
-            console.log('result get my wow: ', result);
             return result
         } catch (err) {
             return err;
