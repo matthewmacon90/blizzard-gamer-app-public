@@ -16,10 +16,17 @@ const userRouter = require('./routes/users.js');
 const blizzardRoutes = require('./authentication/oauth2-blizzard/blizzardRoutes.js');
 const wowProfileRoutes = require('./routes/wowProfileRoutes.js');
 
+//I tried this for the blizzard api call
+const corsOptions = {
+    origin: 'http://localhost:3000', // This should match the domain of your front-end application
+    optionsSuccessStatus: 200,
+    credentials: true, // This is important for sessions or when using cookies/token authentication
+};
+
 
 const app = express();
 app.use(helmet());
-app.use(cors({}));
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan('tiny'));

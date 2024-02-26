@@ -78,8 +78,13 @@ class Api {
 
     static async linkBattleNetAccount() {
         try{
-            const result = await this.request(`wow-user`);
-            return result;
+            const token = this.token;
+            const headers = { 'authorization': `Bearer ${token}`};
+            // const response = await axios.get(`https://oauth.battle.net/authorize`);
+            // console.log('RESPONSE: ', response);
+            const result = await this.request(`battlenet`, {}, 'get', headers);
+            console.log('RESULT: ', result);
+            // return result;
         } catch (err) {
             return err;
         }

@@ -2,6 +2,7 @@ import EditProfile from "./EditProfile";
 import { useState } from "react";
 import CurrentProfileData from "./CurrentProfileData";
 import Api from "../../api";
+import BattleNetLink from "./BattleNetAuth";
 
 const Profile = ({ user, setUser }) => {
     const [edit, setEdit] = useState(false);
@@ -32,6 +33,10 @@ const Profile = ({ user, setUser }) => {
             {edit ? (<EditProfile user={user} edit={edit} editProfile={editProfile} updateUser={updateUser} />) :
                 (<CurrentProfileData user={user} edit={edit} editProfile={editProfile} />)}
             {message && <p>{message}</p>}
+
+            <div className="profile-link-battlenet">
+                <BattleNetLink user={user} />
+            </div>
         </div>
     );
 };

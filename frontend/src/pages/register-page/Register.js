@@ -2,7 +2,6 @@ import RegisterForm from "./RegisterForm";
 import Api from "../../api";
 import {Link, Navigate} from "react-router-dom";
 import {useState} from "react";
-import BattleNetAuth from "./BattleNetAuth"; //Implement this later when user has logged in and they can connect their battlenet account to their user account.
 import checkResult from "../../helpers/checkResult";
 
 const Register = () => {
@@ -36,7 +35,6 @@ const Register = () => {
     return (
         <div>
             <h1>Register</h1>
-            {/* <BattleNetAuth /> */}
             <RegisterForm submit={submitUserInfo}/>
             {message &&
                 <div className="register-message-container"> 
