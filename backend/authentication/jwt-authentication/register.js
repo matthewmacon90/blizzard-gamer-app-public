@@ -15,6 +15,8 @@ router.post('/', async (req, res, next) => {
             throw new BadRequestError(errs);
         }
 
+        console.log('req.session', req.session);
+
         const {username, password, email, firstName, lastName} = req.body;
         const hashedPassword = await bcrypt.hash(password, 12);
         const result = await registerUser(username, hashedPassword, email, firstName, lastName);

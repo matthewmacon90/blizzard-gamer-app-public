@@ -1,7 +1,6 @@
 require('dotenv').config();
 const passport = require('passport');
 const BnetStrategy = require('passport-bnet').Strategy;
-console.log(BnetStrategy)
 
 passport.use(new BnetStrategy({
     clientID: process.env.BLIZZARD_CLIENT_ID,

@@ -3,9 +3,8 @@ const passport = require('passport');
 const session = require('express-session');
 const cors = require('cors');
 const morgan = require('morgan');
-const {SECRET_KEY} = require('./db/config.js');
+const {SESSION_SECRET} = require('./db/config.js');
 const helmet = require('helmet');
-const cookieParser = require('cookie-parser'); //Do I need this?
 require('./authentication/oauth2-blizzard/blizzardPassport.js');
 
 //Routes
@@ -16,21 +15,32 @@ const userRouter = require('./routes/users.js');
 const blizzardRoutes = require('./authentication/oauth2-blizzard/blizzardRoutes.js');
 const wowProfileRoutes = require('./routes/wowProfileRoutes.js');
 
-//I tried this for the blizzard api call
+
 const corsOptions = {
-    origin: '*', // This should match the domain of your front-end application
+    origin: '*', 
     optionsSuccessStatus: 200,
-    credentials: true, // This is important for sessions or when using cookies/token authentication
+    credentials: true
 };
 
 
 const app = express();
 app.use(helmet());
-app.use(cors(corsOptions));
+app.use(cors({}));
 app.use(express.json());
-app.use(cookieParser());
 app.use(morgan('tiny'));
-app.use(session({ secret: SECRET_KEY, resave: false, saveUninitialized: false, cookie: { httpOnly: false, secure: false}})); //Learn more about this.
+
+app.use(session({ 
+    secret: SESSION_SECRET, 
+    name:'connect.sons', 
+    resave: false, 
+    saveUninitialized: false, 
+    cookie: { 
+        httpOnly: false, 
+        secure: false, 
+        maxAge:90000
+    }
+}));
+
 app.use(passport.initialize());
 app.use(passport.session());
 

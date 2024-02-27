@@ -1,7 +1,7 @@
 const db = require('../db/db.js');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { SECRET_KEY } = require('../db/config.js');
+const { JWT_SECRET } = require('../db/config.js');
 const {ExpressError} = require('../error-handling/ExpressError.js');
 const generatePassword = require('generate-password');
 const {generateUsername} = require('unique-username-generator');
@@ -108,7 +108,7 @@ class User {
 
             await User.updateLoginTime(username);
 
-            const token = jwt.sign({id:userFound.user_id, username: userFound.username}, SECRET_KEY, {expiresIn: '1h',});
+            const token = jwt.sign({id:userFound.user_id, username: userFound.username}, JWT_SECRET, {expiresIn: '1h',});
 
             return token;
         } catch (err) {

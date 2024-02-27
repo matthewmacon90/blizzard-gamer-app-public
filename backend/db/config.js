@@ -2,6 +2,8 @@ require('dotenv').config();
 
 const PORT = process.env.PORT;
 const SECRET_KEY = process.env.SECRET_KEY;
+const JWT_SECRET = process.env.JWT_SECRET;
+const SESSION_SECRET = process.env.SESSION_SECRET;
 
 
 const getEnvironmentInformation = () => {
@@ -27,5 +29,7 @@ const getEnvironmentInformation = () => {
 module.exports = {
     getEnvironmentInformation, 
     PORT,
-    SECRET_KEY
+    SECRET_KEY,
+    JWT_SECRET,
+    SESSION_SECRET
 };
