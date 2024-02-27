@@ -1,6 +1,6 @@
 import Input from "../../components/input-form/Input";
 import {useForm, FormProvider } from "react-hook-form";
-import {usernameSchema, emailSchema, firstNameSchema, lastNameSchema} from "../../form-schema/updateUserSchema";
+import {usernameSchema, emailSchema} from "../../form-schema/updateUserSchema";
 
 const EditProfileForm = ({user, editProfile, edit, updateUser}) => {
     const {username, email, firstname, lastname} = user;
@@ -29,11 +29,9 @@ const EditProfileForm = ({user, editProfile, edit, updateUser}) => {
                 <label htmlFor={'email'}>{'Email'}:</label>
                 <Input id={'email'} placeholder={email} type={'email'} validationRules={emailSchema} />
 
-                <label htmlFor={'firstname'}>{'First Name'}:</label>
-                <Input id={'firstname'} placeholder={firstname} type={'text'} validationRules={firstNameSchema} />
+                <p>First Name: {firstname}</p>
+                <p>Last Name: {lastname}</p>
 
-                <label htmlFor={'lastname'}>{'Last Name'}:</label>
-                <Input id={'lastname'} placeholder={lastname} type={'text'} validationRules={lastNameSchema} />
                 {edit && <button type="submit">Save Changes</button>}
                 
             </form>

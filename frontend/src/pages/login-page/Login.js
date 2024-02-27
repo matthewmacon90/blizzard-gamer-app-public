@@ -4,7 +4,6 @@ import { useContext } from "react";
 import AuthContext from "../../context/authContext";
 import { useState } from "react";
 import { Navigate } from "react-router-dom";
-import checkResult from "../../helpers/checkResult";
 
 const Login = () => {
     const [error, setError] = useState(null);
@@ -13,15 +12,10 @@ const Login = () => {
     async function login(userInfo) {
         try {
             const result = await Api.loginUser(userInfo);
-            const data = checkResult(result);
-
-            if (!data) {
-                setError('Invalid username or password');
-                return;
-            }
-            auth.setCurrentUser(data);
+            auth.setCurrentUser(result);
         } catch (err) {
-            console.error(err);
+            console.error('ERROR ON LOGIN PAGE', err);
+            setError(err[0]);
         }
     };
 

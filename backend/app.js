@@ -18,7 +18,7 @@ const wowProfileRoutes = require('./routes/wowProfileRoutes.js');
 
 //I tried this for the blizzard api call
 const corsOptions = {
-    origin: 'http://localhost:3000', // This should match the domain of your front-end application
+    origin: '*', // This should match the domain of your front-end application
     optionsSuccessStatus: 200,
     credentials: true, // This is important for sessions or when using cookies/token authentication
 };

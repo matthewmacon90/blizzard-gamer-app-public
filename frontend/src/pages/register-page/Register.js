@@ -2,7 +2,6 @@ import RegisterForm from "./RegisterForm";
 import Api from "../../api";
 import {Link, Navigate} from "react-router-dom";
 import {useState} from "react";
-import checkResult from "../../helpers/checkResult";
 
 const Register = () => {
     const [message, setMessage] = useState('');
@@ -11,12 +10,7 @@ const Register = () => {
     async function register(userInfo) {
         try {
             const result = await Api.registerUser(userInfo);
-            const data = checkResult(result);
-            
-            if (!data) {
-                return setMessage(result);
-            }
-            
+
             setMessage(result);
             setTimeout(() => {
                 setIsRegistered(!isRegistered);
@@ -25,6 +19,7 @@ const Register = () => {
         } catch (err) {
             setMessage(err[0]);
             setIsRegistered(isRegistered);
+            console.log('ERROR ON REGISTER PAGE', err)
         }
     };
 

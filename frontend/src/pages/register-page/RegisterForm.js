@@ -31,19 +31,19 @@ const RegisterForm = ({submit}) => {
             <FormProvider {...methods}> 
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <label htmlFor="username">Username</label>
-                    <Input id="username" type="text" placeholder="Username" validationRules={usernameSchema}/>
+                    <Input id="username" type="text" placeholder="Username" validationRules={usernameSchema} />
 
                     <label htmlFor="password">Password</label>
-                    <Input id="password" type="password" placeholder="Password" validationRules={passwordSchema}/>
+                    <Input id="password" type="password" placeholder="Password" validationRules={passwordSchema} />
 
                     <label htmlFor="email">Email</label>
                     <Input id="email" type="email" placeholder="Email" validationRules={emailSchema}/>
 
                     <label htmlFor="firstName">First Name</label>
-                    <Input id="firstName" type="text" placeholder="First Name" validationRules={firstNameSchema}/>
+                    <Input id="firstName" type="text" placeholder="First Name" validationRules={firstNameSchema} />
 
                     <label htmlFor="lastName">Last Name</label>
-                    <Input id="lastName" type="text" placeholder="Last Name" validationRules={lastNameSchema}/>
+                    <Input id="lastName" type="text" placeholder="Last Name" validationRules={lastNameSchema} />
                     <button type="submit">Register</button>
                 </form>
             </FormProvider>

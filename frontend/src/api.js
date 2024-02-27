@@ -32,7 +32,8 @@ class Api {
             await this.request(`register`, {username, email, password, firstName, lastName}, 'post');
             return 'You have successfully registered! Please log in to continue.';
         } catch (err) {
-            return err;
+            console.error('ERROR REGISTER API: ', err);
+            throw err;
         }
     };
 
@@ -43,7 +44,8 @@ class Api {
             this.token = token;
             return token;
         } catch (err) {
-            return err;
+            console.log('ERROR: ', err);
+            throw err;
         }
     }
 
@@ -78,6 +80,7 @@ class Api {
 
     static async linkBattleNetAccount() {
         try{
+            console.log('CALLING BLIZZARD API')
             const token = this.token;
             const headers = { 'authorization': `Bearer ${token}`};
             // const response = await axios.get(`https://oauth.battle.net/authorize`);

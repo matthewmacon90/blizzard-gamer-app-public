@@ -15,9 +15,9 @@ const BattleNetLink = () => {
 
     return (
         <div className="battlenet-container"> 
-            {/* <button className="battlenet-link-button" aria-label="Battlenet Link Account" onClick={linkBattleNetAccount}>
+            <button className="battlenet-link-button" aria-label="Battlenet Link Account" onClick={linkBattleNetAccount}>
                 Link Battle.net Account
-            </button> */}
+            </button>
             <button className="battlenet-link-button" aria-label="Battlenet Link Account">
                 <a href='http://localhost:3001/battlenet'>Link Battle.net Account</a>
             </button>
