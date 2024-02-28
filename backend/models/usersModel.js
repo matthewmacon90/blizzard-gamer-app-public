@@ -1,10 +1,9 @@
 const db = require('../db/db.js');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const { JWT_SECRET } = require('../db/config.js');
 const {ExpressError} = require('../error-handling/ExpressError.js');
 const generatePassword = require('generate-password');
 const {generateUsername} = require('unique-username-generator');
+const encryptToken = require('../authentication/jwt-token/jwt.js');
 
 class User {
     static async registerUser (username, hashedPassword, email, firstName, lastName) {
@@ -106,9 +105,19 @@ class User {
 
             if(!userFound.username || !passwordMatch) throw new ExpressError('Authentication failed.', 401);
 
+            const payload = {
+                id: userFound.user_id,
+                username: userFound.username
+            };
+
+            console.log('PAYLOAD', payload);
+
+            const token = await encryptToken(payload);
+            console.log('TOKEN', token);
+
             await User.updateLoginTime(username);
 
-            const token = jwt.sign({id:userFound.user_id, username: userFound.username}, JWT_SECRET, {expiresIn: '1h',});
+            // const token = jwt.sign({id:userFound.user_id, username: userFound.username}, JWT_SECRET, {expiresIn: '1h',});
 
             return token;
         } catch (err) {
