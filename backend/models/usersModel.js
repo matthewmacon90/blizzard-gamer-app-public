@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const {ExpressError} = require('../error-handling/ExpressError.js');
 const generatePassword = require('generate-password');
 const {generateUsername} = require('unique-username-generator');
-const encryptToken = require('../authentication/jwt-token/jwt.js');
+const {signToken} = require('../helpers/jwt-token/jwt.js');
 
 class User {
     static async registerUser (username, hashedPassword, email, firstName, lastName) {
@@ -110,14 +110,8 @@ class User {
                 username: userFound.username
             };
 
-            console.log('PAYLOAD', payload);
-
-            const token = await encryptToken(payload);
-            console.log('TOKEN', token);
-
+            const token = await signToken(payload);
             await User.updateLoginTime(username);
-
-            // const token = jwt.sign({id:userFound.user_id, username: userFound.username}, JWT_SECRET, {expiresIn: '1h',});
 
             return token;
         } catch (err) {

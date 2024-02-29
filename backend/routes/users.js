@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require('../models/usersModel.js');
 const bcrypt = require('bcrypt'); //I will add this to update user later.
 const verifyToken = require('../middleware/verifyToken.js');
-const decodeToken = require('../helpers/decodeToken.js');
+const {decodeToken} = require('../helpers/jwt-token/jwt');
 
 router.get('/', verifyToken, async (req, res, next) => { 
     try {
@@ -17,7 +17,7 @@ router.get('/', verifyToken, async (req, res, next) => {
 
 router.get('/profile', verifyToken, async (req, res, next) => {
     try {
-        const decodedToken = decodeToken(req.headers.authorization.split(' ')[1]);
+        const decodedToken = await decodeToken(req.headers.authorization.split(' ')[1]);
         const {id} = decodedToken;
         const result = await User.getAuthenticatedUserInfo(id);
         return res.status(200).json(result);
@@ -50,7 +50,7 @@ router.post('/link/battlenet', verifyToken, async (req, res, next) => {
 
 router.patch('/profile/update', verifyToken, async (req, res, next) => {
     try {
-        const decodedToken = decodeToken(req.headers.authorization.split(' ')[1]);
+        const decodedToken = await decodeToken(req.headers.authorization.split(' ')[1]);
         const {id} = decodedToken;
         const {username, email, firstname, lastname} = req.body;
         const result = await User.updateUser(id, username, email, firstname, lastname);

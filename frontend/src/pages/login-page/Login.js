@@ -12,7 +12,6 @@ const Login = () => {
     async function login(userInfo) {
         try {
             const result = await Api.loginUser(userInfo);
-            console.log('RESULT LOGIN PAGE', result);
             auth.setCurrentUser(result);
         } catch (err) {
             console.error('ERROR ON LOGIN PAGE', err);

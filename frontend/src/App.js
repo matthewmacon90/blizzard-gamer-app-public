@@ -6,7 +6,6 @@ import HeaderComponent from './components/header/HeaderComponent';
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
-  console.log('CURRENT USER', currentUser);
 
   return (
     <div className="App">
