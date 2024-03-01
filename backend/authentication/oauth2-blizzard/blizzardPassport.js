@@ -12,9 +12,6 @@ passport.use(new BnetStrategy({
 }, 
     function(accessToken, refreshToken, profile, done) {
         console.log('profile: ', profile);
-        //In need to grab data from the profile object. 
-        //In process of checking for user in db and creating user if not found or updating if a user exists.
-        // console.log('PROFILE: ', profile);
         profile.refreshToken = refreshToken;
         profile.accessToken = accessToken;
         return done(null, profile);

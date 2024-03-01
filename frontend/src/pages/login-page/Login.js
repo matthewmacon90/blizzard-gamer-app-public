@@ -12,6 +12,7 @@ const Login = () => {
     async function login(userInfo) {
         try {
             const result = await Api.loginUser(userInfo);
+            localStorage.setItem('token', result);
             auth.setCurrentUser(result);
         } catch (err) {
             console.error('ERROR ON LOGIN PAGE', err);

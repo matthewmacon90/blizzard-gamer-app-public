@@ -1,13 +1,19 @@
 const express = require('express');
 const passport = require('passport');
 const router = express.Router();
-const verifyToken = require('../../middleware/verifyToken');
+const { signToken } = require('../../helpers/jwt-token/jwt');
 
-router.get('/', verifyToken, passport.authenticate('bnet'));
+
+router.get('/', passport.authenticate('bnet'));
 
 router.get('/callback', passport.authenticate('bnet', { failureRedirect: '/' }),
-    function(req, res){
-        res.redirect('http://localhost:3000/my-profile');
+    async function(req, res){
+        console.log('req.user: ', req.user);
+        const { id, battletag, accessToken } = req.user;
+        const blizzardToken = await signToken({id, battletag, accessToken});
+        console.log('blizzardToken: ', blizzardToken);
+
+        res.redirect('http://localhost:3000/my-profile')
     });
 
 

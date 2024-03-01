@@ -5,9 +5,8 @@ const {authenticateUserJWT} = require('../../models/usersModel.js');
 router.post('/', async (req, res, next) => {
     try {
         const {username, password} = req.body;
-        console.log('req.session', req.session);
         const result = await authenticateUserJWT(username, password);
-        
+
         return res.status(200).json(result);
     } catch (err) {
         console.log(err);

@@ -24,6 +24,7 @@ const corsOptions = {
 
 
 const app = express();
+
 app.use(helmet());
 app.use(cors({}));
 app.use(express.json());
@@ -37,7 +38,7 @@ app.use(session({
     cookie: { 
         httpOnly: false, 
         secure: false, 
-        maxAge:90000
+        maxAge:3600000 
     }
 }));
 

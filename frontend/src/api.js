@@ -22,6 +22,18 @@ class Api {
         }
     }
 
+    static async verifyToken(storageToken) {
+        try {
+            this.token = storageToken;
+            const headers = { 'authorization': `Bearer ${this.token}`};
+            const result = await this.request(`users/verify`, {}, 'get', headers);
+            return result;
+        } catch (err) {
+            console.error('ERROR VERIFYING TOKEN: ', err);
+            throw err;
+        }
+    };
+
     static async registerUser(newUser) {
         try{
             let {username, email, password, firstName, lastName} = newUser;
@@ -78,29 +90,17 @@ class Api {
         }
     }
 
-    static async linkBattleNetAccount() {
-        try{
-            console.log('CALLING BLIZZARD API')
+    static async getBattleNetToken() {
+        try {
             const token = this.token;
             const headers = { 'authorization': `Bearer ${token}`};
-            // const response = await axios.get(`https://oauth.battle.net/authorize`);
-            // console.log('RESPONSE: ', response);
-            const result = await this.request(`battlenet`, {}, 'get', headers);
-            console.log('RESULT: ', result);
-            // return result;
+            const result = await this.request(`battlenet/callback`, {}, 'get', headers);
+            return result;
         } catch (err) {
-            return err;
+            console.error('ERROR GETTING BATTLENET TOKEN: ', err);
+            throw err;
         }
     };
-
-    static async getMyWow(){
-        try {
-            const result = await this.request(`wow-user`);
-            return result
-        } catch (err) {
-            return err;
-        }
-    }
 }
 
 export default Api;
