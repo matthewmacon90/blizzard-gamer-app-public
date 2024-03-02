@@ -11,7 +11,7 @@ function App() {
   useEffect(() => {
     async function checkToken() {
       try{
-        const token = localStorage.getItem('token');
+        const token = sessionStorage.getItem('token');
         if(!token) return;
         const result = await Api.verifyToken(token);
         if(result.message === 'Token verified') return setCurrentUser(token);
