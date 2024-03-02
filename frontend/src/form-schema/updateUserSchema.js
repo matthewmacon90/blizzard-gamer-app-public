@@ -23,18 +23,15 @@ const emailSchema = {
     }
 };
 
-const firstNameSchema = {
+const battleTagSchema = {
     maxLength: {
-        value: 30,
-        message: 'Your first name is too long, the max length is 30 characters'
+        value: 100,
+        message: 'Your username is too long, the max length is 30 characters'
+    },
+    pattern: {
+        value: /^[a-zA-Z0-9]+#[0-9]+$/,
+        message: 'Invalid battle tag. Must be in the format of battletag#1234.'
     }
 };
 
-const lastNameSchema = {
-    maxLength: {
-        value: 30,
-        message: 'Your last name is too long, the max length is 30 characters'
-    }
-};
-
-export {usernameSchema, passwordSchema, emailSchema, firstNameSchema, lastNameSchema}
+export {usernameSchema, passwordSchema, emailSchema, battleTagSchema}

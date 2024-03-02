@@ -6,13 +6,13 @@ const {generateUsername} = require('unique-username-generator');
 const {signToken} = require('../helpers/jwt-token/jwt.js');
 
 class User {
-    static async registerUser (username, hashedPassword, email, firstName, lastName) {
+    static async registerUser (username, hashedPassword, email, firstName, lastName, battletag) {
         try {
             const result = await db.query(
-                `INSERT INTO users (username, password, email, first_name, last_name) 
-                 VALUES ($1, $2, $3, $4, $5) 
-                 RETURNING username, email, first_name AS firstName, last_name AS lastName`, 
-                 [username, hashedPassword, email, firstName, lastName]);
+                `INSERT INTO users (username, password, email, first_name, last_name, battle_tag) 
+                 VALUES ($1, $2, $3, $4, $5, $6) 
+                 RETURNING username, email, first_name AS firstName, last_name AS lastName, battle_tag AS battletag`, 
+                 [username, hashedPassword, email, firstName, lastName, battletag]);
             return result.rows[0]
         } catch (err) {
             console.error(err);
@@ -22,7 +22,7 @@ class User {
 
     static async getAuthenticatedUserInfo (id) {
         try {
-            const result = await db.query('SELECT username, email, first_name AS firstName, last_name AS lastName FROM users WHERE user_id = $1', [id]);
+            const result = await db.query('SELECT username, email, first_name AS firstName, last_name AS lastName, battle_tag AS battletag FROM users WHERE user_id = $1', [id]);
             return result.rows[0];
         } catch (err) {
             console.error(err);
@@ -84,14 +84,14 @@ class User {
         }
     }
 
-    static async updateUser (id, username, email, firstName, lastName) {
+    static async updateUser (id, username, email, firstName, lastName, battletag) {
         try {
             const result = await db.query(`
                 UPDATE users 
-                SET username = $1, email = $2, first_name = $3, last_name = $4 
-                WHERE user_id = $5 
-                RETURNING username, email, first_name AS firstName, last_name AS lastName`, 
-                [username, email, firstName, lastName, id]);
+                SET username = $1, email = $2, first_name = $3, last_name = $4, battle_tag = $5
+                WHERE user_id = $6 
+                RETURNING username, email, first_name AS firstName, last_name AS lastName, battle_tag AS battleTag`, 
+                [username, email, firstName, lastName, battletag, id]);
             return result.rows[0];
         } catch (err) {
             if(err.code === '23505') throw new ExpressError('Username or email already exists', 409);

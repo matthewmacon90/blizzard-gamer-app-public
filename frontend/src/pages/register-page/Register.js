@@ -12,9 +12,7 @@ const Register = () => {
             const result = await Api.registerUser(userInfo);
 
             setMessage(result);
-            setTimeout(() => {
-                setIsRegistered(!isRegistered);
-            }, 2000);
+            setIsRegistered(!isRegistered);
 
         } catch (err) {
             setMessage(err[0]);

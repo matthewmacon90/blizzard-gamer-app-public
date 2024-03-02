@@ -36,12 +36,14 @@ class Api {
 
     static async registerUser(newUser) {
         try{
-            let {username, email, password, firstName, lastName} = newUser;
+            let {username, email, password, firstName, lastName, battletag} = newUser;
             username = username.trim().toLowerCase();
             email = email.trim().toLowerCase();
             firstName = firstName.trim().toLowerCase();
             lastName = lastName.trim().toLowerCase();
-            await this.request(`register`, {username, email, password, firstName, lastName}, 'post');
+            battletag = battletag.trim().toLowerCase();
+
+            await this.request(`register`, {username, email, password, firstName, lastName, battletag}, 'post');
             return 'You have successfully registered! Please log in to continue.';
         } catch (err) {
             console.error('ERROR REGISTER API: ', err);
@@ -63,15 +65,17 @@ class Api {
 
     static async updateUser(user) {
         try {
+            console.log('USER: ', user);
             const token = this.token;
             const headers = { 'authorization': `Bearer ${token}`};
-            let {username, email, firstname, lastname} = user;
+            let {username, email, firstname, lastname, battletag} = user;
             username = username.trim().toLowerCase();
             email = email.trim().toLowerCase();
             firstname = firstname.trim().toLowerCase();
             lastname = lastname.trim().toLowerCase();
+            battletag = battletag.trim().toLowerCase();
 
-            const result = await this.request(`users/profile/update/`, {username, email, firstname, lastname}, 'patch', headers);
+            const result = await this.request(`users/profile/update/`, {username, email, firstname, lastname, battletag}, 'patch', headers);
 
             return result;
         } catch (err) {

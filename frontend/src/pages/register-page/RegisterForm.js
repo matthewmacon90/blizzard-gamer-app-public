@@ -1,6 +1,6 @@
 import {useForm, FormProvider} from "react-hook-form";
 import Input from "../../components/input-form/Input";
-import { usernameSchema, passwordSchema, emailSchema, firstNameSchema, lastNameSchema } from "../../form-schema/registerFormSchema";
+import { usernameSchema, passwordSchema, emailSchema, firstNameSchema, lastNameSchema, battleTagSchema } from "../../form-schema/registerFormSchema";
 
 const RegisterForm = ({submit}) => {
     const initalState = {
@@ -25,7 +25,6 @@ const RegisterForm = ({submit}) => {
         });
     };
 
-    //There is a bug on this input and the following after the form has been submitted and it is not resetting the state as intended. 
     return (
         <div>
             <FormProvider {...methods}> 
@@ -44,6 +43,10 @@ const RegisterForm = ({submit}) => {
 
                     <label htmlFor="lastName">Last Name</label>
                     <Input id="lastName" type="text" placeholder="Last Name" validationRules={lastNameSchema} />
+                    
+                    <label htmlFor="battletag">Battle Tag</label>
+                    <Input id="battletag" type="text" placeholder="battletag#1234" validationRules={battleTagSchema} />
+
                     <button type="submit">Register</button>
                 </form>
             </FormProvider>

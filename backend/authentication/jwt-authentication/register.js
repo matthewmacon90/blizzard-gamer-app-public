@@ -15,11 +15,9 @@ router.post('/', async (req, res, next) => {
             throw new BadRequestError(errs);
         }
 
-        console.log('req.session', req.session);
-
-        const {username, password, email, firstName, lastName} = req.body;
+        const {username, password, email, firstName, lastName, battletag} = req.body;
         const hashedPassword = await bcrypt.hash(password, 12);
-        const result = await registerUser(username, hashedPassword, email, firstName, lastName);
+        const result = await registerUser(username, hashedPassword, email, firstName, lastName, battletag);
 
         return res.status(200).json(result);
     } catch (err) {

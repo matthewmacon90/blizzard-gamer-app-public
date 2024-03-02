@@ -2,7 +2,7 @@ import EditProfile from "./EditProfile";
 import { useState } from "react";
 import CurrentProfileData from "./CurrentProfileData";
 import Api from "../../api";
-import BattleNetLink from "./BattleNetAuth";
+import BattleNetLink from "./BattleNetLink";
 
 const Profile = ({ user, setUser }) => {
     const [edit, setEdit] = useState(false);
@@ -35,7 +35,14 @@ const Profile = ({ user, setUser }) => {
             {message && <p>{message}</p>}
 
             <div className="profile-link-battlenet">
-                <BattleNetLink user={user} />
+                {user.battletag ? (
+                        <BattleNetLink user={user} />
+                    ) : (
+                    <div>
+                        <p>*To Access more features add a battle tag by clicking Edit Profile</p>
+                    </div>
+                    )
+                }
             </div>
         </div>
     );
