@@ -27,6 +27,7 @@ router.get('/verify', verifyToken, async (req, res, next) => {
 router.get('/profile', verifyToken, async (req, res, next) => {
     try {
         const decodedToken = await decodeToken(req.headers.authorization.split(' ')[1]);
+        console.log('decodedToken: ', decodedToken);
         const { id } = decodedToken;
         const result = await User.getAuthenticatedUserInfo(id);
         return res.status(200).json(result);
@@ -51,9 +52,7 @@ router.patch('/profile/update', verifyToken, async (req, res, next) => {
         const decodedToken = await decodeToken(req.headers.authorization.split(' ')[1]);
         const { id } = decodedToken;
         const { username, email, firstname, lastname, battletag } = req.body;
-        console.log('REQ.BODY: ', req.body)
         const result = await User.updateUser(id, username, email, firstname, lastname, battletag);
-        console.log('RESULT: ', result);
 
         return res.status(200).json(result);
     } catch (err) {

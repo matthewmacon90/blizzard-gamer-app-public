@@ -51,7 +51,12 @@ const decodeToken = async (token) => {
         audience: 'sons-app'
       });
 
-      const payload = {id: verifiedToken.payload.id, username: verifiedToken.payload.username};
+      const payload = {
+        id: verifiedToken.payload.id,
+        username: verifiedToken.payload.username, 
+        battletag: verifiedToken.payload.battletag,
+        btoken: verifiedToken.payload.btoken
+    };
 
     return payload;
 };

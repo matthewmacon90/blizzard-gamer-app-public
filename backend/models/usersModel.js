@@ -22,7 +22,9 @@ class User {
 
     static async getAuthenticatedUserInfo (id) {
         try {
-            const result = await db.query('SELECT username, email, first_name AS firstName, last_name AS lastName, battle_tag AS battletag FROM users WHERE user_id = $1', [id]);
+            const result = await db.query(`
+                SELECT username, email, first_name AS firstName, last_name AS lastName, battle_tag AS battletag
+                FROM users WHERE user_id = $1`, [id]);
             return result.rows[0];
         } catch (err) {
             console.error(err);
@@ -50,7 +52,7 @@ class User {
 
     static async getUserByBattleTag (battletag) {
         try {
-            const result = await db.query('SELECT username, first_name AS firstName, last_name AS lastName FROM users WHERE battletag = $1', [battletag]);
+            const result = await db.query('SELECT battle_tag AS battletag FROM users WHERE battle_tag = $1', [battletag]);
             return result.rows[0];
         } catch (err) {
             console.error(err);
@@ -59,7 +61,10 @@ class User {
 
     static async getUserByUsername (username) {
         try {
-            const result = await db.query('SELECT user_id, username, password FROM users WHERE username = $1', [username]);
+            const result = await db.query(`
+                SELECT user_id, username, password, battlenet_token AS btoken, battle_tag AS battletag 
+                FROM users WHERE username = $1`, 
+                [username]);
             return result.rows[0];
         } catch (err) {
             throw new ExpressError('Authentication failed.', 401)
@@ -98,6 +103,20 @@ class User {
         }
     }
 
+    static async linkBattleTag (battlenetID, battletag, accessToken) {
+        try {
+            const result = await db.query(`
+                UPDATE users
+                SET battlenet_id = $1, battlenet_token = $2
+                WHERE battle_tag = $3
+                RETURNING battlenet_token, battle_tag AS battletag
+                `, [battlenetID, accessToken, battletag]);
+            return result.rows[0];
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
     static async authenticateUserJWT (username, password) {
         try {
             const userFound = await User.getUserByUsername(username);
@@ -107,8 +126,11 @@ class User {
 
             const payload = {
                 id: userFound.user_id,
-                username: userFound.username
+                username: userFound.username,
+                battletag: userFound.battletag,
+                btoken: userFound.btoken
             };
+            console.log('PAYLOAD: ', payload);
 
             const token = await signToken(payload);
             await User.updateLoginTime(username);
@@ -116,25 +138,6 @@ class User {
             return token;
         } catch (err) {
             throw new ExpressError('Login Failed.', 500);
-        }
-    }
-
-    //This method also needs to be finished out.
-    static async battleNetFindCreate (profile) {
-        try {
-            const {id, battletag, token} = profile;
-            const result = await this.getUserByBattleTag(battletag);
-        } catch (err) {
-            throw new ExpressError('Internal Server Error', 500);
-        }
-    }
-
-    //Finish out this method
-    static async linkBattleNetAccount (email) {
-        try {
-            
-        } catch (err) {
-            throw new ExpressError('Internal Server Error', 500);
         }
     }
 }

@@ -4,6 +4,7 @@ import Profile from './Profile';
 
 const UserHome = () => {
     const [user, setUser] = useState(null);
+    console.log('user: ', user);
 
     useEffect(() => {
         async function fetchData() {
