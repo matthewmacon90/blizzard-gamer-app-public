@@ -17,7 +17,7 @@ const verifyToken = async (req, res, next) => {
 
         next();
     } catch (error) {
-        console.log(error);
+        console.log('VERFY ERROR: ', error);
         next(new ExpressError('Invalid token', 401));
     }
 };

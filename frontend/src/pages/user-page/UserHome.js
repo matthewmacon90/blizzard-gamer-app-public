@@ -10,6 +10,8 @@ const UserHome = () => {
         async function fetchData() {
             try{
                 const result = await Api.getMyProfile();
+                const wowProfile = await Api.getWoWProfile();
+                console.log('WOW PROFILE: ', wowProfile);
                 setUser(result);
             } catch (err) {
                 throw err;

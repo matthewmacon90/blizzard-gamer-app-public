@@ -94,6 +94,18 @@ class Api {
         }
     }
 
+    static async getWoWProfile() {
+        try {
+            const token = this.token;
+            const headers = { 'authorization': `Bearer ${token}`};
+            const result = await this.request(`my-wow`, {}, 'get', headers);
+            return result;
+        } catch (err) {
+            console.error('ERROR GETTING WOW PROFILE: ', err);
+            throw err;
+        }
+    }
+
     static async getBattleNetToken() {
         try {
             const token = this.token;

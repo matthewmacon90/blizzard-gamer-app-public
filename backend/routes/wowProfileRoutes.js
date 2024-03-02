@@ -2,14 +2,19 @@ const express = require('express');
 const router = express.Router();
 const attachToken = require('../middleware/attachToken.js');
 const WoWApi = require('../blizzard-api/wowapi.js');
+const verifyToken = require('../middleware/verifyToken.js');
+const {decodeToken} = require('../helpers/jwt-token/jwt.js');
 
-router.get('/', attachToken, async (req, res, next) => {
+router.get('/', verifyToken, async (req, res, next) => {
     try {
-        const wowapi = new WoWApi(req.token);
-        const result = await wowapi.getUserInfo();
+        console.log('VERIFY TOKEN ROUTE COMPLETE');
+        const decodedToken = await decodeToken(req.headers.authorization.split(' ')[1]);
+        console.log('DECODED TOKEN: ', decodedToken);
+        const wowapi = new WoWApi(decodedToken.btoken);
+        const result = await wowapi.getUserProfile();
         return res.status(200).json(result);
     } catch (error) {
-        console.log(error);
+        console.log('WOW PROFILE ROUTES ERROR', error);
         next(error);
     }
 });

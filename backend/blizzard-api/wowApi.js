@@ -1,8 +1,6 @@
 const axios = require('axios');
 const WoWProfileData = require('../models/wowProfileModel.js');
 
-//USR5x6aqivyqg1LngKAgaJfR4Gg5NWaevD token for testing purposes
-
 class WoWApi {
     constructor(token = '') {
         this.token = token;
@@ -20,13 +18,15 @@ class WoWApi {
 
     async getUserProfile() {
         try {
+            console.log('AUTH HEADERS: ', this.authorizationHeaders);
             const result = await axios.get('https://us.api.blizzard.com/profile/user/wow?namespace=profile-us', this.authorizationHeaders);
             const {headers, data} = result;
+            console.log('HEADERS: ', headers, 'DATA: ', data);
             const apiCallDate = headers.date; //I'm going to use this date to check the date of the last db update and then if it is past a certain time, I will update the db with the new data.
             // await WoWProfileData.createWoWProfileData(data, apiCallDate);
             return data;
         } catch (error) {
-            console.log(error);
+            console.log('ERROR GET USER PROFILE: ',error);
         }
     };
 
