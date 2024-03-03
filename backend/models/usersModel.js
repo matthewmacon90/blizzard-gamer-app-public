@@ -23,7 +23,7 @@ class User {
     static async getAuthenticatedUserInfo (id) {
         try {
             const result = await db.query(`
-                SELECT username, email, first_name AS firstName, last_name AS lastName, battle_tag AS battletag
+                SELECT username, email, first_name AS firstName, last_name AS lastName, battle_tag AS battletag, battlenet_token AS btoken
                 FROM users WHERE user_id = $1`, [id]);
             return result.rows[0];
         } catch (err) {

@@ -27,7 +27,6 @@ router.get('/verify', verifyToken, async (req, res, next) => {
 router.get('/profile', verifyToken, async (req, res, next) => {
     try {
         const decodedToken = await decodeToken(req.headers.authorization.split(' ')[1]);
-        console.log('decodedToken: ', decodedToken);
         const { id } = decodedToken;
         const result = await User.getAuthenticatedUserInfo(id);
         return res.status(200).json(result);

@@ -1,16 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const attachToken = require('../middleware/attachToken.js');
-const WoWApi = require('../blizzard-api/wowapi.js');
+const WoWApi = require('../blizzard-api/wowApi.js');
 const verifyToken = require('../middleware/verifyToken.js');
 const {decodeToken} = require('../helpers/jwt-token/jwt.js');
 
 router.get('/', verifyToken, async (req, res, next) => {
     try {
-        console.log('VERIFY TOKEN ROUTE COMPLETE');
         const decodedToken = await decodeToken(req.headers.authorization.split(' ')[1]);
         console.log('DECODED TOKEN: ', decodedToken);
-        const wowapi = new WoWApi(decodedToken.btoken);
+        const wowapi = new WoWApi(decodedToken.btoken, decodedToken.id);
         const result = await wowapi.getUserProfile();
         return res.status(200).json(result);
     } catch (error) {

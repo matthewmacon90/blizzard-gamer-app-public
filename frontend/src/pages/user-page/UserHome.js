@@ -10,11 +10,14 @@ const UserHome = () => {
         async function fetchData() {
             try{
                 const result = await Api.getMyProfile();
+
+                if(!result.btoken) return setUser(result);
                 const wowProfile = await Api.getWoWProfile();
                 console.log('WOW PROFILE: ', wowProfile);
-                setUser(result);
+                const userProfile = {...result, wow_characters: wowProfile};
+                setUser(userProfile);
             } catch (err) {
-                throw err;
+                console.log('ERROR FETCHING USER PROFILE: ', err);
             }
         }
         fetchData();
