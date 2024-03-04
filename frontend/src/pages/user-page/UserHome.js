@@ -6,6 +6,9 @@ import AuthContext from '../../context/authContext';
 const UserHome = () => {
     const auth = useContext(AuthContext);
     const [user, setUser] = useState(null);
+    console.log('USER: ', user);
+
+    //The user page is rendering 3 times. This is something that needs to be fixed.
 
     useEffect(() => {
         async function fetchData() {

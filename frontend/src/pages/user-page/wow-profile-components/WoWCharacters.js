@@ -3,7 +3,7 @@ import BattleNetLink from "./BattleNetLink";
 
 
 const WoWCharacters = ({isExpired, user, setUser }) => {
-    const { wow_characters: characters } = user;
+    const {btoken, wow_characters: characters } = user;
     async function fetchData() {
         const wowProfile = await Api.getWoWProfile();
         const userProfile = { ...user, wow_characters: wowProfile };
@@ -12,7 +12,7 @@ const WoWCharacters = ({isExpired, user, setUser }) => {
 
     return (
         <div className="wow-character-container">
-            {isExpired ? <BattleNetLink isExpired={isExpired} /> : <button onClick={fetchData}>Sync WoW Profile</button>}
+            {!btoken || isExpired ? <BattleNetLink isExpired={isExpired} /> : <button onClick={fetchData}>Sync WoW Profile</button>}
             <h2>WoW Characters</h2>
             {characters && characters.map((character) =>
                 <div className="wow-charcter" key={character.character_id}>
