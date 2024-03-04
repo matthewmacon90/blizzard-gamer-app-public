@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS "users" (
     battlenet_id VARCHAR(255) UNIQUE,
     battle_tag VARCHAR(255) UNIQUE,
     battlenet_token VARCHAR(255),
+    btoken_expires TIMESTAMP,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     last_login TIMESTAMP
 );

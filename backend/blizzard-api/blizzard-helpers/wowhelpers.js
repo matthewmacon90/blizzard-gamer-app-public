@@ -44,7 +44,7 @@ const getCurrentDate = () => {
 };
 
 const compareDates = (currentDate, dbDate=null) => {
-    if(!dbDate) return true;
+    if(!dbDate) return false;
     const millisecondsPerDay = 1000 * 60 * 60 * 24;
     const diffInMilliseconds = Math.abs(currentDate - dbDate);
     const diffInDays = Math.ceil(diffInMilliseconds / millisecondsPerDay);

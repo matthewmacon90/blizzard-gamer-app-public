@@ -8,15 +8,6 @@ class WoWApi {
         this.user_id = user_id;
         this.authorizationHeaders = {headers: {'Authorization': `Bearer ${this.token}`}}
     }
-    async getUserInfo() {
-        try {
-            const result = await axios.get(`https://oauth.battle.net/userinfo`, this.authorizationHeaders);
-            console.log(result.data);
-            return result.data;
-        } catch (error) { 
-            console.log(error);
-        }
-    }
 
     async getUserProfile() {
         try {
@@ -49,16 +40,6 @@ class WoWApi {
         }
     };
 
-    async getCharacterProfile(realm, characterName) {
-        try {
-            const result = await axios.get(`https://us.api.blizzard.com/profile/wow/character/${realm}/${characterName.toLowerCase()}?namespace=profile-us`, this.authorizationHeaders);
-            const {headers, data} = result;
-            const apiCallDate = headers.date;
-            return data;
-        } catch (error) {
-            console.log(error);
-        }
-    };
 
     //Not working at the moment.
     async getGuildProfile(realm, guildName) {

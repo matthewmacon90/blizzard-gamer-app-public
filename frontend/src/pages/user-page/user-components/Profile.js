@@ -1,10 +1,14 @@
 import EditProfile from "./EditProfile";
 import { useState } from "react";
 import CurrentProfileData from "./CurrentProfileData";
-import Api from "../../api";
-import BattleNetLink from "./BattleNetLink";
+import Api from "../../../api";
+import { useNavigate } from 'react-router-dom';
+import { useContext } from "react";
+import AuthContext from "../../../context/authContext";
 
 const Profile = ({ user, setUser }) => {
+    const navigate = useNavigate();
+    const auth = useContext(AuthContext);
     const [edit, setEdit] = useState(false);
     const [message, setMessage] = useState('');
 
@@ -22,6 +26,18 @@ const Profile = ({ user, setUser }) => {
         }
     };
 
+    async function deleteUser() {
+        try {
+            await Api.deleteUser();
+            setUser(null);
+            sessionStorage.clear();
+            auth.setCurrentUser(null);
+            navigate("/", { replace: true });
+        } catch (err) {
+            console.error('ERROR DELETING USER: ', err);
+        }
+    }
+
     const editProfile = () => {
         setEdit(!edit);
         setMessage('');
@@ -31,19 +47,8 @@ const Profile = ({ user, setUser }) => {
         <div className="profile-container">
             <h2>Profile Information</h2>
             {edit ? (<EditProfile user={user} edit={edit} editProfile={editProfile} updateUser={updateUser} />) :
-                (<CurrentProfileData user={user} edit={edit} editProfile={editProfile} />)}
+                (<CurrentProfileData user={user} setUser={setUser} edit={edit} editProfile={editProfile} deleteUser={deleteUser} />)}
             {message && <p>{message}</p>}
-
-            <div className="profile-link-battlenet">
-                {user.battletag ? (
-                        <BattleNetLink user={user} />
-                    ) : (
-                    <div>
-                        <p>*To Access more features add a battle tag by clicking Edit Profile</p>
-                    </div>
-                    )
-                }
-            </div>
         </div>
     );
 };

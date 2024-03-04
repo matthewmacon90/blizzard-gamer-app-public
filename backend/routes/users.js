@@ -24,6 +24,18 @@ router.get('/verify', verifyToken, async (req, res, next) => {
     }
 });
 
+router.get('/refresh', verifyToken, async (req, res, next) => {
+    try {
+        const decodedToken = await decodeToken(req.headers.authorization.split(' ')[1]);
+        console.log('DECODED TOKEN refresh: ', decodedToken);
+        const result = await User.refreshToken(decodedToken.id);
+        return res.status(200).json(result);
+    } catch (err) {
+        console.error(err);
+        next(err);
+    }
+});
+
 router.get('/profile', verifyToken, async (req, res, next) => {
     try {
         const decodedToken = await decodeToken(req.headers.authorization.split(' ')[1]);
@@ -61,7 +73,8 @@ router.patch('/profile/update', verifyToken, async (req, res, next) => {
 
 router.delete('/:id', verifyToken, async (req, res, next) => {
     try {
-        const { id } = req.params;
+        const decodedToken = await decodeToken(req.headers.authorization.split(' ')[1]);
+        const { id } = decodedToken;
         const result = await User.deleteUser(id);
         return res.status(200).json(result);
     } catch (err) {

@@ -23,11 +23,12 @@ class User {
     static async getAuthenticatedUserInfo (id) {
         try {
             const result = await db.query(`
-                SELECT username, email, first_name AS firstName, last_name AS lastName, battle_tag AS battletag, battlenet_token AS btoken
-                FROM users WHERE user_id = $1`, [id]);
+                SELECT username, email, first_name AS firstName, last_name AS lastName, battle_tag AS battletag, battlenet_token AS btoken, btoken_expires AS btokenexpires
+                FROM users 
+                WHERE user_id = $1`, [id]);
             return result.rows[0];
         } catch (err) {
-            console.error(err);
+            console.error('ERROR GETTING AUTHENTICATED USER', err);
             throw new ExpressError('Internal Server Error', 500);
         }
     }
@@ -43,7 +44,9 @@ class User {
 
     static async getUserById (id) {
         try {
-            const result = await db.query('SELECT username, first_name AS firstName, last_name AS lastName FROM users WHERE user_id = $1', [id]);
+            const result = await db.query(`SELECT user_id, username, battle_tag AS battletag, battlenet_token AS btoken
+            FROM users 
+            WHERE user_id = $1`, [id]);
             return result.rows[0] ? result.rows[0] : new Error('No user found with that id');
         } catch (err) {
             console.error(err);
@@ -103,19 +106,48 @@ class User {
         }
     }
 
+    static async deleteUser (id) {
+        try {
+            await db.query(
+                `DELETE FROM users
+                 WHERE user_id = $1`, 
+                [id]);
+        } catch (err) {
+            console.error(err);
+            throw new ExpressError('Internal Server Error', 500);
+        }
+    };
+
     static async linkBattleTag (battlenetID, battletag, accessToken) {
         try {
             const result = await db.query(`
                 UPDATE users
-                SET battlenet_id = $1, battlenet_token = $2
+                SET battlenet_id = $1, battlenet_token = $2, btoken_expires = CURRENT_TIMESTAMP + INTERVAL '24 hours'
                 WHERE battle_tag = $3
-                RETURNING battlenet_token, battle_tag AS battletag
+                RETURNING user_id, username, battlenet_token, battle_tag AS battletag, btoken_expires AS expires
                 `, [battlenetID, accessToken, battletag]);
             return result.rows[0];
         } catch (err) {
             console.error(err);
         }
     }
+
+    static async refreshToken (id) {
+        try {
+            const result = await User.getUserById(id);
+            console.log('REFRESH TOKEN RESULT: ', result);
+            const payload = {
+                id: result.user_id,
+                username: result.username,
+                battletag: result.battletag,
+                btoken: result.btoken
+            };
+            const token = await signToken(payload);
+            return token;
+        } catch (err) {
+            console.error(err);
+        }
+    };
 
     static async authenticateUserJWT (username, password) {
         try {

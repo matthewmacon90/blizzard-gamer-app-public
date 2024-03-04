@@ -34,6 +34,19 @@ class Api {
         }
     };
 
+    static async refreshToken() {
+        try {
+            const token = this.token;
+            const headers = { 'authorization': `Bearer ${token}`};
+            const result = await this.request(`users/refresh`, {}, 'get', headers);
+            this.token = result;
+            return result;
+        } catch (err) {
+            console.error('ERROR REFRESHING TOKEN: ', err);
+            throw err;
+        }
+    };
+
     static async registerUser(newUser) {
         try{
             let {username, email, password, firstName, lastName, battletag} = newUser;
@@ -83,6 +96,17 @@ class Api {
         }
     }
 
+    static async deleteUser() {
+        try {
+            const token = this.token;
+            const headers = { 'authorization': `Bearer ${token}`};
+            await this.request(`users/delete`, {}, 'delete', headers);
+        } catch (err) {
+            console.error('ERROR DELETING USER: ', err);
+            throw err;
+        }
+    };
+
     static async getMyProfile() {
         try{
             const token = this.token;
@@ -90,7 +114,7 @@ class Api {
             const result = await this.request(`users/profile`, {}, 'get', headers);
             return result;
         } catch (err) {
-            return err;
+            throw err;
         }
     }
 

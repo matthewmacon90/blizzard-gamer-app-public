@@ -1,9 +1,9 @@
-import Input from "../../components/input-form/Input";
-import {useForm, FormProvider } from "react-hook-form";
-import {usernameSchema, emailSchema, battleTagSchema} from "../../form-schema/updateUserSchema";
+import Input from "../../../components/input-form/Input";
+import { useForm, FormProvider } from "react-hook-form";
+import { usernameSchema, emailSchema, battleTagSchema } from "../../../form-schema/updateUserSchema";
 
-const EditProfileForm = ({user, editProfile, edit, updateUser}) => {
-    const {username, email, firstname, lastname, battletag=null} = user;
+const EditProfileForm = ({ user, editProfile, edit, updateUser }) => {
+    const { username, email, firstname, lastname, battletag = null } = user;
 
     const methods = useForm({
         defaultValues: {
@@ -29,20 +29,20 @@ const EditProfileForm = ({user, editProfile, edit, updateUser}) => {
 
                 <label htmlFor={'email'}>{'Email'}:</label>
                 <Input id={'email'} placeholder={email} type={'email'} validationRules={emailSchema} />
-                
+
                 {battletag ? (
                     <p>Battle Tag: {battletag}</p>
-                    ) : (
+                ) : (
                     <div>
                         <label htmlFor={'battletag'}>{'Battle Tag'}:</label>
-                        <Input id={'battletag'} placeholder={'Battletag#1234'} type={'text'} validationRules={battleTagSchema} /> 
+                        <Input id={'battletag'} placeholder={'Battletag#1234'} type={'text'} validationRules={battleTagSchema} />
                     </div>
-                    )
+                )
                 }
                 <p>First Name: {firstname}</p>
                 <p>Last Name: {lastname}</p>
 
-                {edit && 
+                {edit &&
                     <div>
                         <button type="submit">Save Changes</button>
                         <button onClick={editProfile}>Cancel</button>

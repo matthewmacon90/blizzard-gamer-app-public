@@ -10,6 +10,7 @@ class WoWProfileData {
             return result.rows;
         } catch (error) {
             console.log(error);
+            throw error;
         }
     }
 
@@ -31,6 +32,7 @@ class WoWProfileData {
             await result;
             return result.rows;
         } catch (error) {
+            console.log('ERROR CREATING CHARACTERS: ', error);
             if (error.code === '23505') {
                 return new ExpressError('Character already exists', 400);
             }
@@ -47,8 +49,9 @@ class WoWProfileData {
             while(i < characters.length) {
                 const {character_id, name, level, character_class, realm_id, realm_name, realm_slug} = characters[i];
                 result = db.query(`
-                    UPDATE characters (character_id, character_name, character_level, character_class, realm_id, realm_name, realm_slug, user_id, created_at)
-                    VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+                    UPDATE characters 
+                    SET character_id = $1, character_name = $2, character_level = $3, character_class = $4, 
+                        realm_id = $5, realm_name = $6, realm_slug = $7, user_id = $8, created_at = $9
                     RETURNING character_id, character_name, character_level, character_class, realm_id, realm_name, realm_slug, user_id
                 `, [character_id, name, level, character_class, realm_id, realm_name, realm_slug, user_id, date]);
                 i++;
@@ -56,7 +59,7 @@ class WoWProfileData {
             await result;
             return result.rows;
         } catch (error) {
-            console.log(error);
+            console.log('UPDATING ERROR', error);
             throw error;
         }
     };
