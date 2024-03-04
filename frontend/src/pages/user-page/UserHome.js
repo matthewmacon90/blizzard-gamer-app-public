@@ -6,13 +6,11 @@ import AuthContext from '../../context/authContext';
 const UserHome = () => {
     const auth = useContext(AuthContext);
     const [user, setUser] = useState(null);
-    console.log('user: ', user);
 
     useEffect(() => {
         async function fetchData() {
             try {
                 const result = await Api.getMyProfile();
-                console.log('RESULT: ', result);
                 if (!result.btoken) return setUser(result);
 
                 const refeshData = await Api.refreshToken();

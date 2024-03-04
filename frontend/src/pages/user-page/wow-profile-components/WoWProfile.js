@@ -1,11 +1,19 @@
-import BattleNetLink from "./BattleNetLink";
 import WoWCharacters from "./WoWCharacters";
+import {useState, useEffect } from "react";
+import {checkTokenDate} from "../../../helpers/checkTokenDate";
 
 const WoWProfile = ({user, setUser}) => {
+    const [isExpired, setIsExpired] = useState(false);
+    useEffect(() => {
+        if(!user.btoken) return;
+        const istokenExpired = checkTokenDate(user.btokenexpires);
+        if(!istokenExpired) return;
+        setIsExpired(!isExpired);
+    }, [user]);
     console.log(user);
     return (
         <div>
-            {user.battletag && user.btoken ? <WoWCharacters user={user} setUser={setUser}/> : <BattleNetLink />}
+            {user.battletag && <WoWCharacters isExpired={isExpired} user={user} setUser={setUser}/> }
         </div>
     );
 };
