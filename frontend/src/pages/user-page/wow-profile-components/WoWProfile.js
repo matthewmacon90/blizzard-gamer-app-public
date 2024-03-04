@@ -10,7 +10,7 @@ const WoWProfile = ({user, setUser}) => {
         if(!istokenExpired) return;
         setIsExpired(!isExpired);
     }, [user]);
-    console.log(user);
+
     return (
         <div>
             {user.battletag && <WoWCharacters isExpired={isExpired} user={user} setUser={setUser}/> }

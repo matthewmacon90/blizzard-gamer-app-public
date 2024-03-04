@@ -78,7 +78,6 @@ class Api {
 
     static async updateUser(user) {
         try {
-            console.log('USER: ', user);
             const token = this.token;
             const headers = { 'authorization': `Bearer ${token}`};
             let {username, email, firstname, lastname, battletag} = user;
