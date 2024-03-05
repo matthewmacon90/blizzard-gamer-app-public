@@ -3,7 +3,8 @@ import BattleNetLink from "./BattleNetLink";
 
 
 const WoWCharacters = ({isExpired, user, setUser }) => {
-    const {btoken, wow_characters: characters } = user;
+    const {btoken, wowCharacters: characters } = user;
+
     async function fetchData() {
         const wowProfile = await Api.getWoWProfile();
         const userProfile = { ...user, wow_characters: wowProfile };

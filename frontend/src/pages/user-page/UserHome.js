@@ -14,7 +14,9 @@ const UserHome = () => {
         async function fetchData() {
             try {
                 const result = await Api.getMyProfile();
-                if (!result.btoken) return setUser(result);
+                if (!result.btoken) {
+                    return setUser(result)
+                }
 
                 const refeshData = await Api.refreshToken();
                 sessionStorage.clear();
@@ -22,7 +24,7 @@ const UserHome = () => {
                 auth.setCurrentUser(refeshData);
 
                 const wowProfile = await Api.getWoWProfile();
-                const userProfile = { ...result, wow_characters: wowProfile };
+                const userProfile = { ...result, wowCharacters: wowProfile };
                 setUser(userProfile);
             } catch (err) {
                 console.log('ERROR FETCHING USER PROFILE: ', err);
@@ -30,6 +32,7 @@ const UserHome = () => {
         }
         fetchData();
     }, []);
+
 
     return (
         <div>

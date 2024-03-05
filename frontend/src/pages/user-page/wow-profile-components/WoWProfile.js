@@ -6,7 +6,7 @@ const WoWProfile = ({user, setUser}) => {
     const [isExpired, setIsExpired] = useState(false);
     useEffect(() => {
         if(!user.btoken) return;
-        const istokenExpired = checkTokenDate(user.btokenexpires);
+        const istokenExpired = checkTokenDate(user.bTokenExpires);
         if(!istokenExpired) return;
         setIsExpired(!isExpired);
     }, [user]);

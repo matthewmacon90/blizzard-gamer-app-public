@@ -25,7 +25,7 @@ class Api {
     static async verifyToken(storageToken) {
         try {
             this.token = storageToken;
-            const headers = { 'authorization': `Bearer ${this.token}`};
+            const headers = { 'authorization': `Bearer ${this.token}` };
             const result = await this.request(`users/verify`, {}, 'get', headers);
             return result;
         } catch (err) {
@@ -37,7 +37,7 @@ class Api {
     static async refreshToken() {
         try {
             const token = this.token;
-            const headers = { 'authorization': `Bearer ${token}`};
+            const headers = { 'authorization': `Bearer ${token}` };
             const result = await this.request(`users/refresh`, {}, 'get', headers);
             this.token = result;
             return result;
@@ -48,15 +48,15 @@ class Api {
     };
 
     static async registerUser(newUser) {
-        try{
-            let {username, email, password, firstName, lastName, battletag} = newUser;
+        try {
+            let { username, email, password, firstName, lastName, battletag } = newUser;
             username = username.trim().toLowerCase();
             email = email.trim().toLowerCase();
             firstName = firstName.trim().toLowerCase();
             lastName = lastName.trim().toLowerCase();
             battletag = battletag.trim().toLowerCase();
 
-            await this.request(`register`, {username, email, password, firstName, lastName, battletag}, 'post');
+            await this.request(`register`, { username, email, password, firstName, lastName, battletag }, 'post');
             return 'You have successfully registered! Please log in to continue.';
         } catch (err) {
             console.error('ERROR REGISTER API: ', err);
@@ -66,8 +66,8 @@ class Api {
 
     static async loginUser(userInfo) {
         try {
-            const {username, password} = userInfo;
-            const token = await this.request(`login`, {username, password}, 'post');
+            const { username, password } = userInfo;
+            const token = await this.request(`login`, { username, password }, 'post');
             this.token = token;
             return token;
         } catch (err) {
@@ -79,17 +79,25 @@ class Api {
     static async updateUser(user) {
         try {
             const token = this.token;
-            const headers = { 'authorization': `Bearer ${token}`};
-            let {username, email, firstname, lastname, battletag} = user;
+            const headers = { 'authorization': `Bearer ${token}` };
+            let { username, email, firstname, lastname, battletag } = user;
             username = username.trim().toLowerCase();
             email = email.trim().toLowerCase();
             firstname = firstname.trim().toLowerCase();
             lastname = lastname.trim().toLowerCase();
             battletag = battletag.trim().toLowerCase();
 
-            const result = await this.request(`users/profile/update/`, {username, email, firstname, lastname, battletag}, 'patch', headers);
-
-            return result;
+            const result = await this.request(`users/profile/update/`, { username, email, firstname, lastname, battletag }, 'patch', headers);
+            const profile = {
+                username: result.username,
+                email: result.email,
+                firstname: result.firstname,
+                lastname: result.lastname,
+                battletag: result.battletag,
+                btoken :  result.btoken ? true : false,
+                bTokenExpires: result.btokenexpires
+            };
+            return profile;
         } catch (err) {
             throw err;
         }
@@ -98,7 +106,7 @@ class Api {
     static async deleteUser() {
         try {
             const token = this.token;
-            const headers = { 'authorization': `Bearer ${token}`};
+            const headers = { 'authorization': `Bearer ${token}` };
             await this.request(`users/delete`, {}, 'delete', headers);
         } catch (err) {
             console.error('ERROR DELETING USER: ', err);
@@ -107,11 +115,20 @@ class Api {
     };
 
     static async getMyProfile() {
-        try{
+        try {
             const token = this.token;
-            const headers = { 'authorization': `Bearer ${token}`};
+            const headers = { 'authorization': `Bearer ${token}` };
             const result = await this.request(`users/profile`, {}, 'get', headers);
-            return result;
+            const profile = {
+                username: result.username,
+                email: result.email,
+                firstname: result.firstname,
+                lastname: result.lastname,
+                battletag: result.battletag,
+                btoken :  result.btoken ? true : false,
+                bTokenExpires: result.btokenexpires
+            };
+            return profile;
         } catch (err) {
             throw err;
         }
@@ -120,7 +137,7 @@ class Api {
     static async getWoWProfile() {
         try {
             const token = this.token;
-            const headers = { 'authorization': `Bearer ${token}`};
+            const headers = { 'authorization': `Bearer ${token}` };
             const result = await this.request(`my-wow`, {}, 'get', headers);
             return result;
         } catch (err) {
@@ -132,7 +149,7 @@ class Api {
     static async getBattleNetToken() {
         try {
             const token = this.token;
-            const headers = { 'authorization': `Bearer ${token}`};
+            const headers = { 'authorization': `Bearer ${token}` };
             const result = await this.request(`battlenet/callback`, {}, 'get', headers);
             return result;
         } catch (err) {
@@ -140,6 +157,17 @@ class Api {
             throw err;
         }
     };
+
+    //***************************Guild Section of the API***************************
+    static async getGuilds(realmSlug) {
+        try {
+            const result = await this.request(`guilds`, { realmSlug }, 'get');
+            console.log('RESULT GUILD SECTION: ', result);
+        } catch (err) {
+            console.error('ERROR GETTING GUILDS: ', err);
+            throw err;
+        }
+    }
 }
 
 export default Api;

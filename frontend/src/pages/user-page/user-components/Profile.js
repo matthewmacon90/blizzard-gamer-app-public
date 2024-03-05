@@ -1,5 +1,5 @@
 import EditProfile from "./EditProfile";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CurrentProfileData from "./CurrentProfileData";
 import Api from "../../../api";
 import { useNavigate } from 'react-router-dom';
@@ -15,12 +15,17 @@ const Profile = ({ user, setUser }) => {
     async function updateUser(user) {
         try {
             const result = await Api.updateUser(user);
-            setUser(result);
+            if (!result.btoken) {
+                return setUser(result);
+            }
+
+            const wowProfile = await Api.getWoWProfile();
+            const userProfile = { ...result, wowCharacters: wowProfile };
+            setUser(userProfile);
             setMessage('Profile Updated Successfully!');
             setTimeout(() => {
                 setMessage('');
             }, 3000);
-            return result;
         } catch (err) {
             setMessage(err);
         }
