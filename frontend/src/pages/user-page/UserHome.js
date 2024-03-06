@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import Api from '../../api';
 import Profile from './user-components/Profile';
 import AuthContext from '../../context/authContext';
+import './UserHomeStyles.css';
 
 const UserHome = () => {
     const auth = useContext(AuthContext);
@@ -24,6 +25,7 @@ const UserHome = () => {
                 auth.setCurrentUser(refeshData);
 
                 const wowProfile = await Api.getWoWProfile();
+                console.log('WOW PROFILE: ', wowProfile);
                 const userProfile = { ...result, wowCharacters: wowProfile };
                 setUser(userProfile);
             } catch (err) {
@@ -35,7 +37,7 @@ const UserHome = () => {
 
 
     return (
-        <div>
+        <div className='UserHome-Container'>
             <h1>Welcome to the User Profile Page</h1>
             {user && <Profile user={user} setUser={setUser} />}
         </div>

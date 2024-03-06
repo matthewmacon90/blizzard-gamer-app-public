@@ -6,7 +6,12 @@ const {ExpressError} = require('../error-handling/ExpressError.js');
 class WoWProfileData {
     static async checkDb(user_id) {
         try {
-            const result = await db.query('SELECT * FROM characters WHERE user_id = $1', [user_id]);
+            const result = await db.query(`
+                SELECT * 
+                FROM characters 
+                WHERE user_id = $1
+                ORDER BY character_level DESC
+                `, [user_id]);
             return result.rows;
         } catch (error) {
             console.log(error);

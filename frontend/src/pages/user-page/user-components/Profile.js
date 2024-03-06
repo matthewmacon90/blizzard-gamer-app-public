@@ -1,10 +1,11 @@
 import EditProfile from "./EditProfile";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import CurrentProfileData from "./CurrentProfileData";
 import Api from "../../../api";
 import { useNavigate } from 'react-router-dom';
 import { useContext } from "react";
 import AuthContext from "../../../context/authContext";
+import './ProfileStyles.css'
 
 const Profile = ({ user, setUser }) => {
     const navigate = useNavigate();
@@ -49,7 +50,7 @@ const Profile = ({ user, setUser }) => {
     };
 
     return (
-        <div className="profile-container">
+        <div className="Profile-Container">
             <h2>Profile Information</h2>
             {edit ? (<EditProfile user={user} edit={edit} editProfile={editProfile} updateUser={updateUser} />) :
                 (<CurrentProfileData user={user} setUser={setUser} edit={edit} editProfile={editProfile} deleteUser={deleteUser} />)}
