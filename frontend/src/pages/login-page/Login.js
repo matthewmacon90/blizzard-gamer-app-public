@@ -4,6 +4,7 @@ import { useContext } from "react";
 import AuthContext from "../../context/authContext";
 import { useState } from "react";
 import { Navigate } from "react-router-dom";
+import './LoginStyles.css';
 
 const Login = () => {
     const [error, setError] = useState(null);
@@ -21,7 +22,7 @@ const Login = () => {
     };
 
     return (
-        <div>
+        <div className="Login-Container">
             {auth.currentUser ? <Navigate to='/my-profile' replace={true}/> : <LoginForm login={login} error={error} setError={setError}/> }
         </div>
     );

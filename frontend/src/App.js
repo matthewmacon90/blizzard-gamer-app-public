@@ -4,6 +4,7 @@ import {useState, useEffect } from 'react';
 import AuthContext from './context/authContext';
 import HeaderComponent from './components/header/HeaderComponent';
 import Api from './api';
+import Footer from './components/footer/Footer';
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -28,6 +29,7 @@ function App() {
         <HeaderComponent />
         <RouteComponent />
       </AuthContext.Provider>
+      <Footer />
     </div>
   );
 }
