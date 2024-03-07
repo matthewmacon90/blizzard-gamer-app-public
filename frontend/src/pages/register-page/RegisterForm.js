@@ -1,4 +1,5 @@
 import {useForm, FormProvider} from "react-hook-form";
+import {Link} from "react-router-dom";
 import Input from "../../components/input-form/Input";
 import { usernameSchema, passwordSchema, emailSchema, firstNameSchema, lastNameSchema, battleTagSchema } from "../../form-schema/registerFormSchema";
 
@@ -26,7 +27,7 @@ const RegisterForm = ({submit}) => {
     };
 
     return (
-        <div>
+        <div className="RegisterForm-Container">
             <FormProvider {...methods}> 
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <label htmlFor="username">Username</label>
@@ -49,6 +50,9 @@ const RegisterForm = ({submit}) => {
 
                     <button type="submit">Register</button>
                 </form>
+                <div className="RegisterFormLogin-Container">
+                    <p>Already have an account? <Link to="/login">Login</Link></p>
+                </div>
             </FormProvider>
         </div>
     );

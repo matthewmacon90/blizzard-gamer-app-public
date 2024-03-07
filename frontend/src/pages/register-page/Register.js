@@ -1,7 +1,8 @@
 import RegisterForm from "./RegisterForm";
 import Api from "../../api";
-import {Link, Navigate} from "react-router-dom";
+import {Navigate} from "react-router-dom";
 import {useState} from "react";
+import "./RegisterStyles.css";
 
 const Register = () => {
     const [message, setMessage] = useState('');
@@ -26,17 +27,14 @@ const Register = () => {
     };
 
     return (
-        <div>
-            <h1>Register</h1>
+        <div className="Register-Container">
+            <h1 className="RegisterHeading">Join us today!</h1>
             <RegisterForm submit={submitUserInfo}/>
             {message &&
-                <div className="register-message-container"> 
+                <div className="Register-Message-Container"> 
                     <p>{message}</p>
                 </div>
             }
-            <div className="register-login-container">
-                <p>Already have an account? <Link to="/login" aria-label="Login">Login</Link></p>
-            </div>
             {isRegistered ? <Navigate to="/login"/> : null}
         </div>
     );

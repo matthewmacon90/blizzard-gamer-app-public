@@ -1,0 +1,58 @@
+.Register-Container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #f5f5f5;
+}
+
+.RegisterForm-Container {
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin: auto;
+    padding: 4rem;
+    font-size: 1rem;
+    max-width: 600px;
+    width: 100%;
+}
+
+.RegisterForm-Container label {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.RegisterForm-Container input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+
+.RegisterForm-Container input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.RegisterForm-Container button:focus {
+    outline: 2.5px solid #007bff;; 
+    outline-offset: 2px;
+}
+
+.RegisterFormLogin-Container a {
+    color: #007bff;
+    font-size: 1rem;
+}
+
+.RegisterFormLogin-Container a:focus {
+    outline-offset: 3px;
+}
+
+.Register-Message-Container p {
+    color: red;
+    font-size: 3rem;
+}
