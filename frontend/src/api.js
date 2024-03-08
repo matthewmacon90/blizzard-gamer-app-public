@@ -142,7 +142,7 @@ class Api {
             return result;
         } catch (err) {
             console.error('ERROR GETTING WOW PROFILE: ', err);
-            throw err;
+            return err;
         }
     }
 
@@ -161,7 +161,9 @@ class Api {
     //***************************Guild Section of the API***************************
     static async getGuilds(realmSlug) {
         try {
-            const result = await this.request(`guilds`, { realmSlug }, 'get');
+            const token = this.token;
+            const headers = { 'authorization': `Bearer ${token}` };
+            const result = await this.request(`guilds`, { realmSlug }, 'get', headers);
             console.log('RESULT GUILD SECTION: ', result);
         } catch (err) {
             console.error('ERROR GETTING GUILDS: ', err);

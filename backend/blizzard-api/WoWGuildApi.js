@@ -13,9 +13,11 @@ class WoWGuildApi extends WoWApi {
     //Not working at the moment.
     async getGuilds(realmSlug) {
         try {
+            console.log()
             console.log('REALM SLUG: ', realmSlug)
-            const result = await axios.get(`https://us.api.blizzard.com/data/wow/realm/${realmSlug}?namespace=profile-us`);
-            console.log('RESULT: ', result);
+            // const result = await axios.get(`https://us.api.blizzard.com/data/wow/realm/${realmSlug}?namespace=dynamic-us`, this.authorizationHeaders);
+            const result = await axios.get(`https://us.api.blizzard.com/data/wow/search/realm/${realmSlug}?namespace=dynamic-us`, this.authorizationHeaders);
+            console.log('RESULT: ', result.data);
         } catch (error) {
             console.log('getGuilds:', error);
         }

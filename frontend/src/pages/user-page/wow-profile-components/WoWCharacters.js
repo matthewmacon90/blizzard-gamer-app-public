@@ -8,6 +8,10 @@ const WoWCharacters = ({isExpired, user, setUser }) => {
 
     async function fetchData() {
         const wowProfile = await Api.getWoWProfile();
+        if(wowProfile[0] === 'Request failed with status code 404') {
+            return setUser(user);
+        }
+
         const userProfile = { ...user, wowCharacters: wowProfile };
         return setUser(userProfile);
     };

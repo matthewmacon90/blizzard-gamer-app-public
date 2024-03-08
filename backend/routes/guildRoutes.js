@@ -1,14 +1,18 @@
 const express = require('express');
 const router = express.Router();
 const WoWGuildApi = require('../blizzard-api/WoWGuildApi.js');
+const verifyToken = require('../middleware/verifyToken.js');
+const {decodeToken} = require('../helpers/jwt-token/jwt.js');
 
-router.get('/', async (req, res, next) => {
+router.get('/', verifyToken, async (req, res, next) => {
     try {
         console.log('req: ', req.query.realmSlug);
-        const wowGuildApi = new WoWGuildApi();
+        const decodedToken = await decodeToken(req.headers.authorization.split(' ')[1]);
+        console.log('DECODED TOKEN: ', decodedToken);
+        const wowGuildApi = new WoWGuildApi(decodedToken.btoken);
         const result = await wowGuildApi.getGuilds(req.query.realmSlug);
         console.log('RESULT GUILDS ROUTE: ', result);
-        return res.status(200).json('Hello from guildRoutes');
+        return res.status(200).json(result);
     } catch (error) {
         console.log('GUILD ROUTES ERROR', error);
         next(error);
