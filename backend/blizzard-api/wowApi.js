@@ -21,7 +21,7 @@ class WoWApi {
 
             if(fetchData.length === 0) {
                 const result = await axios.get('https://us.api.blizzard.com/profile/user/wow?namespace=profile-us', this.authorizationHeaders);
-                console.log('RESULT: ', result.data.code);
+                console.log('RESULT: ', result.data);
                 const response = filterCharacterData(this.user_id, result.data);
                 const userProfile = await WoWProfileData.createCharacters(response);
                 return userProfile;

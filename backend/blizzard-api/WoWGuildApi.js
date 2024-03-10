@@ -1,5 +1,5 @@
 const axios = require('axios');
-const {filterCharacterData, getCurrentDate, compareDates} = require('./blizzard-helpers/wowhelpers.js');
+const {filterCharacterData, getCurrentDate, compareDates, gatherData} = require('./blizzard-helpers/wowhelpers.js');
 const WoWApi = require('./wowApi.js');
 
 class WoWGuildApi extends WoWApi {
@@ -10,14 +10,23 @@ class WoWGuildApi extends WoWApi {
         this.authorizationHeaders = {headers: {'Authorization': `Bearer ${this.token}`}}
     }
 
+    async buildGuildProfile(realmSlug, guildName=null) {
+        try {
+            const data = await gatherData(this.authorizationHeaders, realmSlug, guildName);
+            const periodIndex = await axios.get('https://us.api.blizzard.com/data/wow/mythic-keystone/period/index?namespace=dynamic-us', this.authorizationHeaders);
+            console.log('DATA buildGuildProfile: ', data, periodIndex.data.current_period.id);
+            // const result = await axios.get(`https://us.api.blizzard.com/data/wow/guild/${realmSlug}/${guildName.toLowerCase()}?namespace=profile-us`, this.authorizationHeaders);
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     //Not working at the moment.
     async getGuilds(realmSlug) {
         try {
-            console.log()
-            console.log('REALM SLUG: ', realmSlug)
-            // const result = await axios.get(`https://us.api.blizzard.com/data/wow/realm/${realmSlug}?namespace=dynamic-us`, this.authorizationHeaders);
-            const result = await axios.get(`https://us.api.blizzard.com/data/wow/search/realm/${realmSlug}?namespace=dynamic-us`, this.authorizationHeaders);
-            console.log('RESULT: ', result.data);
+            const response = await this.buildGuildProfile(realmSlug);
+            // console.log('roster: ', roster.data.members.roster[0].character.key);
         } catch (error) {
             console.log('getGuilds:', error);
         }

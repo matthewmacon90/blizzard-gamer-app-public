@@ -19,10 +19,31 @@ CREATE TABLE IF NOT EXISTS "users" (
     last_login TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS "realms" (
+    realm_id SERIAL PRIMARY KEY,
+    realm_name VARCHAR(255) NOT NULL,
+    realm_slug VARCHAR(255) NOT NULL,
+    connected_realm_id INT NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS "dungeons" (
+    dungeon_id SERIAL PRIMARY KEY,
+    dungeon_name VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE IF NOT EXISTS "guilds" (
     guild_id SERIAL PRIMARY KEY,
     guild_name VARCHAR(30) UNIQUE NOT NULL,
     guild_description TEXT NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS "guild_members" (
+    guild_member_id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(user_id) ON DELETE CASCADE,
+    guild_id INT REFERENCES guilds(guild_id) ON DELETE CASCADE,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
