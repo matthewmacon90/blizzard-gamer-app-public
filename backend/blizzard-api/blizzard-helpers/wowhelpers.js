@@ -151,14 +151,14 @@ const cleanMountData = (data) => {
 }
 
 const updateMountData = async (data, headers) => {
-    console.log('DATA: ', data);
+    console.log('DATA IN UPDATE HELPER: ', data);
     const image = await axios.get(`https://us.api.blizzard.com/data/wow/media/creature-display/${data.creature_displays[0].id}?namespace=static-us`, headers);
     console.log('IMAGE: ', image.data.assets[0].value);
     try {
         return {
             mount_id: data.id,
-            mount_description: data.description.en_US,
-            mount_faction: data.faction.name.en_US,
+            mount_description: data.description ? data.description.en_US : 'No description available',
+            mount_faction: data.faction ? data.faction.name.en_US : 'Avaiable to Alliance and Horde',
             mount_source: data.source.name.en_US,
             image_url: image.data.assets[0].value,
         }

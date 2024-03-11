@@ -30,6 +30,15 @@ router.get('/:mountId', async (req, res, next) => {
         const decodedToken = await decodeToken(req.headers.authorization.split(' ')[1]);
         const mountId = req.params.mountId;
 
+        const mountDb = await WoWMountsModel.getMountById(mountId);
+        console.log('MOUNT DB: ', mountDb);
+
+        const {mount_description, mount_faction, mount_source, image_url} = mountDb;
+
+        if(mount_description || mount_faction || mount_source || image_url) {
+            return res.status(200).json(mountDb);
+        }
+       
         const wowMountsApi = new WoWMountsApi(decodedToken.btoken);
         const result = await wowMountsApi.getMountData(mountId);
         console.log('RESULT MOUNT DATA ROUTE: ', result);

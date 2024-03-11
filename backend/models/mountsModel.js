@@ -1,15 +1,27 @@
 const db = require('../db/db.js');
 const {ExpressError} = require('../error-handling/ExpressError.js');
 
-class MountsModel {
+class WoWMountsModel {
     static async getMounts() {
         try {
             const result = await db.query(`
-                SELECT mount_id, mount_name
+                SELECT *
                 FROM mounts`);
             return result.rows;
         } catch (err) {
             throw new ExpressError('Error fetching mounts', 500);
+        }
+    }
+
+    static async getMountById(mount_id) {
+        try {
+            const result = await db.query(`
+                SELECT * FROM mounts
+                WHERE mount_id = $1
+            `,[mount_id]);
+            return result.rows[0];
+        } catch (err) {
+            throw new ExpressError('Error fetching mount by id', 500);
         }
     }
 
@@ -28,6 +40,7 @@ class MountsModel {
     }
 
     static async updateMount(mount_id, mount) {
+        console.log('MOUNT UPDATE MOUNT: ', mount)
         try {
             const {mount_description, mount_faction, mount_source, image_url} = mount;
             await db.query(`
@@ -43,4 +56,4 @@ class MountsModel {
     }
 };
 
-module.exports = MountsModel;
+module.exports = WoWMountsModel;

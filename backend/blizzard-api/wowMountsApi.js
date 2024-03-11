@@ -37,7 +37,7 @@ class WoWMountsApi extends WoWApi {
             const result = await axios.get(`https://us.api.blizzard.com/data/wow/mount/${mountId}?namespace=static-us`, this.authorizationHeaders);
             // console.log('RESULT MOUNT DATA: ', result.data);
             const mount = await updateMountData(result.data, this.authorizationHeaders);
-            console.log('MOUNT: ', mount);
+            // console.log('MOUNT: ', mount);
             // console.log('RESULT MOUNT DATA: ', result.data);
             return mount;
         } catch (err) {
