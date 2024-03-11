@@ -12,6 +12,7 @@ const NavBar = () => {
     <nav className="navbar-container">
       <Link to="/" className="nav-link-styles" aria-label="Home Page">Home</Link>
       <Link to="/guilds" className="nav-link-styles" aria-label="Guilds Page">Guilds</Link>
+      <Link to="/mounts" className="nav-link-styles" aria-label="Mounts Page">Mounts</Link>
       { currentUser ? (
           <>
             <button className="nav-button-styles" onClick={() => logout(auth.setCurrentUser)} aria-label="Logout">Logout</button>

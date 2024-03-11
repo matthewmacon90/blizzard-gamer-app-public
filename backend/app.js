@@ -15,6 +15,7 @@ const userRouter = require('./routes/users.js');
 const blizzardRoutes = require('./authentication/oauth2-blizzard/blizzardRoutes.js');
 const wowProfileRoutes = require('./routes/wowProfileRoutes.js');
 const guildRoutes = require('./routes/guildRoutes.js');
+const mountsRoutes = require('./routes/mountsRoutes.js');
 
 
 const corsOptions = {
@@ -53,6 +54,7 @@ app.use('/battlenet', blizzardRoutes);
 app.use('/users', userRouter);
 app.use('/my-wow', wowProfileRoutes);
 app.use('/guilds', guildRoutes);
+app.use('/mounts', mountsRoutes);
 
 app.use((err, req, res, next) => {
     const message = err.message || 'Something went wrong';

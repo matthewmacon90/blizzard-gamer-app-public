@@ -170,6 +170,20 @@ class Api {
             throw err;
         }
     }
+
+        //***************************Mounts Section of the API***************************
+    static async getMounts() {
+        try {
+            const token = this.token;
+            const headers = { 'authorization': `Bearer ${token}` };
+            const result = await this.request(`mounts`, {}, 'get', headers);
+            console.log('RESULT MOUNTS SECTION: ', result);
+            return result;
+        } catch (err) {
+            console.error('ERROR GETTING MOUNTS: ', err);
+            throw err;
+        }
+    };
 }
 
 export default Api;

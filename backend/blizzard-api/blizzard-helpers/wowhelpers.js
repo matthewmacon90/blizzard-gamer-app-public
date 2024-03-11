@@ -128,7 +128,8 @@ const gatherMembers = (data) => {
         // console.log('row: ', row)
         groups.push(row.data.leading_groups);
     }
-    console.log('groups: ', groups);
+ 
+    console.log('groups: ', groups[0].data.members);
 
     for(let row of groups) {
         // console.log('row: ', row)
@@ -137,6 +138,16 @@ const gatherMembers = (data) => {
     // console.log('members: ', members);
 };
 
+const cleanMountData = (data) => {
+    console.log('DATA: ', data);
+    const mounts = data.map(mount => {
+        return {
+            mount_id: mount.id,
+            mount_name: mount.name.en_US,
+        }
+    });
+    return mounts;
+}
 
 
 
@@ -144,5 +155,6 @@ module.exports = {
     getCurrentDate,
     filterCharacterData,
     compareDates,
-    gatherData
+    gatherData,
+    cleanMountData
 };
