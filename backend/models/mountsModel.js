@@ -23,6 +23,22 @@ class MountsModel {
             });
         } catch (err) {
             console.error(err);
+            throw new ExpressError('Error inserting mounts', 500);
+        }
+    }
+
+    static async updateMount(mount_id, mount) {
+        try {
+            const {mount_description, mount_faction, mount_source, image_url} = mount;
+            await db.query(`
+                UPDATE mounts
+                SET mount_description = $1, mount_faction = $2, mount_source = $3, image_url = $4
+                WHERE mount_id = $5`
+            , [mount_description, mount_faction, mount_source, image_url, mount_id]);
+
+        } catch (err) {
+            console.error(err);
+            throw new ExpressError('Error updating mounts', 500);
         }
     }
 };

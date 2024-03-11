@@ -1,5 +1,5 @@
 const axios = require('axios');
-const {cleanMountData} = require('./blizzard-helpers/wowhelpers.js');
+const {cleanMountData, updateMountData} = require('./blizzard-helpers/wowhelpers.js');
 const WoWApi = require('./wowApi.js');
 const MountsModel = require('../models/mountsModel.js');
 
@@ -28,6 +28,20 @@ class WoWMountsApi extends WoWApi {
             // console.log('mountImage: ', mountImage.data.assets);
         } catch (err) {
             console.log('ERROR GET MOUNTS: ',err);
+            throw err;
+        }
+    }
+
+    async getMountData(mountId) {
+        try {
+            const result = await axios.get(`https://us.api.blizzard.com/data/wow/mount/${mountId}?namespace=static-us`, this.authorizationHeaders);
+            // console.log('RESULT MOUNT DATA: ', result.data);
+            const mount = await updateMountData(result.data, this.authorizationHeaders);
+            console.log('MOUNT: ', mount);
+            // console.log('RESULT MOUNT DATA: ', result.data);
+            return mount;
+        } catch (err) {
+            console.log('ERROR GET MOUNT DATA: ', err);
             throw err;
         }
     }

@@ -140,6 +140,7 @@ const gatherMembers = (data) => {
 
 const cleanMountData = (data) => {
     console.log('DATA: ', data);
+    // console.log('DATA CREATURE: ', data.creature_displays[0]);
     const mounts = data.map(mount => {
         return {
             mount_id: mount.id,
@@ -149,6 +150,24 @@ const cleanMountData = (data) => {
     return mounts;
 }
 
+const updateMountData = async (data, headers) => {
+    console.log('DATA: ', data);
+    const image = await axios.get(`https://us.api.blizzard.com/data/wow/media/creature-display/${data.creature_displays[0].id}?namespace=static-us`, headers);
+    console.log('IMAGE: ', image.data.assets[0].value);
+    try {
+        return {
+            mount_id: data.id,
+            mount_description: data.description.en_US,
+            mount_faction: data.faction.name.en_US,
+            mount_source: data.source.name.en_US,
+            image_url: image.data.assets[0].value,
+        }
+    } catch (err) {
+        console.error(err);
+        throw err;
+    }
+};
+
 
 
 module.exports = {
@@ -156,5 +175,6 @@ module.exports = {
     filterCharacterData,
     compareDates,
     gatherData,
-    cleanMountData
+    cleanMountData,
+    updateMountData
 };

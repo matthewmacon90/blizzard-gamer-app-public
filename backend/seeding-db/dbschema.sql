@@ -67,6 +67,8 @@ CREATE TABLE IF NOT EXISTS "mounts" (
     mount_name VARCHAR(255) NOT NULL,
     mount_description TEXT,
     mount_source TEXT,
+    mount_faction TEXT,
+    image_url TEXT,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 

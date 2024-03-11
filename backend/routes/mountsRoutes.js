@@ -25,4 +25,22 @@ router.get('/', async (req, res, next) => {
     }
 });
 
+router.get('/:mountId', async (req, res, next) => {
+    try {
+        const decodedToken = await decodeToken(req.headers.authorization.split(' ')[1]);
+        const mountId = req.params.mountId;
+
+        const wowMountsApi = new WoWMountsApi(decodedToken.btoken);
+        const result = await wowMountsApi.getMountData(mountId);
+        console.log('RESULT MOUNT DATA ROUTE: ', result);
+
+        await WoWMountsModel.updateMount(mountId, result);
+
+        return res.status(200).json(result);
+    } catch (err) {
+        console.error(err);
+        next(err);
+    }
+});
+
 module.exports = router;

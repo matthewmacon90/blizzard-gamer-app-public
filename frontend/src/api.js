@@ -177,13 +177,25 @@ class Api {
             const token = this.token;
             const headers = { 'authorization': `Bearer ${token}` };
             const result = await this.request(`mounts`, {}, 'get', headers);
-            console.log('RESULT MOUNTS SECTION: ', result);
             return result;
         } catch (err) {
             console.error('ERROR GETTING MOUNTS: ', err);
             throw err;
         }
     };
+
+    static async getMountData(mountId) {
+        try {
+            const token = this.token;
+            const headers = { 'authorization': `Bearer ${token}` };
+            const result = await this.request(`mounts/${mountId}`, {}, 'get', headers);
+            console.log('RESULT MOUNT DATA: ', result);
+            return result;
+        } catch (err) {
+            console.error('ERROR GETTING MOUNT DATA: ', err);
+            throw err;
+        }
+    }
 }
 
 export default Api;
