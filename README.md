@@ -7,35 +7,32 @@ Our goal is to use this application to build a community for gamers by gamers.
 
 Instructions for setting up your project locally. These should include:
 
-- Prerequisites: Nodejs version 16 or higher should be installed to run this project.
+- Prerequisites: 
+    - Nodejs version 16 or higher should be installed to run this project.
+    - Clone the repo using ![Clone Repo](image.png)
+
 - Installation: 
-    -Navigate to the frontend folder and enter npm install to install the packages.
-    -Navigate to the backend folder and enter npm install to install the packages.
+    - Navigate to the frontend folder and enter npm install to install the packages.
+    - Install WSL (ubuntu), if using windows, to run ubuntu from the commandline
+      Once ubuntu is installed use the command line to install postgresql.
+    - Navigate to the backend folder and enter npm install to install the packages.
 
 ## Usage
 
-Instructions for how to use your project. This could include code examples, screenshots, or even videos.
+Before running the server and client you will need to run postgresql for your db. 
+Enter: sudo service postgresql start 
 
-## Running the Tests
+Note: You will most likely need a password.
 
-Explain how to run the automated tests for this system.
+In the backend directory within ubuntu enter command nodemon server.js to run the server locally.
 
-## Deployment
-
-Add additional notes about how to deploy this on a live system.
+In the frontend directory enter command npm start to run the client locally.
 
 ## Built With
 
-List the major frameworks or tools that you used to build your project.
+We used React for the frontend and Express for the backend of the application.
 
-## Contributing
-
-Details about how others can contribute to your project.
-
-## License
-
-Information about the project's license.
 
 ## Acknowledgments
 
-Credit anyone whose code was used or who inspired the project.
+I want to acknowledge and thank Christian Feier, a friend and mentor, who has provided support and technical advice as I have worked on this project.
