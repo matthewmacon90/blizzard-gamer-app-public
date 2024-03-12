@@ -1,47 +1,62 @@
-Sons-of-Thunder
-Sons-of-Thunder is a community-driven platform designed for gamers who indulge in the immersive world of World of Warcraft and other captivating games. It serves as a central hub for players to access their gaming profiles, showcasing their achievements, stats, characters, and more. Our mission is to foster a vibrant community built by gamers, for gamers.
+# Sons-of-Thunder
 
-Getting Started
-To get a local copy up and running, follow these simple steps.
+Welcome to the Sons-of-Thunder project! This platform is designed for the passionate gamers of World of Warcraft and other games, offering a personalized space to showcase your gaming achievements, stats, characters, and more. Join us in fostering a vibrant community built by gamers, for gamers.
 
-Prerequisites
-Ensure you have the following installed:
+## Getting Started
 
-Node.js (version 16 or higher)
-Git for cloning the repository
-# Clone the repository
+Follow these instructions to set up the project locally and embark on your development journey.
+
+### Prerequisites
+- Ensure you have **Node.js (v16 or higher)** installed on your system.
+- Clone the repository to your local machine:
+```Bash
 git clone https://github.com/your-username/Sons-of-Thunder.git
+```
+    ![Clone Repo](image.png)
 
-Installation
-Frontend Setup: Navigate to the frontend directory and install dependencies.
-cd frontend
+
+### Installation
+
+- **Frontend Setup:**
+Navigate to the `frontend` directory and run the following command to install all dependencies:
+```Bash
 npm install
+```
 
-Backend Setup:
-For Windows users, install WSL (Ubuntu) to utilize Ubuntu in the command line.
-Install PostgreSQL within Ubuntu.
-sudo apt-get update
-sudo apt-get install postgresql postgresql-contrib
+- **Backend Setup:**
+- If you're on Windows, install **WSL (Ubuntu)** to enable running Ubuntu from the command line.
+- With Ubuntu set up, install **PostgreSQL** using the command line:
+  ```
+  sudo apt-get install postgresql
+  ```
+- Move to the `backend` directory and install the necessary packages:
+  ```
+  npm install
+  ```
 
-Navigate to the backend directory and install dependencies.
-cd backend
-npm install
+## Usage
 
-Usage
-To use the application, follow these steps:
+To get the application up and running, follow these steps:
 
-Start PostgreSQL:
-sudo service postgresql start
+1. Start the PostgreSQL service (you might need your password):
 
-Note: You may be prompted for a password.
-Run the Server: Within the backend directory, start the server using nodemon.
-nodemon server.js
 
-Run the Client: In the frontend directory, start the client application.
-npm start
+## Usage
 
-Built With
-React - A JavaScript library for building user interfaces.
-Express - A web application framework for Node.js.
-Acknowledgments
-Special thanks to Christian Feier, a dear friend and mentor, whose support and technical guidance have been invaluable throughout the development of this project.
+Before running the server and client you will need to run postgresql for your db. 
+Enter: sudo service postgresql start 
+
+Note: You will most likely need a password.
+
+In the backend directory within ubuntu enter command nodemon server.js to run the server locally.
+
+In the frontend directory enter command npm start to run the client locally.
+
+## Built With
+
+We used React for the frontend and Express for the backend of the application.
+
+
+## Acknowledgments
+
+I want to acknowledge and thank Christian Feier, a friend and mentor, who has provided support and technical advice as I have worked on this project.
