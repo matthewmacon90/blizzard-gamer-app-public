@@ -40,7 +40,6 @@ const Profile = ({ user, setUser }) => {
             auth.setCurrentUser(null);
             navigate("/", { replace: true });
         } catch (err) {
-            console.error('ERROR DELETING USER: ', err);
         }
     }
 

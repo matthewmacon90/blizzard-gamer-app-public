@@ -7,16 +7,12 @@ class Api {
 
     static async request(endpoint, data = {}, method = "get") {
         try {
-            console.debug("API Call:", endpoint, data, method);
-
             const url = `${BASE_URL}/${endpoint}`;
             const headers = { Authorization: `Bearer ${Api.token}` };
             const params = method === "get" ? data : {};
 
             return (await axios({ url, method, data, params, headers })).data;
         } catch (err) {
-            console.error("API Error:", err.response);
-            console.error('ERROR: ', err);
             const message = err.response.data.error;
             throw Array.isArray(message) ? message : [message];
         }
@@ -29,7 +25,6 @@ class Api {
             const result = await this.request(`users/verify`, {}, 'get', headers);
             return result;
         } catch (err) {
-            console.error('ERROR VERIFYING TOKEN: ', err);
             throw err;
         }
     };
@@ -42,7 +37,6 @@ class Api {
             this.token = result;
             return result;
         } catch (err) {
-            console.error('ERROR REFRESHING TOKEN: ', err);
             throw err;
         }
     };
@@ -59,7 +53,6 @@ class Api {
             await this.request(`register`, { username, email, password, firstName, lastName, battletag }, 'post');
             return 'You have successfully registered! Please log in to continue.';
         } catch (err) {
-            console.error('ERROR REGISTER API: ', err);
             throw err;
         }
     };
@@ -71,7 +64,6 @@ class Api {
             this.token = token;
             return token;
         } catch (err) {
-            console.log('ERROR: ', err);
             throw err;
         }
     }
@@ -109,7 +101,6 @@ class Api {
             const headers = { 'authorization': `Bearer ${token}` };
             await this.request(`users/delete`, {}, 'delete', headers);
         } catch (err) {
-            console.error('ERROR DELETING USER: ', err);
             throw err;
         }
     };
@@ -141,7 +132,6 @@ class Api {
             const result = await this.request(`my-wow`, {}, 'get', headers);
             return result;
         } catch (err) {
-            console.error('ERROR GETTING WOW PROFILE: ', err);
             return err;
         }
     }
@@ -153,7 +143,6 @@ class Api {
             const result = await this.request(`battlenet/callback`, {}, 'get', headers);
             return result;
         } catch (err) {
-            console.error('ERROR GETTING BATTLENET TOKEN: ', err);
             throw err;
         }
     };
@@ -164,9 +153,7 @@ class Api {
             const token = this.token;
             const headers = { 'authorization': `Bearer ${token}` };
             const result = await this.request(`guilds`, { realmSlug }, 'get', headers);
-            console.log('RESULT GUILD SECTION: ', result);
         } catch (err) {
-            console.error('ERROR GETTING GUILDS: ', err);
             throw err;
         }
     }
@@ -179,7 +166,6 @@ class Api {
             const result = await this.request(`mounts`, {}, 'get', headers);
             return result;
         } catch (err) {
-            console.error('ERROR GETTING MOUNTS: ', err);
             throw err;
         }
     };
@@ -189,10 +175,8 @@ class Api {
             const token = this.token;
             const headers = { 'authorization': `Bearer ${token}` };
             const result = await this.request(`mounts/${mountId}`, {}, 'get', headers);
-            console.log('RESULT MOUNT DATA: ', result);
             return result;
         } catch (err) {
-            console.error('ERROR GETTING MOUNT DATA: ', err);
             throw err;
         }
     }

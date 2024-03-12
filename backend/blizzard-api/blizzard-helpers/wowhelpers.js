@@ -1,7 +1,6 @@
 const axios = require('axios');
 
 const filterCharacterData = (user_id, data, date=null) => {
-    console.log('USER ID: ', user_id, typeof user_id)
     const {wow_accounts} = data;
     let i = 0;
     const results = [];
@@ -54,8 +53,12 @@ const compareDates = (currentDate, dbDate=null) => {
     return diffInDays === 5;
 };
 
+//PART 2: GUILD ROUTES NOT IN USE AT THE MOMENT
+
 const gatherData = async (headers, realmSlug, guildName) => {
     try {
+        //PART 2 For Capstone Project
+
         // const formattedName = formatName(guildName);
         // console.log('FORMATTED NAME: ', formattedName);
         const realmData = await axios.get(`https://us.api.blizzard.com/data/wow/realm/${realmSlug}?namespace=dynamic-us`, headers);
@@ -81,6 +84,7 @@ const gatherData = async (headers, realmSlug, guildName) => {
     }
 };
 
+//PART 2: GUILD ROUTES NOT IN USE AT THE MOMENT
 const formatName = (name) => {
     return name.toLowerCase().replaceAll(' ', '-');
 };
@@ -108,6 +112,7 @@ const cleanDungeonData = (data) => {
     );
 };
 
+//PART 2: GUILD ROUTES NOT IN USE AT THE MOMENT
 const gatherDungeonLeaderBoard = async (connectedRealmId, dungeonData, period, headers) => {
     const dungeonIds = dungeonData.map(dungeon => dungeon.id);
     const result = [];
@@ -120,6 +125,7 @@ const gatherDungeonLeaderBoard = async (connectedRealmId, dungeonData, period, h
     return result;
 };
 
+//PART 2: GUILD ROUTES NOT IN USE AT THE MOMENT
 const gatherMembers = (data) => {
     const groups = [];
     const members = [];
@@ -139,8 +145,6 @@ const gatherMembers = (data) => {
 };
 
 const cleanMountData = (data) => {
-    console.log('DATA: ', data);
-    // console.log('DATA CREATURE: ', data.creature_displays[0]);
     const mounts = data.map(mount => {
         return {
             mount_id: mount.id,
@@ -151,10 +155,8 @@ const cleanMountData = (data) => {
 }
 
 const updateMountData = async (data, headers) => {
-    console.log('DATA IN UPDATE HELPER: ', data);
-    const image = await axios.get(`https://us.api.blizzard.com/data/wow/media/creature-display/${data.creature_displays[0].id}?namespace=static-us`, headers);
-    console.log('IMAGE: ', image.data.assets[0].value);
     try {
+        const image = await axios.get(`https://us.api.blizzard.com/data/wow/media/creature-display/${data.creature_displays[0].id}?namespace=static-us`, headers);
         return {
             mount_id: data.id,
             mount_description: data.description ? data.description.en_US : 'No description available',

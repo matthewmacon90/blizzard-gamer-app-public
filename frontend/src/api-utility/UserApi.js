@@ -1,3 +1,5 @@
+//I will be using this later. Not currently in use.
+
 import Api from './Api.js';
 
 class UserApi extends Api {
@@ -13,7 +15,6 @@ class UserApi extends Api {
             await this.request(`register`, {username, email, password, firstName, lastName, battletag}, 'post');
             return 'You have successfully registered! Please log in to continue.';
         } catch (err) {
-            console.error('ERROR REGISTER API: ', err);
             throw err;
         }
     };
@@ -25,7 +26,6 @@ class UserApi extends Api {
             this.token = token;
             return token;
         } catch (err) {
-            console.log('ERROR: ', err);
             throw err;
         }
     }
@@ -55,7 +55,6 @@ class UserApi extends Api {
             const headers = { 'authorization': `Bearer ${token}`};
             await this.request(`users/delete`, {}, 'delete', headers);
         } catch (err) {
-            console.error('ERROR DELETING USER: ', err);
             throw err;
         }
     };
@@ -63,7 +62,6 @@ class UserApi extends Api {
     static async getMyProfile() {
         try{
             const token = this.token;
-            console.log('TOKEN: ', token);
             const headers = { 'authorization': `Bearer ${token}`};
             const result = await this.request(`users/profile`, {}, 'get', headers);
             return result;
@@ -79,7 +77,6 @@ class UserApi extends Api {
             const result = await this.request(`my-wow`, {}, 'get', headers);
             return result;
         } catch (err) {
-            console.error('ERROR GETTING WOW PROFILE: ', err);
             throw err;
         }
     }
@@ -91,7 +88,6 @@ class UserApi extends Api {
             const result = await this.request(`battlenet/callback`, {}, 'get', headers);
             return result;
         } catch (err) {
-            console.error('ERROR GETTING BATTLENET TOKEN: ', err);
             throw err;
         }
     };

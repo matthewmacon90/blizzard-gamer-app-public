@@ -18,13 +18,6 @@ const guildRoutes = require('./routes/guildRoutes.js');
 const mountsRoutes = require('./routes/mountsRoutes.js');
 
 
-const corsOptions = {
-    origin: '*', 
-    optionsSuccessStatus: 200,
-    credentials: true
-};
-
-
 const app = express();
 
 app.use(helmet());

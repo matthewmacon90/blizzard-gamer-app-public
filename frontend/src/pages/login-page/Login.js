@@ -16,7 +16,6 @@ const Login = () => {
             sessionStorage.setItem('token', result);
             auth.setCurrentUser(result);
         } catch (err) {
-            console.error('ERROR ON LOGIN PAGE', err);
             setError(err[0]);
         }
     };

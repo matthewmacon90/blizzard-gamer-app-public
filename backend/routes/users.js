@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/usersModel.js');
-const bcrypt = require('bcrypt'); //I will add this to update user later.
 const verifyToken = require('../middleware/verifyToken.js');
 const { decodeToken } = require('../helpers/jwt-token/jwt');
 
@@ -27,7 +26,6 @@ router.get('/verify', verifyToken, async (req, res, next) => {
 router.get('/refresh', verifyToken, async (req, res, next) => {
     try {
         const decodedToken = await decodeToken(req.headers.authorization.split(' ')[1]);
-        console.log('DECODED TOKEN refresh: ', decodedToken);
         const result = await User.refreshToken(decodedToken.id);
         return res.status(200).json(result);
     } catch (err) {

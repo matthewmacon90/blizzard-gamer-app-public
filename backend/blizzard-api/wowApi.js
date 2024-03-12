@@ -12,16 +12,13 @@ class WoWApi {
     async getUserProfile() {
         try {
             const date = getCurrentDate();
-            console.log('DATE: ', date);
             const fetchData = await WoWProfileData.checkDb(this.user_id);
             const dbDate = fetchData.length > 0 ? fetchData[0].date : null;
-            console.log('FETCH DATA: ', fetchData);
             const compareDatesResult = compareDates(date, dbDate);
-            console.log('COMPARE DATES RESULT: ', compareDatesResult);
+
 
             if(fetchData.length === 0) {
                 const result = await axios.get('https://us.api.blizzard.com/profile/user/wow?namespace=profile-us', this.authorizationHeaders);
-                console.log('RESULT: ', result.data);
                 const response = filterCharacterData(this.user_id, result.data);
                 const userProfile = await WoWProfileData.createCharacters(response);
                 return userProfile;
@@ -40,19 +37,6 @@ class WoWApi {
             throw error;
         }
     };
-
-
-    //Not working at the moment.
-    async getGuildProfile(realm, guildName) {
-        try {
-            const result = await axios.get(`https://us.api.blizzard.com/data/wow/guild/${realm}/${guildName.toLowerCase()}?namespace=profile-us`, this.authorizationHeaders);
-            const {headers, data} = result;
-            const apiCallDate = headers.date;
-            return data;
-        } catch (error) {
-            console.log(error);
-        }
-    }
 }
 
 module.exports = WoWApi;

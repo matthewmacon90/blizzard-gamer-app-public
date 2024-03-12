@@ -16,9 +16,8 @@ router.get('/', async (req, res, next) => {
 
         const wowMountsApi = new WoWMountsApi(decodedToken.btoken);
         const result = await wowMountsApi.getMounts();
-        console.log('RESULT MOUNTS ROUTE: ', result);
 
-        return res.status(200).json({ message: 'Mounts route works' });
+        return res.status(200).json(result);
     } catch (err) {
         console.error(err);
         next(err);
@@ -29,10 +28,7 @@ router.get('/:mountId', async (req, res, next) => {
     try {
         const decodedToken = await decodeToken(req.headers.authorization.split(' ')[1]);
         const mountId = req.params.mountId;
-
         const mountDb = await WoWMountsModel.getMountById(mountId);
-        console.log('MOUNT DB: ', mountDb);
-
         const {mount_description, mount_faction, mount_source, image_url} = mountDb;
 
         if(mount_description || mount_faction || mount_source || image_url) {
@@ -41,7 +37,6 @@ router.get('/:mountId', async (req, res, next) => {
        
         const wowMountsApi = new WoWMountsApi(decodedToken.btoken);
         const result = await wowMountsApi.getMountData(mountId);
-        console.log('RESULT MOUNT DATA ROUTE: ', result);
 
         await WoWMountsModel.updateMount(mountId, result);
 

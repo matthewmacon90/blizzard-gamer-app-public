@@ -12,7 +12,6 @@ const Mounts = () => {
                 const result = await Api.getMounts();
                 setMounts(result);
             } catch (err) {
-                console.error('ERROR FETCHING MOUNTS: ', err);
             }
         }
         fetchMounts();

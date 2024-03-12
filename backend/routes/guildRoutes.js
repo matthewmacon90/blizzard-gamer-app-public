@@ -5,6 +5,8 @@ const WoWDungeonApi = require('../blizzard-api/wowDungeonApi.js');
 const verifyToken = require('../middleware/verifyToken.js');
 const {decodeToken} = require('../helpers/jwt-token/jwt.js');
 
+
+//PART 2: GUILD ROUTES NOT IN USE AT THE MOMENT
 router.get('/', verifyToken, async (req, res, next) => {
     try {
         console.log('req: ', req.query.realmSlug);

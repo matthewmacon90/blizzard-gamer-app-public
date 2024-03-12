@@ -11,7 +11,6 @@ passport.use(new BnetStrategy({
     scope: ['wow.profile', 'openid', 'email']
 }, 
     function(accessToken, refreshToken, profile, done) {
-        console.log('profile: ', profile);
         profile.refreshToken = refreshToken;
         profile.accessToken = accessToken;
         return done(null, profile);

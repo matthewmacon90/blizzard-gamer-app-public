@@ -18,7 +18,6 @@ const Register = () => {
         } catch (err) {
             setMessage(err[0]);
             setIsRegistered(isRegistered);
-            console.log('ERROR ON REGISTER PAGE', err)
         }
     };
 

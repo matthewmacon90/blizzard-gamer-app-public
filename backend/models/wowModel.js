@@ -1,8 +1,6 @@
 const db = require('../db/db.js');
 const {ExpressError} = require('../error-handling/ExpressError.js');
 
-// This is a model for the WoWProfileData. It will be used to create a new user profile in the database or connect to an existing one.
-
 class WoWProfileData {
     static async checkDb(user_id) {
         try {

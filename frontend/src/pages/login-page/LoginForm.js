@@ -5,6 +5,7 @@ const LoginForm = ({error, login, setError}) => {
         username: '',
         password: '',
     };
+
     const [formState, setFormState] = useState(initalState);
 
     const handleChange = (e) => {

@@ -40,7 +40,6 @@ class WoWMountsModel {
     }
 
     static async updateMount(mount_id, mount) {
-        console.log('MOUNT UPDATE MOUNT: ', mount)
         try {
             const {mount_description, mount_faction, mount_source, image_url} = mount;
             await db.query(`

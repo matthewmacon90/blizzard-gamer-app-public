@@ -2,6 +2,8 @@ const axios = require('axios');
 const {filterCharacterData, getCurrentDate, compareDates, gatherData} = require('./blizzard-helpers/wowhelpers.js');
 const WoWApi = require('./wowApi.js');
 
+//PART 2: GUILD ROUTES NOT IN USE AT THE MOMENT
+
 class WoWGuildApi extends WoWApi {
     constructor(token = '', user_id = null) {
         super(token, user_id);

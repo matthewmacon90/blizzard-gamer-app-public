@@ -1,8 +1,6 @@
 const db = require('../db/db.js');
 const bcrypt = require('bcrypt');
 const {ExpressError} = require('../error-handling/ExpressError.js');
-const generatePassword = require('generate-password');
-const {generateUsername} = require('unique-username-generator');
 const {signToken} = require('../helpers/jwt-token/jwt.js');
 
 class User {
@@ -135,7 +133,6 @@ class User {
     static async refreshToken (id) {
         try {
             const result = await User.getUserById(id);
-            console.log('REFRESH TOKEN RESULT: ', result);
             const payload = {
                 id: result.user_id,
                 username: result.username,
@@ -162,7 +159,6 @@ class User {
                 battletag: userFound.battletag,
                 btoken: userFound.btoken
             };
-            console.log('PAYLOAD: ', payload);
 
             const token = await signToken(payload);
             await User.updateLoginTime(username);
