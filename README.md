@@ -7,56 +7,143 @@ Welcome to the Sons-of-Thunder project! This platform is designed for the passio
 Follow these instructions to set up the project locally and embark on your development journey.
 
 ### Prerequisites
-- Ensure you have **Node.js (v16 or higher)** installed on your system.
+Before you begin, make sure you have the following installed:
+
+### Git Bash
+- Download the latest version of Git for Windows from the [official Git website](https://git-scm.com/downloads).
+- Run the downloaded installer and follow the on-screen instructions to complete the installation.
+
+## Windows Subsystem for Linux (WSL) with Ubuntu
+
+### Installing WSL with Ubuntu
+1. Open PowerShell as Administrator and run:
+
+```
+wsl --install
+```
+
+2. Restart your computer when prompted.
+3. Launch Ubuntu from the Start menu and set up your new UNIX username and password.
+
+For detailed instructions, visit the [Microsoft Learn WSL Installation Guide](https://learn.microsoft.com/en-us/windows/wsl/install).
+
+## Node.js and Node Version Manager (NVM)
+
+### Installing Node.js
+1. After setting up WSL, open the Ubuntu terminal.
+2. Update your package index:
+```
+sudo apt update
+```
+3. Install Node.js:
+```
+sudo apt install nodejs
+```
+4. Confirm the installation with:
+```
+node -v
+```
+For more details, check out the [Node.js Installation Guide](https://nodejs.org/en/learn/getting-started/how-to-install-nodejs).
+
+### Installing NVM
+1. In the Ubuntu terminal, install NVM using the following curl command:
+```
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+```
+2. Close and reopen the terminal.
+3. Install the latest version of Node.js with NVM:
+```
+nvm install node
+```
+
+For a complete guide, refer to the [NVM Install Guide](https://www.freecodecamp.org/news/node-version-manager-nvm-install-guide/).
+
+## PostgreSQL
+
+### Installing PostgreSQL
+1. Update your package index:
+```
+sudo apt update
+```
+2. Install PostgreSQL:
+```
+sudo apt install postgresql postgresql-contrib
+```
+3. Start the PostgreSQL service:
+```
+sudo service postgresql start
+```
+4. Optionally, secure PostgreSQL by setting a password for the `postgres` user:
+```
+sudo -u postgres psql -c “ALTER USER postgres PASSWORD ‘newpassword’;”
+```
+
+For a step-by-step guide, visit the [PostgreSQL Installation Documentation](https://www.postgresql.org/docs/current/tutorial-install.html).
+
+### Cloning Repo
 - Clone the repository to your local machine:
-```Bash
+```
 git clone https://github.com/your-username/Sons-of-Thunder.git
 ```
-    ![Clone Repo](image.png)
 
+## Backend Setup
 
-### Installation
+Setting up the backend is just as straightforward as the frontend. Here's what you need to do:
 
-- **Frontend Setup:**
-Navigate to the `frontend` directory and run the following command to install all dependencies:
-```Bash
+1. Open your terminal or command prompt.
+2. Change the directory to the `backend` folder of your project:
+```
+cd path/to/backend
+```
+3. Install all the required dependencies with npm:
+```
 npm install
 ```
+This command will install all the dependencies listed in the `package.json` file.
 
-- **Backend Setup:**
-- If you're on Windows, install **WSL (Ubuntu)** to enable running Ubuntu from the command line.
-- With Ubuntu set up, install **PostgreSQL** using the command line:
-  ```
-  sudo apt-get install postgresql
-  ```
-- Move to the `backend` directory and install the necessary packages:
-  ```
-  npm install
-  ```
+4. Before starting the backend server, ensure that PostgreSQL is running:
+```
+sudo service postgresql start
+```
+You might be prompted for your password.
 
-## Usage
+5. Now, start the backend server using nodemon. The `-L` flag ensures that nodemon will poll for changes:
+```
+nodemon server.js -L
+```
 
-To get the application up and running, follow these steps:
+After these steps, your backend server should be up and running on port `http://localhost:3001`, listening for requests from the frontend.
 
-1. Start the PostgreSQL service (you might need your password):
+## Frontend Setup
 
+To get the frontend up and running, follow these simple steps:
 
-## Usage
+1. Open your terminal or command prompt.
+2. Change the directory to the `frontend` folder of the project:
+```
+cd path/to/frontend
+```
+3. Install all the required dependencies with npm:
+```
+npm install
+```
+This command fetches all the necessary packages defined in the `package.json` file and installs them locally.
 
-Before running the server and client you will need to run postgresql for your db. 
-Enter: sudo service postgresql start 
+4. Once the installation is complete, you can start the frontend application by running:
+```
+npm start
+```
 
-Note: You will most likely need a password.
+The application should now be accessible in your web browser at `http://localhost:3000`.
 
-In the backend directory within ubuntu enter command nodemon server.js to run the server locally.
+## Technologies
+The Sons-of-Thunder application is engineered with a robust stack to ensure a seamless and dynamic user experience:
 
-In the frontend directory enter command npm start to run the client locally.
+- **Frontend Development**: Crafted with React, a declarative and efficient JavaScript library for building user interfaces. React's component-based architecture facilitates the development of interactive UIs, making it an ideal choice for our application's frontend.
 
-## Built With
-
-We used React for the frontend and Express for the backend of the application.
+- **Backend Development**: Powered by Express, a fast, unopinionated, minimalist web framework for Node.js. Express provides a thin layer of fundamental web application features, enabling us to create a powerful API for our application's backend.
 
 
 ## Acknowledgments
 
-I want to acknowledge and thank Christian Feier, a friend and mentor, who has provided support and technical advice as I have worked on this project.
+Heartfelt gratitude goes out to Christian Feier, whose mentorship and unwavering support have been pivotal throughout the development of this project. His technical expertise and valuable insights have not only shaped this application but also enriched my personal growth and understanding. A sincere thank you to a remarkable friend and mentor.
