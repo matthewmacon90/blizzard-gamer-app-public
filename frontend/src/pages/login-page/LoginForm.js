@@ -5,6 +5,7 @@ const LoginForm = ({error, login, setError}) => {
         username: '',
         password: '',
     };
+
     const [formState, setFormState] = useState(initalState);
 
     const handleChange = (e) => {
@@ -20,9 +21,8 @@ const LoginForm = ({error, login, setError}) => {
     };
 
     return (
-        <div>
-            <h1>Login</h1>
-            <form onSubmit={handleSubmit}>
+        <div className="LoginForm-Container">
+            <form className="LoginForm" onSubmit={handleSubmit}>
                 <label htmlFor={'username'}>Username</label>
                 <input id={'username'} placeholder={'username'} type={'text'} name="username" value={formState.username} onChange={handleChange}/>
 
@@ -31,7 +31,7 @@ const LoginForm = ({error, login, setError}) => {
 
                 <button type={'submit'}>Login</button>
             </form>
-            {error && <p>{error}</p>}
+            {error && <p className="LoginFormError-Message">{error}</p>}
         </div>
     );
 };

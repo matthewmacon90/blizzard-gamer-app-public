@@ -11,9 +11,6 @@ passport.use(new BnetStrategy({
     scope: ['wow.profile', 'openid', 'email']
 }, 
     function(accessToken, refreshToken, profile, done) {
-        //In need to grab data from the profile object. 
-        //In process of checking for user in db and creating user if not found or updating if a user exists.
-        // console.log('PROFILE: ', profile);
         profile.refreshToken = refreshToken;
         profile.accessToken = accessToken;
         return done(null, profile);

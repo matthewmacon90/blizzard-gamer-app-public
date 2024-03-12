@@ -1,0 +1,39 @@
+.CurrentProfileInformation-Container {
+    background-color: white;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+  
+.CurrentProfile-List {
+    list-style: none;
+    padding: 0;
+}
+  
+.CurrentProfile-List li {
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+    color: #333;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #555;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #666;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+.CurrentProfileWoW-Container{
+    width: 100%;
+}
