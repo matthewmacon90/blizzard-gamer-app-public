@@ -1,0 +1,52 @@
+.Mounts-Container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    padding: 10px;
+}
+
+.MountsList-Container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+    box-shadow: 0 0 5px 0 #000;
+}
+
+.MountsList-Card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+    box-shadow: 0 0 5px 0 #000;
+    color: black;
+    font-size: 1rem;
+    height: auto;
+    width: 220px
+}
+
+.MountsList-Card:hover {
+    background-color: #e0e0e0;
+    box-shadow: 0 0 5px 0 #000;
+    transform: translateY(-5px); 
+}
+
+.mount-image {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    margin: 10px;
+    padding: 10px;
+}

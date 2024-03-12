@@ -1,6 +1,6 @@
 const logout = (setCurrentUser) => {
     setCurrentUser(null);
-    localStorage.clear();
+    sessionStorage.clear();
 };
 
 export default logout;

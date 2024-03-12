@@ -1,0 +1,17 @@
+.HomePage-Heading{
+    display: flex;
+    justify-content: center;
+    font-size: 2.5rem;
+}
+
+.ContentHomePage-Container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 30px;
+}
+
+.ContentHomePage-Container img {
+    height: 800px;
+    width: 100%;
+}

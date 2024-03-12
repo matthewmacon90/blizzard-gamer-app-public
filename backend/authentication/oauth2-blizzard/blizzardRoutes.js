@@ -1,25 +1,23 @@
 const express = require('express');
 const passport = require('passport');
 const router = express.Router();
-const crypto = require('crypto');
-
-//Would I add link a battlenet account to a user account here?
+const User = require('../../models/usersModel.js');
 
 router.get('/', passport.authenticate('bnet'));
 
 router.get('/callback', passport.authenticate('bnet', { failureRedirect: '/' }),
-    function(req, res){
-        //Look at how to link battlenet account to user account here.
-        // const sessionId = crypto.randomBytes(16).toString('hex');
-        // console.log('REQ USER CALL BACK: ', req.user);
-        // req.session.user = req.user;
-        // res.cookie('sessionId', sessionId, { httpOnly: false, secure: true });
-        res.redirect('http://localhost:3000/');
+    async function(req, res){
+        try{
+            const { id, battletag, accessToken } = req.user;
+            const result = await User.getUserByBattleTag(battletag);
+
+            if(result) {
+                await User.linkBattleTag(id, battletag, accessToken);
+            }
+            res.redirect('http://localhost:3000/my-profile');
+        } catch (err) {
+            console.error(err);
+        }
     });
-
-router.get('/wow-user', (req, res, next) => {
-
-});
-
 
 module.exports = router;
