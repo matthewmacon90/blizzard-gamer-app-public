@@ -71,6 +71,7 @@ const gatherData = async (headers, realmSlug, guildName) => {
         const formattedDungeonData = cleanDungeonData(mythicRealmBoard.data.current_leaderboards);
 
         const dungeonLeaderBoard = await gatherDungeonLeaderBoard(connectedRealmId, formattedDungeonData, currentPeriod, headers);
+        //Add dungeonLeaderBoard to the database.
         const leadingMembers = gatherMembers(dungeonLeaderBoard);
         // console.log('formattedDungeonData: ', formattedDungeonData);
         // console.log('FORMATTED REALM DATA: ', formattedRealmData);
@@ -116,31 +117,40 @@ const cleanDungeonData = (data) => {
 const gatherDungeonLeaderBoard = async (connectedRealmId, dungeonData, period, headers) => {
     const dungeonIds = dungeonData.map(dungeon => dungeon.id);
     const result = [];
+    const leadingGroups = [];
 
     for(let dungeonId of dungeonIds) {
         const dungeonLeaderBoard = await axios.get(`https://us.api.blizzard.com/data/wow/connected-realm/${connectedRealmId}/mythic-leaderboard/${dungeonId}/period/${period}?namespace=dynamic-us`, headers);
         result.push({data:dungeonLeaderBoard.data});
     }
-    console.log('RESULT: ', result);
-    return result;
+
+    for(let row of result) {
+        leadingGroups.push(row.data.leading_groups);
+    };
+
+    console.log('leadingGroups: ', leadingGroups);
+    // console.log('RESULT: ', result[0].data);
+    return leadingGroups;
 };
 
 //PART 2: GUILD ROUTES NOT IN USE AT THE MOMENT
 const gatherMembers = (data) => {
+    // console.log('data: ', data[0])
     const groups = [];
     const members = [];
 
-    for(let row of data) {
-        // console.log('row: ', row)
-        groups.push(row.data.leading_groups);
-    }
- 
-    console.log('groups: ', groups[0].data.members);
+    // for(let i = 0; i < data.length; i++) {
+    //     for(let j = 0; j < data[i].length; j++) {
+    //         console.log('data[i][j]: ', data[i][j].members[j].profile);
+    //     }
+    // }
+    // console.log('members: ', members);
+    // console.log('groups: ', groups[0].data.members);
 
-    for(let row of groups) {
+    // for(let row of groups) {
         // console.log('row: ', row)
         // members.push(row.data.members);
-    }
+    // }
     // console.log('members: ', members);
 };
 
@@ -170,6 +180,24 @@ const updateMountData = async (data, headers) => {
     }
 };
 
+const gatherRealmData = (data) => {
+    const realmData = [];
+    let i = 0;
+
+    while(i < data.results.length) {
+        for(let realm of data.results[i].data.realms) {
+            realmData.push({
+                realmID: realm.id,
+                realmName: realm.name.en_US,
+                connectedRealmID: data.results[i].data.id,
+                realmSlug: realm.slug,
+            });
+        }
+        i++;
+    }
+    return realmData;
+}
+
 
 
 module.exports = {
@@ -178,5 +206,6 @@ module.exports = {
     compareDates,
     gatherData,
     cleanMountData,
-    updateMountData
+    updateMountData,
+    gatherRealmData
 };

@@ -180,6 +180,19 @@ class Api {
             throw err;
         }
     }
+
+            //***************************Dungeons Section of the API***************************
+
+    static async getDungeons() {
+        try {
+            const token = this.token;
+            const headers = { 'authorization': `Bearer ${token}` };
+            const result = await this.request(`dungeons`, {}, 'get', headers);
+            return result;
+        } catch (err) {
+            throw err;
+        }
+    }
 }
 
 export default Api;
