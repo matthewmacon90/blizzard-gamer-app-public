@@ -1,8 +1,9 @@
 const axios = require('axios');
-const { gatherRealmData } = require('./blizzard-helpers/wowhelpers.js');
+const { cleanRealmData, cleanDungeonLeaderBoard, cleanDungeonData } = require('./blizzard-helpers/wowhelpers.js');
 const WoWProfileData = require('../models/wowModel.js');
 const WoWApi = require('./wowApi.js');
 const WoWDungeonModel = require('../models/dungeonModel.js');
+const WoWRealmModel = require('../models/realmModel.js');
 
 //PART 2: GUILD ROUTES NOT IN USE AT THE MOMENT
 
@@ -16,10 +17,41 @@ class WoWDungeonApi extends WoWApi {
 
     async getDungeons() {
         try {
+            
+            
             const connectedRealms = await axios.get('https://us.api.blizzard.com/data/wow/search/connected-realm?namespace=dynamic-us', this.authorizationHeaders);
-            const realmData = gatherRealmData(connectedRealms.data);
-            console.log('REALM DATA: ', realmData);
+            const realmData = cleanRealmData(connectedRealms.data);
 
+            const currentPeriod = await axios.get(`https://us.api.blizzard.com/data/wow/mythic-keystone/period/index?namespace=dynamic-us`, this.authorizationHeaders);
+            console.log('PERIOD: ', currentPeriod.data.current_period.id);
+
+            const dungeonIndex = await axios.get(`https://us.api.blizzard.com/data/wow/mythic-keystone/dungeon/index?namespace=dynamic-us`, this.authorizationHeaders);
+            const dungeonIndexData = cleanDungeonData(dungeonIndex.data.dungeons);
+            console.log('DUNGEON INDEX: ',dungeonIndexData);
+
+            for (let dungeon of dungeonIndexData) {
+                const {id, name} = dungeon;
+                await WoWDungeonModel.insertDungeon(id, name, currentPeriod.data.current_period.id);
+            }
+
+        
+            // for (let realm of realmData) {
+            //     const {connectedRealmID} = realm;
+            //     const dungeonLeaderBoard = await axios.get(`https://us.api.blizzard.com/data/wow/connected-realm/${connectedRealmID}/mythic-leaderboard/index?namespace=dynamic-us`, this.authorizationHeaders);
+            //     const dungeonLeaderBoardData = cleanDungeonLeaderBoard(dungeonLeaderBoard.data.current_leaderboards);
+            //     console.log('DUNGEON LEADERBOARD: ', dungeonLeaderBoardData);
+            // }
+            // console.log('REALM DATA: ', realmData);
+
+
+            for(let realm of realmData) {
+                console.log('REALM: ', realm);
+                const { realmID, realmName, connectedRealmID, realmSlug } = realm;
+                await WoWRealmModel.insertRealms(realmID, realmName, connectedRealmID, realmSlug);
+            }
+
+            // for ()
+            
             // const periodIndex = await axios.get('https://us.api.blizzard.com/data/wow/mythic-keystone/period/index?namespace=dynamic-us', this.authorizationHeaders);
             // console.log('PERIOD INDEX: ', periodIndex.data.current_period.id);
 

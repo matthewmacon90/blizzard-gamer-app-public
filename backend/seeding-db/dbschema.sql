@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS "realms" (
 CREATE TABLE IF NOT EXISTS "dungeons" (
     dungeon_id INT PRIMARY KEY,
     dungeon_name VARCHAR(255) NOT NULL,
+    current_period INT,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 

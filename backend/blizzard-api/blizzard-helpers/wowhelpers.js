@@ -90,17 +90,6 @@ const formatName = (name) => {
     return name.toLowerCase().replaceAll(' ', '-');
 };
 
-const cleanRealmData = (data) => {
-    const {id, name, connected_realm, slug} = data;
-    let connectedRealmID = connected_realm.href.slice(53);
-    connectedRealmID = connectedRealmID.split('?')[0];
-    return {
-        id,
-        name: name.en_US,
-        connectedRealmId: connectedRealmID,
-        slug
-    };
-};
 
 const cleanDungeonData = (data) => {
     return (
@@ -180,7 +169,7 @@ const updateMountData = async (data, headers) => {
     }
 };
 
-const gatherRealmData = (data) => {
+const cleanRealmData = (data) => {
     const realmData = [];
     let i = 0;
 
@@ -198,6 +187,10 @@ const gatherRealmData = (data) => {
     return realmData;
 }
 
+const cleanDungeonLeaderBoard = (data) => {
+    console.log('DATA: ', data);
+};
+
 
 
 module.exports = {
@@ -207,5 +200,7 @@ module.exports = {
     gatherData,
     cleanMountData,
     updateMountData,
-    gatherRealmData
+    cleanRealmData,
+    cleanDungeonLeaderBoard,
+    cleanDungeonData
 };
