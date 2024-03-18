@@ -5,8 +5,6 @@ const WoWApi = require('./wowApi.js');
 const WoWDungeonModel = require('../models/dungeonModel.js');
 const WoWRealmModel = require('../models/realmModel.js');
 
-//PART 2: GUILD ROUTES NOT IN USE AT THE MOMENT
-
 class WoWDungeonApi extends WoWApi {
     constructor(token = '', user_id = null) {
         super(token, user_id);
@@ -19,36 +17,49 @@ class WoWDungeonApi extends WoWApi {
         try {
             
             
-            const connectedRealms = await axios.get('https://us.api.blizzard.com/data/wow/search/connected-realm?namespace=dynamic-us', this.authorizationHeaders);
-            const realmData = cleanRealmData(connectedRealms.data);
+            // const connectedRealms = await axios.get('https://us.api.blizzard.com/data/wow/search/connected-realm?namespace=dynamic-us', this.authorizationHeaders);
+            
+            // const items = await axios.get('https://us.api.blizzard.com/data/wow/search/media?namespace=static-us', this.authorizationHeaders);
+            // console.log('ITEMS: ', items.data.results);
+            // const realmData = cleanRealmData(connectedRealms.data);
 
-            const currentPeriod = await axios.get(`https://us.api.blizzard.com/data/wow/mythic-keystone/period/index?namespace=dynamic-us`, this.authorizationHeaders);
-            console.log('PERIOD: ', currentPeriod.data.current_period.id);
+            // const currentPeriod = await axios.get(`https://us.api.blizzard.com/data/wow/mythic-keystone/period/index?namespace=dynamic-us`, this.authorizationHeaders);
+            // console.log('PERIOD: ', currentPeriod.data.current_period.id);
 
-            const dungeonIndex = await axios.get(`https://us.api.blizzard.com/data/wow/mythic-keystone/dungeon/index?namespace=dynamic-us`, this.authorizationHeaders);
-            const dungeonIndexData = cleanDungeonData(dungeonIndex.data.dungeons);
-            console.log('DUNGEON INDEX: ',dungeonIndexData);
+            // const dungeonIndex = await axios.get(`https://us.api.blizzard.com/data/wow/mythic-keystone/dungeon/index?namespace=dynamic-us`, this.authorizationHeaders);
+            const dungeonData = await axios.get(`https://us.api.blizzard.com/data/wow/journal-instance/65?namespace=static-10.2.5_52554-us`, this.authorizationHeaders);
+            console.log('DUNGEON DATA: ', dungeonData.data);
 
-            for (let dungeon of dungeonIndexData) {
-                const {id, name} = dungeon;
-                await WoWDungeonModel.insertDungeon(id, name, currentPeriod.data.current_period.id);
-            }
+            // const dungeonIndexData = cleanDungeonData(dungeonIndex.data.dungeons);
+            // console.log('DUNGEON INDEX: ',dungeonIndexData);
+
+            // for (let dungeon of dungeonIndexData) {
+            //     const {id} = dungeon;
+            //     const dungeonData = await axios.get(`https://us.api.blizzard.com/data/wow/mythic-keystone/dungeon/${id}?namespace=dynamic-us`, this.authorizationHeaders);
+            //     console.log('DUNGEON: ', dungeonData.data);
+            // }
+
+            // for (let dungeon of dungeonIndexData) {
+            //     const {id, name} = dungeon;
+            //     await WoWDungeonModel.insertDungeon(id, name, currentPeriod.data.current_period.id);
+            // }
 
         
             // for (let realm of realmData) {
             //     const {connectedRealmID} = realm;
             //     const dungeonLeaderBoard = await axios.get(`https://us.api.blizzard.com/data/wow/connected-realm/${connectedRealmID}/mythic-leaderboard/index?namespace=dynamic-us`, this.authorizationHeaders);
             //     const dungeonLeaderBoardData = cleanDungeonLeaderBoard(dungeonLeaderBoard.data.current_leaderboards);
-            //     console.log('DUNGEON LEADERBOARD: ', dungeonLeaderBoardData);
+                
             // }
+            // console.log('DUNGEON LEADERBOARD: ', dungeonLeaderBoardData);
             // console.log('REALM DATA: ', realmData);
 
 
-            for(let realm of realmData) {
-                console.log('REALM: ', realm);
-                const { realmID, realmName, connectedRealmID, realmSlug } = realm;
-                await WoWRealmModel.insertRealms(realmID, realmName, connectedRealmID, realmSlug);
-            }
+            // for(let realm of realmData) {
+            //     console.log('REALM: ', realm);
+            //     const { realmID, realmName, connectedRealmID, realmSlug } = realm;
+            //     await WoWRealmModel.insertRealms(realmID, realmName, connectedRealmID, realmSlug);
+            // }
 
             // for ()
             

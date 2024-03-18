@@ -4,7 +4,10 @@ const {ExpressError} = require('../error-handling/ExpressError.js');
 class WoWRealmModel {
     static async getRealms() {
         try {
-            const result = await db.query(`SELECT * FROM realms`);
+            const result = await db.query(`
+                SELECT * 
+                FROM realms
+                ORDER BY realm_name`);
             return result.rows;
         } catch (err) {
             throw new ExpressError('Error getting dungeons', 500);

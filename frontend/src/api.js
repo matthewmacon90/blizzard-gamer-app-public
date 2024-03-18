@@ -193,6 +193,17 @@ class Api {
             throw err;
         }
     }
+                //***************************Realms Section of the API***************************
+    static async getRealms() {
+        try {
+            const token = this.token;
+            const headers = { 'authorization': `Bearer ${token}` };
+            const result = await this.request(`realms`, {}, 'get', headers);
+            return result;
+        } catch (err) {
+            throw err;
+        }
+    }
 }
 
 export default Api;

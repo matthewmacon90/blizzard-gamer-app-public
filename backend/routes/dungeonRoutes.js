@@ -12,7 +12,7 @@ router.get('/', async (req, res, next) => {
 
         // const dungeons = await WoWDungeonModel.getDungeons();
 
-        if(dungeons.length > 0) return res.status(200).json(dungeons);
+        // if(dungeons.length > 0) return res.status(200).json(dungeons);
         // const realms = await WoWRealmModel.getRealms();
 
         // if(realms.length > 0) return res.status(200).json(realms);

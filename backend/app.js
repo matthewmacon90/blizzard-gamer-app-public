@@ -17,6 +17,7 @@ const wowProfileRoutes = require('./routes/wowProfileRoutes.js');
 const guildRoutes = require('./routes/guildRoutes.js');
 const mountsRoutes = require('./routes/mountsRoutes.js');
 const dungeonRoutes = require('./routes/dungeonRoutes.js');
+const realmRoutes = require('./routes/realmRoutes.js');
 
 
 const app = express();
@@ -50,6 +51,7 @@ app.use('/my-wow', wowProfileRoutes);
 app.use('/guilds', guildRoutes);
 app.use('/mounts', mountsRoutes);
 app.use('/dungeons', dungeonRoutes);
+app.use('/realms', realmRoutes);
 
 app.use((err, req, res, next) => {
     const message = err.message || 'Something went wrong';
