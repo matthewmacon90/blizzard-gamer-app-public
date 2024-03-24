@@ -14,7 +14,7 @@ class WoWRealmModel {
         }
     }
 
-    static async getRealmById() {
+    static async getRealmById(realm_id) {
         try {
             const result = await db.query(`SELECT * FROM realms WHERE realm_id = $1`, [realm_id]);
             return result.rows[0];

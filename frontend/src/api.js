@@ -193,6 +193,16 @@ class Api {
             throw err;
         }
     }
+    static async getDungeonByRealmId(realmId) {
+        try {
+            const token = this.token;
+            const headers = { 'authorization': `Bearer ${token}` };
+            const result = await this.request(`dungeons/${realmId}`, {}, 'get', headers);
+            return result;
+        } catch (err) {
+            throw err;
+        }
+    }
                 //***************************Realms Section of the API***************************
     static async getRealms() {
         try {

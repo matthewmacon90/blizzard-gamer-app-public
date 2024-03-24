@@ -26,4 +26,18 @@ router.get('/', async (req, res, next) => {
     }
 });
 
+router.get('/:realmId', async (req, res, next) => {
+    try {
+        const decodedToken = await decodeToken(req.headers.authorization.split(' ')[1]);
+        const realmData = await WoWRealmModel.getRealmById(req.params.realmId);
+
+        const wowDungeonApi = new WoWDungeonApi(decodedToken.btoken);
+        const dungeonLeaderBoard = await wowDungeonApi.getLeaderBoardIdx(realmData.connected_realm_id);
+        return res.status(200).json(dungeonLeaderBoard);
+    } catch (err) {
+        console.log('Dungeon Routes ERROR', err);
+        next(err);
+    }
+});
+
 module.exports = router;

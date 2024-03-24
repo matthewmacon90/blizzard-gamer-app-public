@@ -122,27 +122,6 @@ const gatherDungeonLeaderBoard = async (connectedRealmId, dungeonData, period, h
     return leadingGroups;
 };
 
-//PART 2: GUILD ROUTES NOT IN USE AT THE MOMENT
-const gatherMembers = (data) => {
-    // console.log('data: ', data[0])
-    const groups = [];
-    const members = [];
-
-    // for(let i = 0; i < data.length; i++) {
-    //     for(let j = 0; j < data[i].length; j++) {
-    //         console.log('data[i][j]: ', data[i][j].members[j].profile);
-    //     }
-    // }
-    // console.log('members: ', members);
-    // console.log('groups: ', groups[0].data.members);
-
-    // for(let row of groups) {
-        // console.log('row: ', row)
-        // members.push(row.data.members);
-    // }
-    // console.log('members: ', members);
-};
-
 const cleanMountData = (data) => {
     const mounts = data.map(mount => {
         return {
@@ -187,11 +166,55 @@ const cleanRealmData = (data) => {
     return realmData;
 }
 
-const cleanDungeonLeaderBoard = (data) => {
-    console.log('DATA: ', data);
+const cleanDungeonLeaderBoardIdx = (data, currentPeriod) => {
+    return data.map(dungeon => {
+        return {
+            dungeonId: dungeon.id,
+            dungeonName: dungeon.name.en_US,
+            periodId: currentPeriod,
+        }
+    });
 };
 
+const cleanKeyStoneData = (keystoneData) => {
+    return keystoneData.map(dungeon => {
+        return {
+            dungeonId: dungeon.dungeonId,
+            dungeonName: dungeon.dungeonName,
+            periodId: dungeon.periodId,
+            leadingGroups: dungeon.leaderboardData.leading_groups,
+            affixes: dungeon.leaderboardData.keystone_affixes
+        }
+    });
+};
 
+const cleanLeadingGroups = (dungeonData) => {
+    let i = 0;
+    const results = [];
+
+    while (i < dungeonData.length) {
+        for(let group of dungeonData[i].leadingGroups) {
+            // console.log('GROUP: ', group);
+            for(let member of dungeonData[i].leadingGroups[i].members) {
+                results.push({
+                    dungeonId: dungeonData[i].dungeonId,
+                    dungeonName: dungeonData[i].dungeonName,
+                    periodId: dungeonData[i].periodId,
+                    groupRanking: group.ranking,
+                    groupKeyStoneLevel: group.keystone_level,
+                    mythicRating: group.mythic_rating.rating,
+                    mythicRatingColor: group.mythic_rating.color,
+                    memberId: member.profile.id,
+                    memberName: member.profile.name,
+                    memberRealm: member.profile.realm.id,
+                    memberFaction: member.faction.type
+                });
+            }
+        }
+        i++;
+    }
+    return results;
+}
 
 module.exports = {
     getCurrentDate,
@@ -201,6 +224,8 @@ module.exports = {
     cleanMountData,
     updateMountData,
     cleanRealmData,
-    cleanDungeonLeaderBoard,
-    cleanDungeonData
+    cleanDungeonLeaderBoardIdx,
+    cleanDungeonData,
+    cleanKeyStoneData,
+    cleanLeadingGroups
 };
