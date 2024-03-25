@@ -4,8 +4,8 @@ const GroupRanking = ({groups}) => {
         <>
             {groups.map((group, idx) => (
                 idx < 5 &&
-                <>
-                    <table>
+                <div className="keystone-group-table">
+                    <table className="keystone-table">
                         <thead>
                             <tr>
                                 <th>Rank</th>
@@ -25,7 +25,7 @@ const GroupRanking = ({groups}) => {
                             ))}
                         </tbody>
                     </table>
-                </>
+                </div>
             ))}
         </>
     );
