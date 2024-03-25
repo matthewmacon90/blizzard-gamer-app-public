@@ -1,10 +1,9 @@
 const GroupRanking = ({groups}) => {
-    console.log('GROUPS: ', groups);
     return (
         <>
             {groups.map((group, idx) => (
                 idx < 5 &&
-                <div className="keystone-group-table">
+                <div key={idx} className="keystone-group-table">
                     <table className="keystone-table">
                         <thead>
                             <tr>

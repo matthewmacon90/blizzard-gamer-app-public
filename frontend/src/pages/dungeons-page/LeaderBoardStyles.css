@@ -1,3 +1,61 @@
+.Dungeons-Container {
+    margin-top: 20px;
+}
+
+.SelectedRealms-Container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.SelectedRealms-label {
+    margin-bottom: 5px;
+    font-size: 1.4rem;
+    text-align: center;
+}
+
+.SelectedRealms-selectForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 10px;
+    width: 250px;
+}
+
+.SelectedRealms-select-input {
+    padding: 10px;
+    border: 2px solid #0056b3;
+    border-radius: 5px;
+    font-size: 1rem;
+    outline: none;
+    transition: background-color 0.3s ease;
+}
+
+.SelectedRealms-selectForm select:hover {
+    background-color: #e2e2e2;
+}
+
+.SelectedRealms-selectForm select:focus {
+    background-color: #cacaca;
+    border: 2px solid #0056b3;
+}
+
+.SelectedRealms-btn {
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.SelectedRealms-btn:hover {
+    background-color: #0056b3;
+    color: white;
+}
+
+.SelectedRealms-heading {
+    display: flex;
+    justify-content: center;
+}
+
 .LeaderBoardCard-container {
     display: flex;
     flex-wrap: wrap;

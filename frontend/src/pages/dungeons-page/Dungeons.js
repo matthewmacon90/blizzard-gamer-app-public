@@ -10,10 +10,8 @@ const Dungeons = () => {
 
     async function fetchDungeonLeaderBoard(realmId) {
         try {
-            console.log('REALM ID FETCH: ', realmId);
             const result = await Api.getDungeonByRealmId(realmId);
             setDungeons(result);
-            console.log('RESULT FRONT END DUNGEONS: ', result);
         } catch (err) {
             console.log('ERROR FETCH DUNGEONS: ', err);
         }
@@ -22,7 +20,6 @@ const Dungeons = () => {
 
     return (
         <div className="Dungeons-Container">
-            <h1>Dungeons</h1>
             <SelectedRealm fetchDungeonLeaderBoard={fetchDungeonLeaderBoard} />
             <LeaderBoard dungeons={dungeons} />
         </div>
