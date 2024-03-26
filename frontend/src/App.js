@@ -17,7 +17,6 @@ function App() {
         const result = await Api.verifyToken(token);
         if(result.message === 'Token verified') return setCurrentUser(token);
       } catch (err) {
-        console.error('ERROR CHECKING TOKEN: ', err);
       }
     }
     checkToken();

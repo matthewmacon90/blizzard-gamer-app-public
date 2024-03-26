@@ -19,7 +19,7 @@ router.get('/', async (req, res, next) => {
 
         return res.status(200).json(result);
     } catch (err) {
-        console.error(err);
+        console.log(err);
         next(err);
     }
 });
@@ -42,7 +42,7 @@ router.get('/:mountId', async (req, res, next) => {
 
         return res.status(200).json(result);
     } catch (err) {
-        console.error(err);
+        console.log(err);
         next(err);
     }
 });

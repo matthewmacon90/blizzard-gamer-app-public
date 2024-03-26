@@ -16,7 +16,7 @@ router.get('/callback', passport.authenticate('bnet', { failureRedirect: '/' }),
             }
             res.redirect('http://localhost:3000/my-profile');
         } catch (err) {
-            console.error(err);
+            console.log(err);
         }
     });
 

@@ -15,7 +15,7 @@ const signToken = async (payload) => {
 
         return encryptedToken;
     } catch (err) {
-        console.error(err);
+        console.log(err);
     }
 };
 
@@ -26,7 +26,7 @@ const encryptToken = async (signedToken) => {
             .encrypt(Buffer.from(ENCRYPT_JWT_SECRET, 'base64'));
         return token;
     } catch (err) {
-        console.error(err);
+        console.log(err);
     }
 };
 
@@ -37,7 +37,7 @@ const decryptEncryptedToken = async (encryptedToken) => {
 
         return token.payload.signedToken;
     } catch (error) {
-        console.error(error);
+        console.log(error);
     }
 };
 

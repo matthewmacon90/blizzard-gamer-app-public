@@ -20,7 +20,7 @@ const WoWCharacters = ({isExpired, user, setUser }) => {
         <div className="wow-character-container">
             <h2 className="WoWCharacter-Heading">WoW Characters</h2>
             <div className="WoWCharacterBtn-Container">
-                {!btoken || isExpired ? <BattleNetLink isExpired={isExpired} /> : <button onClick={fetchData}>Sync WoW Profile</button>}
+                {!isExpired || !btoken ? <BattleNetLink isExpired={isExpired} /> : <button onClick={fetchData}>Sync WoW Profile</button>}
             </div>
             <div className="WoWCharacterCard-Container">
                 {characters && characters.map((character) =>
