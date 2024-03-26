@@ -1,10 +1,10 @@
 const db = require('../db/db.js');
 const bcrypt = require('bcrypt');
-const {ExpressError} = require('../error-handling/ExpressError.js');
+const {ExpressError, NotFoundError} = require('../error-handling/ExpressError.js');
 const {signToken} = require('../helpers/jwt-token/jwt.js');
 
 class User {
-    static async registerUser (username, hashedPassword, email, firstName, lastName, battletag) {
+    static async registerUser(username, hashedPassword, email, firstName, lastName, battletag) {
         try {
             const result = await db.query(
                 `INSERT INTO users (username, password, email, first_name, last_name, battle_tag) 
@@ -13,12 +13,12 @@ class User {
                  [username, hashedPassword, email, firstName, lastName, battletag]);
             return result.rows[0]
         } catch (err) {
-            console.error(err);
+            console.log(err);
             throw err.code === '23505' ? new ExpressError('Username or email already exists', 409) : new ExpressError('Internal Server Error', 500);
         }
     };
 
-    static async getAuthenticatedUserInfo (id) {
+    static async getAuthenticatedUserInfo(id) {
         try {
             const result = await db.query(`
                 SELECT username, email, first_name AS firstName, last_name AS lastName, battle_tag AS battletag, battlenet_token AS btoken, btoken_expires AS btokenexpires
@@ -26,41 +26,44 @@ class User {
                 WHERE user_id = $1`, [id]);
             return result.rows[0];
         } catch (err) {
-            console.error('ERROR GETTING AUTHENTICATED USER', err);
+            console.log('ERROR GETTING AUTHENTICATED USER', err);
             throw new ExpressError('Internal Server Error', 500);
         }
     }
 
-    static async getAllUsers () {
+    static async getAllUsers() {
         try {
             const result = await db.query('SELECT username, first_name AS firstName, last_name AS lastName FROM users');
             return result.rows;
         } catch (err) {
-            console.error(err);
+            console.log(err);
+            throw new ExpressError('Internal Server Error', 500);
         }
     }
 
-    static async getUserById (id) {
+    static async getUserById(id) {
         try {
             const result = await db.query(`SELECT user_id, username, battle_tag AS battletag, battlenet_token AS btoken
             FROM users 
             WHERE user_id = $1`, [id]);
             return result.rows[0] ? result.rows[0] : new Error('No user found with that id');
         } catch (err) {
-            console.error(err);
+            console.log(err);
+            throw new NotFoundError('User Not Found', 404);
         }
     }
 
-    static async getUserByBattleTag (battletag) {
+    static async getUserByBattleTag(battletag) {
         try {
             const result = await db.query('SELECT battle_tag AS battletag FROM users WHERE battle_tag = $1', [battletag]);
             return result.rows[0];
         } catch (err) {
-            console.error(err);
+            console.log(err);
+            throw new NotFoundError('Battle tag Not Found', 404);
         }
     }
 
-    static async getUserByUsername (username) {
+    static async getUserByUsername(username) {
         try {
             const result = await db.query(`
                 SELECT user_id, username, password, battlenet_token AS btoken, battle_tag AS battletag 
@@ -72,25 +75,27 @@ class User {
         }
    }
 
-   static getUserByEmail (email) {
+   static getUserByEmail(email) {
     try {
         const result = db.query('SELECT email FROM users WHERE email = $1', [email]);
         return result.rows[0]
     } catch (err) {
-        console.error(err);
+        console.log(err);
+        throw new NotFoundError('Email Not Found', 404);
     }
     }
 
-    static async updateLoginTime (username) {
+    static async updateLoginTime(username) {
         try {
             const result = await db.query(`UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE username = $1 RETURNING last_login`, [username]);
             return result.rows[0];
         } catch (err) {
-            console.error(err);
+            console.log(err);
+            throw new ExpressError('Internal Server Error', 500);
         }
     }
 
-    static async updateUser (id, username, email, firstName, lastName, battletag) {
+    static async updateUser(id, username, email, firstName, lastName, battletag) {
         try {
             const result = await db.query(`
                 UPDATE users 
@@ -104,19 +109,19 @@ class User {
         }
     }
 
-    static async deleteUser (id) {
+    static async deleteUser(id) {
         try {
             await db.query(
                 `DELETE FROM users
                  WHERE user_id = $1`, 
                 [id]);
         } catch (err) {
-            console.error(err);
-            throw new ExpressError('Internal Server Error', 500);
+            console.log(err);
+            throw new NotFoundError('User Not Found', 404);
         }
     };
 
-    static async linkBattleTag (battlenetID, battletag, accessToken) {
+    static async linkBattleTag(battlenetID, battletag, accessToken) {
         try {
             const result = await db.query(`
                 UPDATE users
@@ -126,11 +131,12 @@ class User {
                 `, [battlenetID, accessToken, battletag]);
             return result.rows[0];
         } catch (err) {
-            console.error(err);
+            console.log(err);
+            throw new NotFoundError('User Battle Tag Not Found', 404);
         }
     }
 
-    static async refreshToken (id) {
+    static async refreshToken(id) {
         try {
             const result = await User.getUserById(id);
             const payload = {
@@ -142,11 +148,12 @@ class User {
             const token = await signToken(payload);
             return token;
         } catch (err) {
-            console.error(err);
+            console.log(err);
+            throw new NotFoundError('User Not Found', 404);
         }
     };
 
-    static async authenticateUserJWT (username, password) {
+    static async authenticateUserJWT(username, password) {
         try {
             const userFound = await User.getUserByUsername(username);
             const passwordMatch = await bcrypt.compare(password, userFound.password);

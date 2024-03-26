@@ -180,6 +180,40 @@ class Api {
             throw err;
         }
     }
+
+            //***************************Dungeons Section of the API***************************
+
+    static async getDungeons() {
+        try {
+            const token = this.token;
+            const headers = { 'authorization': `Bearer ${token}` };
+            const result = await this.request(`dungeons`, {}, 'get', headers);
+            return result;
+        } catch (err) {
+            throw err;
+        }
+    }
+    static async getDungeonByRealmId(realmId) {
+        try {
+            const token = this.token;
+            const headers = { 'authorization': `Bearer ${token}` };
+            const result = await this.request(`dungeons/${realmId}`, {}, 'get', headers);
+            return result;
+        } catch (err) {
+            throw err;
+        }
+    }
+                //***************************Realms Section of the API***************************
+    static async getRealms() {
+        try {
+            const token = this.token;
+            const headers = { 'authorization': `Bearer ${token}` };
+            const result = await this.request(`realms`, {}, 'get', headers);
+            return result;
+        } catch (err) {
+            throw err;
+        }
+    }
 }
 
 export default Api;

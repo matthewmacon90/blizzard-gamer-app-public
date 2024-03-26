@@ -23,7 +23,7 @@ const UserHome = () => {
                 auth.setCurrentUser(refeshData);
                 const wowProfile = await Api.getWoWProfile();
 
-                if(wowProfile[0] === 'Request failed with status code 404') {
+                if (wowProfile[0] === 'Request failed with status code 404') {
                     setMessage('No characters found.');
                     return setUser(result);
                 }

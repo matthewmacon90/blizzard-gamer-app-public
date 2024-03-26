@@ -30,8 +30,18 @@ CREATE TABLE IF NOT EXISTS "realms" (
 CREATE TABLE IF NOT EXISTS "dungeons" (
     dungeon_id INT PRIMARY KEY,
     dungeon_name VARCHAR(255) NOT NULL,
+    current_period INT,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS "keystone_leaderboard" (
+    dungeon_id INT REFERENCES dungeons(dungeon_id) ON DELETE CASCADE,
+    dungeon_name VARCHAR(255) REFERENCES dungeons(dungeon_name) ON DELETE CASCADE,
+    current_period INT REFERENCES dungeons(current_period) ON DELETE CASCADE,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+
 
 CREATE TABLE IF NOT EXISTS "guilds" (
     guild_id INT PRIMARY KEY,

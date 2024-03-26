@@ -4,15 +4,15 @@ const bcrypt = require('bcrypt');
 const {registerUser} = require('../../models/usersModel.js');
 const jsonValidator = require('jsonschema');
 const userSchema = require('../../json-schema/userSchema.json');
-const {BadRequestError} = require('../../error-handling/ExpressError.js');
+const {ExpressError} = require('../../error-handling/ExpressError.js');
 
 router.post('/', async (req, res, next) => {
     try {
         const isValid = jsonValidator.validate(req.body, userSchema);
 
         if (!isValid.valid) {
-            const errs = isValid.errors.map(e => e.stack);
-            throw new BadRequestError(errs);
+            const errs = isValid.errors.map(e => e.stack); //Used for dev and stage should not be on production.
+            throw new ExpressError("Internal Server Error", 500);
         }
 
         const {username, password, email, firstName, lastName, battletag} = req.body;
@@ -21,7 +21,7 @@ router.post('/', async (req, res, next) => {
 
         return res.status(200).json(result);
     } catch (err) {
-        console.error(err);
+        console.log(err);
         next(err);
     }
 });

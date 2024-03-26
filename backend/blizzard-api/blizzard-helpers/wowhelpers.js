@@ -53,53 +53,6 @@ const compareDates = (currentDate, dbDate=null) => {
     return diffInDays === 5;
 };
 
-//PART 2: GUILD ROUTES NOT IN USE AT THE MOMENT
-
-const gatherData = async (headers, realmSlug, guildName) => {
-    try {
-        //PART 2 For Capstone Project
-
-        // const formattedName = formatName(guildName);
-        // console.log('FORMATTED NAME: ', formattedName);
-        const realmData = await axios.get(`https://us.api.blizzard.com/data/wow/realm/${realmSlug}?namespace=dynamic-us`, headers);
-        const periodIndex = await axios.get('https://us.api.blizzard.com/data/wow/mythic-keystone/period/index?namespace=dynamic-us', headers);
-        const currentPeriod = periodIndex.data.current_period.id;
-        // console.log('REALM DATA: ', realmData.data);
-        const formattedRealmData = cleanRealmData(realmData.data);
-        const {connectedRealmId} = formattedRealmData;
-        const mythicRealmBoard = await axios.get(`https://us.api.blizzard.com/data/wow/connected-realm/${connectedRealmId}/mythic-leaderboard/index?namespace=dynamic-us`, headers);
-        const formattedDungeonData = cleanDungeonData(mythicRealmBoard.data.current_leaderboards);
-
-        const dungeonLeaderBoard = await gatherDungeonLeaderBoard(connectedRealmId, formattedDungeonData, currentPeriod, headers);
-        const leadingMembers = gatherMembers(dungeonLeaderBoard);
-        // console.log('formattedDungeonData: ', formattedDungeonData);
-        // console.log('FORMATTED REALM DATA: ', formattedRealmData);
-        // console.log('dungeonLeaderBoard: ', dungeonLeaderBoard);
-        console.log('leadingMembers: ', leadingMembers);
-
-
-    } catch (err) {
-        console.log('ERROR GATHER DATA: ', err);
-        throw err;
-    }
-};
-
-//PART 2: GUILD ROUTES NOT IN USE AT THE MOMENT
-const formatName = (name) => {
-    return name.toLowerCase().replaceAll(' ', '-');
-};
-
-const cleanRealmData = (data) => {
-    const {id, name, connected_realm, slug} = data;
-    let connectedRealmID = connected_realm.href.slice(53);
-    connectedRealmID = connectedRealmID.split('?')[0];
-    return {
-        id,
-        name: name.en_US,
-        connectedRealmId: connectedRealmID,
-        slug
-    };
-};
 
 const cleanDungeonData = (data) => {
     return (
@@ -110,38 +63,6 @@ const cleanDungeonData = (data) => {
             }
         })
     );
-};
-
-//PART 2: GUILD ROUTES NOT IN USE AT THE MOMENT
-const gatherDungeonLeaderBoard = async (connectedRealmId, dungeonData, period, headers) => {
-    const dungeonIds = dungeonData.map(dungeon => dungeon.id);
-    const result = [];
-
-    for(let dungeonId of dungeonIds) {
-        const dungeonLeaderBoard = await axios.get(`https://us.api.blizzard.com/data/wow/connected-realm/${connectedRealmId}/mythic-leaderboard/${dungeonId}/period/${period}?namespace=dynamic-us`, headers);
-        result.push({data:dungeonLeaderBoard.data});
-    }
-    console.log('RESULT: ', result);
-    return result;
-};
-
-//PART 2: GUILD ROUTES NOT IN USE AT THE MOMENT
-const gatherMembers = (data) => {
-    const groups = [];
-    const members = [];
-
-    for(let row of data) {
-        // console.log('row: ', row)
-        groups.push(row.data.leading_groups);
-    }
- 
-    console.log('groups: ', groups[0].data.members);
-
-    for(let row of groups) {
-        // console.log('row: ', row)
-        // members.push(row.data.members);
-    }
-    // console.log('members: ', members);
 };
 
 const cleanMountData = (data) => {
@@ -165,18 +86,87 @@ const updateMountData = async (data, headers) => {
             image_url: image.data.assets[0].value,
         }
     } catch (err) {
-        console.error(err);
+        console.log(err);
         throw err;
     }
 };
 
+const cleanRealmData = (data) => {
+    const realmData = [];
+    let i = 0;
 
+    while(i < data.results.length) {
+        for(let realm of data.results[i].data.realms) {
+            realmData.push({
+                realmID: realm.id,
+                realmName: realm.name.en_US,
+                connectedRealmID: data.results[i].data.id,
+                realmSlug: realm.slug,
+            });
+        }
+        i++;
+    }
+    return realmData;
+}
+
+const cleanDungeonLeaderBoardIdx = (data, currentPeriod) => {
+    return data.map(dungeon => {
+        return {
+            dungeonId: dungeon.id,
+            dungeonName: dungeon.name.en_US,
+            periodId: currentPeriod,
+        }
+    });
+};
+
+const cleanKeyStoneData = (keystoneData) => {
+    return keystoneData.map(dungeon => {
+        return {
+            dungeonId: dungeon.dungeonId,
+            dungeonName: dungeon.dungeonName,
+            periodId: dungeon.periodId,
+            leadingGroups: dungeon.leaderboardData.leading_groups,
+            affixes: dungeon.leaderboardData.keystone_affixes
+        }
+    });
+};
+
+const cleanLeadingGroups = (dungeonData) => {
+    let i = 0;
+    const results = [];
+
+    while (i < dungeonData.length) {
+        for(let group of dungeonData[i].leadingGroups) {
+            for(let member of dungeonData[i].leadingGroups[i].members) {
+                results.push({
+                    dungeonId: dungeonData[i].dungeonId,
+                    dungeonName: dungeonData[i].dungeonName,
+                    periodId: dungeonData[i].periodId,
+                    groupRanking: group.ranking,
+                    groupKeyStoneLevel: group.keystone_level,
+                    mythicRating: group.mythic_rating.rating,
+                    mythicRatingColor: group.mythic_rating.color,
+                    memberId: member.profile.id,
+                    memberName: member.profile.name,
+                    memberRealm: member.profile.realm.id,
+                    memberFaction: member.faction.type
+                });
+            }
+        }
+        i++;
+    }
+    return results;
+}
 
 module.exports = {
     getCurrentDate,
     filterCharacterData,
     compareDates,
-    gatherData,
     cleanMountData,
-    updateMountData
+    updateMountData,
+    cleanRealmData,
+    cleanDungeonLeaderBoardIdx,
+    cleanDungeonData,
+    cleanKeyStoneData,
+    cleanLeadingGroups
 };
