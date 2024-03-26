@@ -36,16 +36,16 @@ git clone https://github.com/your-username/Sons-of-Thunder.git
 ```
 
 
-# Database Setup
+## Database Setup
 
 This guide will walk you through the process of setting up your database using the provided SQL files.
 
-## Prerequisites
+### Prerequisites
 
 - PostgreSQL installed on your machine
 - Access to a terminal/command line interface
 
-## Steps
+### Steps
 
 1. **Create the Database Schema**
 
@@ -55,11 +55,11 @@ This guide will walk you through the process of setting up your database using t
    psql -f dbschema.sql
    ```
 
-# Database Seeding
+## Database Seeding
 
 This guide will walk you through the process of seeding your database using the provided `seed.sql` file.
 
-## Steps
+### Steps
 
 1. **Seed the Database**
 
