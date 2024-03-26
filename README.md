@@ -35,6 +35,40 @@ psql --version
 git clone https://github.com/your-username/Sons-of-Thunder.git
 ```
 
+
+# Database Setup
+
+This guide will walk you through the process of setting up your database using the provided SQL files.
+
+## Prerequisites
+
+- PostgreSQL installed on your machine
+- Access to a terminal/command line interface
+
+## Steps
+
+1. **Create the Database Schema**
+
+   The `dbschema.sql` file contains the SQL commands to create the database and its tables. To run this file, open your terminal and navigate to the directory containing the `dbschema.sql` file. Then, run the following command:
+
+   ```
+   psql -f dbschema.sql
+   ```
+
+# Database Seeding
+
+This guide will walk you through the process of seeding your database using the provided `seed.sql` file.
+
+## Steps
+
+1. **Seed the Database**
+
+   The `seed.sql` file contains SQL `INSERT` commands to populate the `users` table with initial data. To run this file, open your terminal and navigate to the directory containing the `seed.sql` file. Then, run the following command:
+
+   ```
+   psql -f seed.sql
+   ```
+   
 ## Backend Setup
 
 Setting up the backend is just as straightforward as the frontend. Here's what you need to do:
