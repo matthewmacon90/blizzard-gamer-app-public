@@ -1,6 +1,6 @@
 const db = require('../db/db.js');
 const bcrypt = require('bcrypt');
-const {ExpressError} = require('../error-handling/ExpressError.js');
+const {ExpressError, NotFoundError} = require('../error-handling/ExpressError.js');
 const {signToken} = require('../helpers/jwt-token/jwt.js');
 
 class User {
@@ -37,6 +37,7 @@ class User {
             return result.rows;
         } catch (err) {
             console.log(err);
+            throw new ExpressError('Internal Server Error', 500);
         }
     }
 
@@ -48,6 +49,7 @@ class User {
             return result.rows[0] ? result.rows[0] : new Error('No user found with that id');
         } catch (err) {
             console.log(err);
+            throw new NotFoundError('User Not Found', 404);
         }
     }
 
@@ -57,6 +59,7 @@ class User {
             return result.rows[0];
         } catch (err) {
             console.log(err);
+            throw new NotFoundError('Battle tag Not Found', 404);
         }
     }
 
@@ -78,6 +81,7 @@ class User {
         return result.rows[0]
     } catch (err) {
         console.log(err);
+        throw new NotFoundError('Email Not Found', 404);
     }
     }
 
@@ -87,6 +91,7 @@ class User {
             return result.rows[0];
         } catch (err) {
             console.log(err);
+            throw new ExpressError('Internal Server Error', 500);
         }
     }
 
@@ -112,7 +117,7 @@ class User {
                 [id]);
         } catch (err) {
             console.log(err);
-            throw new ExpressError('Internal Server Error', 500);
+            throw new NotFoundError('User Not Found', 404);
         }
     };
 
@@ -127,6 +132,7 @@ class User {
             return result.rows[0];
         } catch (err) {
             console.log(err);
+            throw new NotFoundError('User Battle Tag Not Found', 404);
         }
     }
 
@@ -143,6 +149,7 @@ class User {
             return token;
         } catch (err) {
             console.log(err);
+            throw new NotFoundError('User Not Found', 404);
         }
     };
 
