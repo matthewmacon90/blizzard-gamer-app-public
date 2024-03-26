@@ -9,76 +9,35 @@ Follow these instructions to set up the project locally and embark on your devel
 ### Prerequisites
 Before you begin, make sure you have the following installed:
 
-### Git Bash
-- Download the latest version of Git for Windows from the [official Git website](https://git-scm.com/downloads).
-- Run the downloaded installer and follow the on-screen instructions to complete the installation.
+# Installation Guide
 
-## Windows Subsystem for Linux (WSL) with Ubuntu
+This guide will help you install the necessary software to get started.
 
-### Installing WSL with Ubuntu
-1. Open PowerShell as Administrator and run:
+## Node.js
 
-```
-wsl --install
-```
+Node.js is a JavaScript runtime built on Chrome's V8 JavaScript engine. It's used for developing server-side and networking applications.
 
-2. Restart your computer when prompted.
-3. Launch Ubuntu from the Start menu and set up your new UNIX username and password.
-
-For detailed instructions, visit the [Microsoft Learn WSL Installation Guide](https://learn.microsoft.com/en-us/windows/wsl/install).
-
-## Node.js and Node Version Manager (NVM)
-
-### Installing Node.js
-1. After setting up WSL, open the Ubuntu terminal.
-2. Update your package index:
-```
-sudo apt update
-```
-3. Install Node.js:
-```
-sudo apt install nodejs
-```
-4. Confirm the installation with:
-```
-node -v
-```
-For more details, check out the [Node.js Installation Guide](https://nodejs.org/en/learn/getting-started/how-to-install-nodejs).
-
-### Installing NVM
-1. In the Ubuntu terminal, install NVM using the following curl command:
-```
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-```
-2. Close and reopen the terminal.
-3. Install the latest version of Node.js with NVM:
-```
-nvm install node
-```
-
-For a complete guide, refer to the [NVM Install Guide](https://www.freecodecamp.org/news/node-version-manager-nvm-install-guide/).
+**Download and Install:**
+- Node.js LTS Version: Recommended for most users. Includes npm, the package manager for JavaScript.
 
 ## PostgreSQL
 
-### Installing PostgreSQL
-1. Update your package index:
-```
-sudo apt update
-```
-2. Install PostgreSQL:
-```
-sudo apt install postgresql postgresql-contrib
-```
-3. Start the PostgreSQL service:
-```
-sudo service postgresql start
-```
-4. Optionally, secure PostgreSQL by setting a password for the `postgres` user:
-```
-sudo -u postgres psql -c “ALTER USER postgres PASSWORD ‘newpassword’;”
-```
+PostgreSQL is a powerful, open-source object-relational database system with over 30 years of active development.
 
-For a step-by-step guide, visit the [PostgreSQL Installation Documentation](https://www.postgresql.org/docs/current/tutorial-install.html).
+**Download and Install:**
+- PostgreSQL: Choose the version that's right for your operating system.
+
+**Installation Instructions:**
+Follow the installation instructions on the respective download pages to set up the software on your system.
+
+---
+
+After installation, verify that both Node.js and PostgreSQL are correctly installed by running the following commands in your terminal:
+
+```
+node -v
+psql --version
+```
 
 ### Cloning Repo
 - Clone the repository to your local machine:
