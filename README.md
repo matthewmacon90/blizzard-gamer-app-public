@@ -10,16 +10,10 @@ Follow these instructions to set up the project locally and embark on your devel
 Before you begin, make sure you have the following installed:
 
 ### Node.js
-
-Node.js is a JavaScript runtime built on Chrome's V8 JavaScript engine. It's used for developing server-side and networking applications.
-
 **Download and Install:**
 - Node.js LTS Version: Recommended for most users. Includes npm, the package manager for JavaScript.
 
 ### PostgreSQL
-
-PostgreSQL is a powerful, open-source object-relational database system with over 30 years of active development.
-
 **Download and Install:**
 - PostgreSQL: Choose the version that's right for your operating system.
 
