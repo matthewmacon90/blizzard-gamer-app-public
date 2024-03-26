@@ -4,7 +4,7 @@ const {ExpressError} = require('../error-handling/ExpressError.js');
 const {signToken} = require('../helpers/jwt-token/jwt.js');
 
 class User {
-    static async registerUser (username, hashedPassword, email, firstName, lastName, battletag) {
+    static async registerUser(username, hashedPassword, email, firstName, lastName, battletag) {
         try {
             const result = await db.query(
                 `INSERT INTO users (username, password, email, first_name, last_name, battle_tag) 
@@ -18,7 +18,7 @@ class User {
         }
     };
 
-    static async getAuthenticatedUserInfo (id) {
+    static async getAuthenticatedUserInfo(id) {
         try {
             const result = await db.query(`
                 SELECT username, email, first_name AS firstName, last_name AS lastName, battle_tag AS battletag, battlenet_token AS btoken, btoken_expires AS btokenexpires
@@ -31,7 +31,7 @@ class User {
         }
     }
 
-    static async getAllUsers () {
+    static async getAllUsers() {
         try {
             const result = await db.query('SELECT username, first_name AS firstName, last_name AS lastName FROM users');
             return result.rows;
@@ -40,7 +40,7 @@ class User {
         }
     }
 
-    static async getUserById (id) {
+    static async getUserById(id) {
         try {
             const result = await db.query(`SELECT user_id, username, battle_tag AS battletag, battlenet_token AS btoken
             FROM users 
@@ -51,7 +51,7 @@ class User {
         }
     }
 
-    static async getUserByBattleTag (battletag) {
+    static async getUserByBattleTag(battletag) {
         try {
             const result = await db.query('SELECT battle_tag AS battletag FROM users WHERE battle_tag = $1', [battletag]);
             return result.rows[0];
@@ -60,7 +60,7 @@ class User {
         }
     }
 
-    static async getUserByUsername (username) {
+    static async getUserByUsername(username) {
         try {
             const result = await db.query(`
                 SELECT user_id, username, password, battlenet_token AS btoken, battle_tag AS battletag 
@@ -72,7 +72,7 @@ class User {
         }
    }
 
-   static getUserByEmail (email) {
+   static getUserByEmail(email) {
     try {
         const result = db.query('SELECT email FROM users WHERE email = $1', [email]);
         return result.rows[0]
@@ -81,7 +81,7 @@ class User {
     }
     }
 
-    static async updateLoginTime (username) {
+    static async updateLoginTime(username) {
         try {
             const result = await db.query(`UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE username = $1 RETURNING last_login`, [username]);
             return result.rows[0];
@@ -90,7 +90,7 @@ class User {
         }
     }
 
-    static async updateUser (id, username, email, firstName, lastName, battletag) {
+    static async updateUser(id, username, email, firstName, lastName, battletag) {
         try {
             const result = await db.query(`
                 UPDATE users 
@@ -104,7 +104,7 @@ class User {
         }
     }
 
-    static async deleteUser (id) {
+    static async deleteUser(id) {
         try {
             await db.query(
                 `DELETE FROM users
@@ -116,7 +116,7 @@ class User {
         }
     };
 
-    static async linkBattleTag (battlenetID, battletag, accessToken) {
+    static async linkBattleTag(battlenetID, battletag, accessToken) {
         try {
             const result = await db.query(`
                 UPDATE users
@@ -130,7 +130,7 @@ class User {
         }
     }
 
-    static async refreshToken (id) {
+    static async refreshToken(id) {
         try {
             const result = await User.getUserById(id);
             const payload = {
@@ -146,7 +146,7 @@ class User {
         }
     };
 
-    static async authenticateUserJWT (username, password) {
+    static async authenticateUserJWT(username, password) {
         try {
             const userFound = await User.getUserByUsername(username);
             const passwordMatch = await bcrypt.compare(password, userFound.password);
