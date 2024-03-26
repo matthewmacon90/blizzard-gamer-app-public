@@ -16,21 +16,8 @@ class WoWGuildApi extends WoWApi {
         try {
             const data = await gatherData(this.authorizationHeaders, realmSlug, guildName);
             const periodIndex = await axios.get('https://us.api.blizzard.com/data/wow/mythic-keystone/period/index?namespace=dynamic-us', this.authorizationHeaders);
-            console.log('DATA buildGuildProfile: ', data, periodIndex.data.current_period.id);
-            // const result = await axios.get(`https://us.api.blizzard.com/data/wow/guild/${realmSlug}/${guildName.toLowerCase()}?namespace=profile-us`, this.authorizationHeaders);
-
         } catch (error) {
             console.log(error);
-        }
-    }
-
-    //Not working at the moment.
-    async getGuilds(realmSlug) {
-        try {
-            const response = await this.buildGuildProfile(realmSlug);
-            // console.log('roster: ', roster.data.members.roster[0].character.key);
-        } catch (error) {
-            console.log('getGuilds:', error);
         }
     }
 }

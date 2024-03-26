@@ -5,7 +5,7 @@ router.get('/', (req, res) => {
     try {
         return res.status(200).json('Welcome to the home page!');
     } catch (err) {
-        console.error(err);
+        console.log(err);
         return res.status(500).send('Internal Server Error');
     }
     

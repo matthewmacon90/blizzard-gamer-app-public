@@ -13,7 +13,7 @@ class User {
                  [username, hashedPassword, email, firstName, lastName, battletag]);
             return result.rows[0]
         } catch (err) {
-            console.error(err);
+            console.log(err);
             throw err.code === '23505' ? new ExpressError('Username or email already exists', 409) : new ExpressError('Internal Server Error', 500);
         }
     };
@@ -26,7 +26,7 @@ class User {
                 WHERE user_id = $1`, [id]);
             return result.rows[0];
         } catch (err) {
-            console.error('ERROR GETTING AUTHENTICATED USER', err);
+            console.log('ERROR GETTING AUTHENTICATED USER', err);
             throw new ExpressError('Internal Server Error', 500);
         }
     }
@@ -36,7 +36,7 @@ class User {
             const result = await db.query('SELECT username, first_name AS firstName, last_name AS lastName FROM users');
             return result.rows;
         } catch (err) {
-            console.error(err);
+            console.log(err);
         }
     }
 
@@ -47,7 +47,7 @@ class User {
             WHERE user_id = $1`, [id]);
             return result.rows[0] ? result.rows[0] : new Error('No user found with that id');
         } catch (err) {
-            console.error(err);
+            console.log(err);
         }
     }
 
@@ -56,7 +56,7 @@ class User {
             const result = await db.query('SELECT battle_tag AS battletag FROM users WHERE battle_tag = $1', [battletag]);
             return result.rows[0];
         } catch (err) {
-            console.error(err);
+            console.log(err);
         }
     }
 
@@ -77,7 +77,7 @@ class User {
         const result = db.query('SELECT email FROM users WHERE email = $1', [email]);
         return result.rows[0]
     } catch (err) {
-        console.error(err);
+        console.log(err);
     }
     }
 
@@ -86,7 +86,7 @@ class User {
             const result = await db.query(`UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE username = $1 RETURNING last_login`, [username]);
             return result.rows[0];
         } catch (err) {
-            console.error(err);
+            console.log(err);
         }
     }
 
@@ -111,7 +111,7 @@ class User {
                  WHERE user_id = $1`, 
                 [id]);
         } catch (err) {
-            console.error(err);
+            console.log(err);
             throw new ExpressError('Internal Server Error', 500);
         }
     };
@@ -126,7 +126,7 @@ class User {
                 `, [battlenetID, accessToken, battletag]);
             return result.rows[0];
         } catch (err) {
-            console.error(err);
+            console.log(err);
         }
     }
 
@@ -142,7 +142,7 @@ class User {
             const token = await signToken(payload);
             return token;
         } catch (err) {
-            console.error(err);
+            console.log(err);
         }
     };
 

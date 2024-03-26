@@ -12,7 +12,7 @@ const SelectedRealm = ({fetchDungeonLeaderBoard}) => {
                 const result = await Api.getRealms();
                 setRealms(result);
             } catch (err) {
-                console.log('ERROR FETCH REALMS: ', err);
+
             }
         };
         fetchRealms();

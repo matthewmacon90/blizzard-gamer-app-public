@@ -9,7 +9,7 @@ router.get('/', verifyToken, async (req, res, next) => {
         const result = await User.getAllUsers();
         return res.status(200).json(result);
     } catch (err) {
-        console.error(err);
+        console.log(err);
         next(err);
     }
 });
@@ -18,7 +18,7 @@ router.get('/verify', verifyToken, async (req, res, next) => {
     try {
         return res.status(200).json({ message: 'Token verified' });
     } catch (err) {
-        console.error(err);
+        console.log(err);
         next(err);
     }
 });
@@ -29,7 +29,7 @@ router.get('/refresh', verifyToken, async (req, res, next) => {
         const result = await User.refreshToken(decodedToken.id);
         return res.status(200).json(result);
     } catch (err) {
-        console.error(err);
+        console.log(err);
         next(err);
     }
 });
@@ -41,7 +41,7 @@ router.get('/profile', verifyToken, async (req, res, next) => {
         const result = await User.getAuthenticatedUserInfo(id);
         return res.status(200).json(result);
     } catch (err) {
-        console.error(err);
+        console.log(err);
         next(err);
     }
 });
@@ -51,7 +51,7 @@ router.get('/:id', verifyToken, async (req, res, next) => {
         const result = await User.getUserById(id);
         return res.status(200).json(result);
     } catch (err) {
-        console.error(err);
+        console.log(err);
         next(err);
     }
 });
@@ -76,7 +76,7 @@ router.delete('/:id', verifyToken, async (req, res, next) => {
         const result = await User.deleteUser(id);
         return res.status(200).json(result);
     } catch (err) {
-        console.error(err);
+        console.log(err);
         next(err);
     }
 });

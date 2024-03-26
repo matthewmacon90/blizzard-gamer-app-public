@@ -1,5 +1,5 @@
 const db = require('../db/db.js');
-const {ExpressError} = require('../error-handling/ExpressError.js');
+const {ExpressError, NotFoundError} = require('../error-handling/ExpressError.js');
 
 class WoWDungeonModel {
     static async getDungeons() {
@@ -16,7 +16,7 @@ class WoWDungeonModel {
             const result = await db.query(`SELECT * FROM dungeons WHERE dungeon_id = $1`, [dungeon_id]);
             return result.rows[0];
         } catch (err) {
-            throw new ExpressError('Error getting realm by id', 500);
+            throw new NotFoundError('Dungeon Not Found', 404);
         }
     }
 
@@ -40,7 +40,7 @@ class WoWDungeonModel {
                 RETURNING *`, [current_period, dungeon_id]);
             return result.rows[0];
         } catch (err) {
-            throw new ExpressError('Error updating realm', 500);
+            throw new NotFoundError('Dungeon Not Found', 404);
         }
     }
 };

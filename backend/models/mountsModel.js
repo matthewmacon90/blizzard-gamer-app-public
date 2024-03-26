@@ -1,5 +1,5 @@
 const db = require('../db/db.js');
-const {ExpressError} = require('../error-handling/ExpressError.js');
+const {ExpressError, NotFoundError} = require('../error-handling/ExpressError.js');
 
 class WoWMountsModel {
     static async getMounts() {
@@ -9,7 +9,7 @@ class WoWMountsModel {
                 FROM mounts`);
             return result.rows;
         } catch (err) {
-            throw new ExpressError('Error fetching mounts', 500);
+            throw new NotFoundError('Not Found', 404);
         }
     }
 
@@ -21,7 +21,7 @@ class WoWMountsModel {
             `,[mount_id]);
             return result.rows[0];
         } catch (err) {
-            throw new ExpressError('Error fetching mount by id', 500);
+            throw new NotFoundError
         }
     }
 
@@ -34,7 +34,7 @@ class WoWMountsModel {
                 [mount.mount_id, mount.mount_name]);
             });
         } catch (err) {
-            console.error(err);
+            console.log(err);
             throw new ExpressError('Error inserting mounts', 500);
         }
     }
@@ -49,8 +49,8 @@ class WoWMountsModel {
             , [mount_description, mount_faction, mount_source, image_url, mount_id]);
 
         } catch (err) {
-            console.error(err);
-            throw new ExpressError('Error updating mounts', 500);
+            console.log(err);
+            throw new NotFoundError
         }
     }
 };

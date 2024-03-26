@@ -53,43 +53,6 @@ const compareDates = (currentDate, dbDate=null) => {
     return diffInDays === 5;
 };
 
-//PART 2: GUILD ROUTES NOT IN USE AT THE MOMENT
-
-const gatherData = async (headers, realmSlug, guildName) => {
-    try {
-        //PART 2 For Capstone Project
-
-        // const formattedName = formatName(guildName);
-        // console.log('FORMATTED NAME: ', formattedName);
-        const realmData = await axios.get(`https://us.api.blizzard.com/data/wow/realm/${realmSlug}?namespace=dynamic-us`, headers);
-        const periodIndex = await axios.get('https://us.api.blizzard.com/data/wow/mythic-keystone/period/index?namespace=dynamic-us', headers);
-        const currentPeriod = periodIndex.data.current_period.id;
-        // console.log('REALM DATA: ', realmData.data);
-        const formattedRealmData = cleanRealmData(realmData.data);
-        const {connectedRealmId} = formattedRealmData;
-        const mythicRealmBoard = await axios.get(`https://us.api.blizzard.com/data/wow/connected-realm/${connectedRealmId}/mythic-leaderboard/index?namespace=dynamic-us`, headers);
-        const formattedDungeonData = cleanDungeonData(mythicRealmBoard.data.current_leaderboards);
-
-        const dungeonLeaderBoard = await gatherDungeonLeaderBoard(connectedRealmId, formattedDungeonData, currentPeriod, headers);
-        //Add dungeonLeaderBoard to the database.
-        const leadingMembers = gatherMembers(dungeonLeaderBoard);
-        // console.log('formattedDungeonData: ', formattedDungeonData);
-        // console.log('FORMATTED REALM DATA: ', formattedRealmData);
-        // console.log('dungeonLeaderBoard: ', dungeonLeaderBoard);
-        console.log('leadingMembers: ', leadingMembers);
-
-
-    } catch (err) {
-        console.log('ERROR GATHER DATA: ', err);
-        throw err;
-    }
-};
-
-//PART 2: GUILD ROUTES NOT IN USE AT THE MOMENT
-const formatName = (name) => {
-    return name.toLowerCase().replaceAll(' ', '-');
-};
-
 
 const cleanDungeonData = (data) => {
     return (
@@ -100,26 +63,6 @@ const cleanDungeonData = (data) => {
             }
         })
     );
-};
-
-//PART 2: GUILD ROUTES NOT IN USE AT THE MOMENT
-const gatherDungeonLeaderBoard = async (connectedRealmId, dungeonData, period, headers) => {
-    const dungeonIds = dungeonData.map(dungeon => dungeon.id);
-    const result = [];
-    const leadingGroups = [];
-
-    for(let dungeonId of dungeonIds) {
-        const dungeonLeaderBoard = await axios.get(`https://us.api.blizzard.com/data/wow/connected-realm/${connectedRealmId}/mythic-leaderboard/${dungeonId}/period/${period}?namespace=dynamic-us`, headers);
-        result.push({data:dungeonLeaderBoard.data});
-    }
-
-    for(let row of result) {
-        leadingGroups.push(row.data.leading_groups);
-    };
-
-    console.log('leadingGroups: ', leadingGroups);
-    // console.log('RESULT: ', result[0].data);
-    return leadingGroups;
 };
 
 const cleanMountData = (data) => {
@@ -143,7 +86,7 @@ const updateMountData = async (data, headers) => {
             image_url: image.data.assets[0].value,
         }
     } catch (err) {
-        console.error(err);
+        console.log(err);
         throw err;
     }
 };
@@ -194,7 +137,6 @@ const cleanLeadingGroups = (dungeonData) => {
 
     while (i < dungeonData.length) {
         for(let group of dungeonData[i].leadingGroups) {
-            // console.log('GROUP: ', group);
             for(let member of dungeonData[i].leadingGroups[i].members) {
                 results.push({
                     dungeonId: dungeonData[i].dungeonId,
@@ -220,7 +162,6 @@ module.exports = {
     getCurrentDate,
     filterCharacterData,
     compareDates,
-    gatherData,
     cleanMountData,
     updateMountData,
     cleanRealmData,

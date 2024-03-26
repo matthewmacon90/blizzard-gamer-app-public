@@ -1,5 +1,5 @@
 const db = require('../db/db.js');
-const {ExpressError} = require('../error-handling/ExpressError.js');
+const {ExpressError, NotFoundError} = require('../error-handling/ExpressError.js');
 
 class WoWRealmModel {
     static async getRealms() {
@@ -10,7 +10,7 @@ class WoWRealmModel {
                 ORDER BY realm_name`);
             return result.rows;
         } catch (err) {
-            throw new ExpressError('Error getting dungeons', 500);
+            throw new NotFoundError('Realms not found', 404);
         }
     }
 
@@ -19,7 +19,7 @@ class WoWRealmModel {
             const result = await db.query(`SELECT * FROM realms WHERE realm_id = $1`, [realm_id]);
             return result.rows[0];
         } catch (err) {
-            throw new ExpressError('Error getting realm by id', 500);
+            throw new NotFoundError('Realm not found', 404);
         }
     }
 

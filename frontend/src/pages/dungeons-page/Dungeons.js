@@ -13,7 +13,6 @@ const Dungeons = () => {
             const result = await Api.getDungeonByRealmId(realmId);
             setDungeons(result);
         } catch (err) {
-            console.log('ERROR FETCH DUNGEONS: ', err);
         }
     };
 
