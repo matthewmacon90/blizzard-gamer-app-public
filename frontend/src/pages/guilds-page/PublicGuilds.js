@@ -2,10 +2,11 @@ import Api from "../../api";
 import GuildsList from "./public-guilds-components/GuildsList";
 import GuildSelect from "./public-guilds-components/GuildSelect";
 
-const Guilds = () => {
+const PublicGuilds = () => {
     const selectGuilds = async (realm) => {
         try {
             const result = await Api.getGuilds(realm);
+            console.log('result frontend: ', result);
         } catch (err) {
         }
     };
@@ -18,4 +19,4 @@ const Guilds = () => {
     );
 };
 
-export default Guilds;
+export default PublicGuilds;

@@ -12,15 +12,20 @@ class WoWApi {
     async getUserProfile() {
         try {
             const date = getCurrentDate();
-            const fetchData = await WoWProfileData.checkDb(this.user_id);
+            const fetchData = await WoWProfileData.getCharactersByUserId(this.user_id);
             const dbDate = fetchData.length > 0 ? fetchData[0].date : null;
             const compareDatesResult = compareDates(date, dbDate);
-
 
             if(fetchData.length === 0) {
                 const result = await axios.get('https://us.api.blizzard.com/profile/user/wow?namespace=profile-us', this.authorizationHeaders);
                 const response = filterCharacterData(this.user_id, result.data);
-                const userProfile = await WoWProfileData.createCharacters(response);
+                
+                for(let char of response.characters) {
+                    const {character_id, name, level, character_class, faction, gender, realm_id, realm_name, realm_slug} = char;
+                    await WoWProfileData.insertCharacter(character_id, name, level, character_class, faction, gender, realm_id, realm_name, realm_slug, response.user_id);
+                }
+
+                const userProfile = await WoWProfileData.getCharactersByUserId(this.user_id);
                 return userProfile;
             }
 

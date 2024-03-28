@@ -1,9 +1,10 @@
 const axios = require('axios');
 const { cleanRealmData, cleanDungeonLeaderBoardIdx, cleanDungeonData, cleanKeyStoneData, cleanLeadingGroups } = require('./blizzard-helpers/wowhelpers.js');
-const WoWProfileData = require('../models/wowModel.js');
 const WoWApi = require('./wowApi.js');
 const WoWDungeonModel = require('../models/dungeonModel.js');
+const WoWProfileData = require('../models/wowModel.js');
 const WoWRealmModel = require('../models/realmModel.js');
+const WoWLeaderboardModel = require('../models/LeaderboardModel.js');
 
 class WoWDungeonApi extends WoWApi {
     constructor(token = '', user_id = null) {
@@ -26,7 +27,31 @@ class WoWDungeonApi extends WoWApi {
                 keyStoneLeaderBoardApi.push({dungeonId, dungeonName, periodId, leaderboardData: leaderboard.data});
             }
             const formattedKeyStoneData = cleanKeyStoneData(keyStoneLeaderBoardApi);
-            const data = cleanLeadingGroups(formattedKeyStoneData); //Taking a closer look at this function to determine what needs to go to the DB.
+            const data = cleanLeadingGroups(formattedKeyStoneData);
+
+            for (let char of data) {
+                const {memberId, memberName, memberRealm, memberFaction} = char;
+                const {
+                    dungeonId, 
+                    dungeonName, 
+                    periodId, 
+                    groupRanking, 
+                    groupKeyStoneLevel, 
+                    mythicRating, 
+                    mythicRatingColor} = char;
+
+                const isChar = await WoWProfileData.getCharacterById(char.characterId);
+                isChar ? await WoWProfileData.updateCharacterLeaderboard(memberId, memberName, memberRealm, memberFaction) 
+                    : await WoWProfileData.createCharacterLeaderboard(memberId, memberName, memberRealm, memberFaction);
+
+                const isDungeon = await WoWDungeonModel.getDungeonById(dungeonId);
+                isDungeon ? await WoWDungeonModel.updateDungeon(periodId, dungeonId)
+                    : await WoWDungeonModel.insertDungeon(dungeonId, dungeonName, periodId);
+
+                const isLeaderboard = await WoWLeaderboardModel.getLeaderboardById(memberId, dungeonId, periodId);
+                isLeaderboard ? await WoWLeaderboardModel.updateLeaderboard(groupRanking, groupKeyStoneLevel, mythicRating, mythicRatingColor, memberId, dungeonId, periodId)
+                    : await WoWLeaderboardModel.insertLeaderboard(dungeonId, dungeonName, periodId, groupRanking, groupKeyStoneLevel, mythicRating, mythicRatingColor, memberId, memberName);
+            }
 
             return formattedKeyStoneData;
         } catch (err) {

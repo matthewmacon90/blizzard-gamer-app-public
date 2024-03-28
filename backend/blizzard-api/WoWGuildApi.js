@@ -14,8 +14,10 @@ class WoWGuildApi extends WoWApi {
 
     async buildGuildProfile(realmSlug, guildName=null) {
         try {
-            const data = await gatherData(this.authorizationHeaders, realmSlug, guildName);
-            const periodIndex = await axios.get('https://us.api.blizzard.com/data/wow/mythic-keystone/period/index?namespace=dynamic-us', this.authorizationHeaders);
+            const characterData = await axios.get(`https://us.api.blizzard.com/profile/wow/character/area-52/zelrus?namespace=profile-us`, this.authorizationHeaders);
+            console.log('characterData: ', characterData.data);
+            // const data = await gatherData(this.authorizationHeaders, realmSlug, guildName);
+            // const periodIndex = await axios.get('https://us.api.blizzard.com/data/wow/mythic-keystone/period/index?namespace=dynamic-us', this.authorizationHeaders);
         } catch (error) {
             console.log(error);
         }
