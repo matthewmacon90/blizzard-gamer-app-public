@@ -9,7 +9,7 @@ router.get('/', verifyToken, async (req, res, next) => {
     try {
         const decodedToken = await decodeToken(req.headers.authorization.split(' ')[1]);
         const wowGuildApi = new WoWGuildApi(decodedToken.btoken);
-        const result = await wowGuildApi.getGuilds(req.query.realmSlug);
+        const result = await wowGuildApi.buildGuildProfile(req.query.realmSlug);
         return res.status(200).json(result);
     } catch (error) {
         console.log('GUILD ROUTES ERROR', error);

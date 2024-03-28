@@ -23,7 +23,7 @@ class WoWRealmModel {
         }
     }
 
-    static async insertRealms(realm_id, realm_name, connected_realm_id, realm_slug) {
+    static async insertRealm(realm_id, realm_name, connected_realm_id, realm_slug) {
         try {
             await db.query(`
                 INSERT INTO realms (realm_id, realm_name, connected_realm_id, realm_slug)
@@ -34,13 +34,13 @@ class WoWRealmModel {
         }
     }
 
-    static async updateRealm() {
+    static async updateRealm(realmID, realmName, connectedRealmID, realmSlug) {
         try {
             const result = await db.query(`
                 UPDATE realms 
-                SET realm_name = $1, connected_id = $2, realm_slug = $3 
-                WHERE realm_id = $4 
-                RETURNING *`, [realm_name, connected_id, realm_slug, realm_id]);
+                SET realm_name = $2, connected_realm_id = $3, realm_slug = $4 
+                WHERE realm_id = $1 
+                RETURNING *`, [realmID, realmName, connectedRealmID, realmSlug]);
             return result.rows[0];
         } catch (err) {
             throw new ExpressError('Error updating realm', 500);
