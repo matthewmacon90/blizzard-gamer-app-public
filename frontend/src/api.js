@@ -1,4 +1,5 @@
 import axios from "axios";
+import { formatLeadboardData } from "./utility/formatData"; 
 
 const BASE_URL = "http://localhost:3001";
 
@@ -191,7 +192,7 @@ class Api {
             const result = await this.request(`dungeons`, {}, 'get', headers);
             return result;
         } catch (err) {
-            throw err;
+            console.log('getDungeons', err);
         }
     }
     static async getDungeonByRealmId(realmId) {
@@ -201,7 +202,7 @@ class Api {
             const result = await this.request(`dungeons/${realmId}`, {}, 'get', headers);
             return result;
         } catch (err) {
-            throw err;
+            console.log('getDungeonByRealmId', err);
         }
     }
                 //***************************Realms Section of the API***************************
@@ -212,7 +213,7 @@ class Api {
             const result = await this.request(`realms`, {}, 'get', headers);
             return result;
         } catch (err) {
-            throw err;
+            console.log('getRealms', err);
         }
     }
 }

@@ -27,7 +27,7 @@ const SelectedRealm = ({fetchDungeonLeaderBoard}) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const realm = realms.find((realm) => realm.realm_id === Number(selectedRealm));
-        setCurrentRealm(realm.realm_name);
+        setCurrentRealm('Aegwynn');
         await fetchDungeonLeaderBoard(selectedRealm);
         setSelectedRealm();
     };

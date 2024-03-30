@@ -50,7 +50,7 @@ const compareDates = (currentDate, dbDate=null) => {
     const diffInMilliseconds = Math.abs(currentDate - dbDate);
     const diffInDays = Math.ceil(diffInMilliseconds / millisecondsPerDay);
 
-    return diffInDays === 5;
+    return diffInDays === 2;
 };
 
 
@@ -125,6 +125,7 @@ const cleanKeyStoneData = (keystoneData) => {
             dungeonId: dungeon.dungeonId,
             dungeonName: dungeon.dungeonName,
             periodId: dungeon.periodId,
+            connectedRealmId: dungeon.connectedRealmId,
             leadingGroups: dungeon.leaderboardData.leading_groups,
             affixes: dungeon.leaderboardData.keystone_affixes
         }
@@ -138,10 +139,13 @@ const cleanLeadingGroups = (dungeonData) => {
     while (i < dungeonData.length) {
         for(let group of dungeonData[i].leadingGroups) {
             for(let member of dungeonData[i].leadingGroups[i].members) {
+                const leaderboardId = `${dungeonData[i].dungeonId}-${dungeonData[i].periodId}-${member.profile.id}-${group.ranking}`;
                 results.push({
+                    leaderboardId,
                     dungeonId: dungeonData[i].dungeonId,
                     dungeonName: dungeonData[i].dungeonName,
                     periodId: dungeonData[i].periodId,
+                    connectedRealmId: dungeonData[i].connectedRealmId,
                     groupRanking: group.ranking,
                     groupKeyStoneLevel: group.keystone_level,
                     mythicRating: group.mythic_rating.rating,
@@ -158,6 +162,26 @@ const cleanLeadingGroups = (dungeonData) => {
     return results;
 }
 
+const formatLeaderboardData = (dungeonData, leaderboardData) => {
+    console.log('dungeonData: ', dungeonData, 'leaderboardData: ', leaderboardData);
+    let i = 0;
+    const results = [];
+    while(i < dungeonData.length) { 
+        for(let group of leaderboardData) {
+            console.log('group: ', group);
+            results.push({
+
+            });
+        }
+        i++;
+    }
+};
+
+const isCurrent = (dbDate) => {
+    const date = getCurrentDate();
+    const compareDatesResult = compareDates(date, dbDate);
+};
+
 module.exports = {
     getCurrentDate,
     filterCharacterData,
@@ -168,5 +192,30 @@ module.exports = {
     cleanDungeonLeaderBoardIdx,
     cleanDungeonData,
     cleanKeyStoneData,
-    cleanLeadingGroups
+    cleanLeadingGroups,
+    isCurrent,
+    formatLeaderboardData
 };
+
+
+
+
+// if(fetchData.length === 0) {
+//     const result = await axios.get('https://us.api.blizzard.com/profile/user/wow?namespace=profile-us', this.authorizationHeaders);
+//     const response = filterCharacterData(this.user_id, result.data);
+    
+//     for(let char of response.characters) {
+//         const {character_id, name, level, character_class, faction, gender, realm_id, realm_name, realm_slug} = char;
+//         await WoWProfileData.insertCharacter(character_id, name, level, character_class, faction, gender, realm_id, realm_name, realm_slug, response.user_id);
+//     }
+
+//     const userProfile = await WoWProfileData.getCharactersByUserId(this.user_id);
+//     return userProfile;
+// }
+
+// if (compareDatesResult) {
+//     const result = await axios.get('https://us.api.blizzard.com/profile/user/wow?namespace=profile-us', this.authorizationHeaders);
+//     const response = filterCharacterData(this.user_id, result.data, date);
+//     const userProfile = await WoWProfileData.updateCharactersMass(response);
+//     return userProfile;
+// }

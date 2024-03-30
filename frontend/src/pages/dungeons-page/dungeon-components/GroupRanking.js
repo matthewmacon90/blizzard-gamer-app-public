@@ -1,9 +1,11 @@
 const GroupRanking = ({groups}) => {
+    console.log('groups: ', groups); 
+    const groupData = groups.leaderboardData;
     return (
         <>
-            {groups.map((group, idx) => (
-                idx < 5 &&
-                <div key={idx} className="keystone-group-table">
+            {groupData.map((group, idx) => (
+                idx < 10 &&
+                <div key={group.leaderboardId} className="keystone-group-table">
                     <table className="keystone-table">
                         <thead>
                             <tr>
@@ -14,14 +16,12 @@ const GroupRanking = ({groups}) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {group.members.map((member, idx) => (
-                                <tr key={idx}>
-                                    <td>{group.ranking}</td>
-                                    <td>{member.profile.name}</td>
-                                    <td>{member.profile.realm.slug}</td>
-                                    <td>{group.keystone_level}</td>
-                                </tr>
-                            ))}
+                            <tr key={idx}>
+                                <td>{group.groupRanking}</td>
+                                <td>{group.characterName}</td>
+                                <td>{group.realmName}</td>
+                                <td>{group.keystoneLevel}</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

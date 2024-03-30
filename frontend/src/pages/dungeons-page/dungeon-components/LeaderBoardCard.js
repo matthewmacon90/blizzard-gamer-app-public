@@ -1,13 +1,14 @@
 import GroupRanking from "./GroupRanking";
 const LeaderBoardCard = ({ dungeons }) => {
+    const dungeonData = dungeons.dungeonData;
     return (
         <div className="LeaderBoardCard-container">
-            {dungeons.map((dungeon) => (
+            {dungeonData ? dungeonData.map((dungeon) => (
                 <div key={dungeon.dungeonId} className="LeaderBoardCard">
                     <h3>{dungeon.dungeonName}</h3>
-                    <GroupRanking groups={dungeon.leadingGroups} />
+                    <GroupRanking groups={dungeons} />
                 </div>
-            ))}
+            )) : null}
         </div>
     );
 };
