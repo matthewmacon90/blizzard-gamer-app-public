@@ -121,7 +121,9 @@ const cleanDungeonLeaderBoardIdx = (data, currentPeriod) => {
 
 const cleanKeyStoneData = (keystoneData) => {
     return keystoneData.map(dungeon => {
+        const leaderboardId = `${dungeon.dungeonId}-${dungeon.periodId}-${dungeon.connectedRealmId}`;
         return {
+            leaderboardId,
             dungeonId: dungeon.dungeonId,
             dungeonName: dungeon.dungeonName,
             periodId: dungeon.periodId,
@@ -132,54 +134,59 @@ const cleanKeyStoneData = (keystoneData) => {
     });
 };
 
-const cleanLeadingGroups = (dungeonData) => {
+const cleanMemberData = (dungeonData) => {
     let i = 0;
-    const results = [];
+    let j = 0;
+    let k = 0;
+    const leadingGroups = [];
+    const members = [];
+    const characters = [];
 
     while (i < dungeonData.length) {
-        for(let group of dungeonData[i].leadingGroups) {
-            for(let member of dungeonData[i].leadingGroups[i].members) {
-                const leaderboardId = `${dungeonData[i].dungeonId}-${dungeonData[i].periodId}-${member.profile.id}-${group.ranking}`;
-                results.push({
-                    leaderboardId,
-                    dungeonId: dungeonData[i].dungeonId,
-                    dungeonName: dungeonData[i].dungeonName,
-                    periodId: dungeonData[i].periodId,
-                    connectedRealmId: dungeonData[i].connectedRealmId,
-                    groupRanking: group.ranking,
-                    groupKeyStoneLevel: group.keystone_level,
-                    mythicRating: group.mythic_rating.rating,
-                    mythicRatingColor: group.mythic_rating.color,
-                    memberId: member.profile.id,
-                    memberName: member.profile.name,
-                    memberRealm: member.profile.realm.id,
-                    memberFaction: member.faction.type
-                });
-            }
-        }
+        leadingGroups.push({groups: dungeonData[i].leadingGroups});
         i++;
     }
-    return results;
-}
 
-const formatLeaderboardData = (dungeonData, leaderboardData) => {
-    console.log('dungeonData: ', dungeonData, 'leaderboardData: ', leaderboardData);
-    let i = 0;
-    const results = [];
-    while(i < dungeonData.length) { 
-        for(let group of leaderboardData) {
-            console.log('group: ', group);
-            results.push({
+    while (j < leadingGroups.length) {
+        for(let i = 0; i < leadingGroups[j].groups.length; i++) {
+            members.push({member: leadingGroups[j].groups[i].members});
+        }
+        j++;
+    }
 
+    while (k < members.length) {
+        for(let i = 0; i < members[k].member.length; i++) {
+            characters.push({
+                memberId: members[k].member[i].profile.id,
+                memberName: members[k].member[i].profile.name,
+                memberRealmId: members[k].member[i].profile.realm.id,
+                memberRealmSlug: members[k].member[i].profile.realm.slug,
+                memberFaction: members[k].member[i].faction.type,
             });
         }
-        i++;
+        k++;
     }
-};
+
+    return characters;
+}
 
 const isCurrent = (dbDate) => {
     const date = getCurrentDate();
     const compareDatesResult = compareDates(date, dbDate);
+};
+
+const formatLeaderboardData = (data) => {
+    return data.map(leaderboard => {
+        return {
+            leaderboardId: leaderboard.leaderboard_id,
+            dungeonId: leaderboard.dungeon_id,
+            dungeonName: leaderboard.dungeon_name,
+            periodId: leaderboard.current_period_leaderboard,
+            leadingGroups: JSON.parse(leaderboard.leading_groups),
+            affixes: JSON.parse(leaderboard.affixes),
+            connectedRealmId: leaderboard.connected_realm_id,
+        }
+    });
 };
 
 module.exports = {
@@ -192,9 +199,9 @@ module.exports = {
     cleanDungeonLeaderBoardIdx,
     cleanDungeonData,
     cleanKeyStoneData,
-    cleanLeadingGroups,
+    cleanMemberData,
     isCurrent,
-    formatLeaderboardData
+    formatLeaderboardData,
 };
 
 

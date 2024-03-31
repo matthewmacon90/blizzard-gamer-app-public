@@ -34,7 +34,7 @@ class WoWProfileData {
     static async insertCharacter(character_id, name, level, character_class, faction, gender, realm_id, realm_name, realm_slug, user_id) {
         try {
             await db.query(`
-                INSERT INTO characters (character_id, character_name, character_level, character_class, chacter_faction, character_gender, realm_id, realm_name, realm_slug, user_id)
+                INSERT INTO characters (character_id, character_name, character_level, character_class, character_faction, character_gender, realm_id, realm_name, realm_slug, user_id)
                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
             `, [character_id, name, level, character_class, faction, gender, realm_id, realm_name, realm_slug, user_id]);
         } catch (error) {
@@ -46,12 +46,12 @@ class WoWProfileData {
         }
     }
 
-    static async createCharacterLeaderboard(character_id, character_name, realm_id, chacter_faction) {
+    static async createCharacterLeaderboard(memberId, memberName, memberRealmId, memberRealmSlug, memberFaction) {
         try {
             await db.query(`
-                INSERT INTO characters (character_id, character_name, realm_id, chacter_faction)
-                VALUES ($1, $2, $3, $4)
-            `, [character_id, character_name, realm_id, chacter_faction]);
+                INSERT INTO characters (character_id, character_name, realm_id, realm_slug, character_faction)
+                VALUES ($1, $2, $3, $4, $5)
+            `, [memberId, memberName, memberRealmId, memberRealmSlug, memberFaction]);
         } catch (error) {
             console.log('ERROR CREATING CHARACTERS: ', error);
             if (error.code === '23505') {
@@ -85,13 +85,13 @@ class WoWProfileData {
         }
     };
 
-    static async updateCharacterLeaderboard(character_id, character_name, realm_id, chacter_faction) {
+    static async updateCharacterLeaderboard(memberId, memberName, memberRealmId, memberRealmSlug, memberFaction) {
         try {
             await db.query(`
                 UPDATE characters 
-                SET character_name = $2, realm_id = $3, chacter_faction = $4
+                SET character_name = $2, realm_id = $3, realm_slug=$4, character_faction = $5
                 WHERE character_id = $1
-            `, [character_id, character_name, realm_id, chacter_faction]);
+            `, [memberId, memberName, memberRealmId, memberRealmSlug, memberFaction]);
         } catch (error) {
             console.log('UPDATING ERROR', error);
             throw error;

@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS "characters" (
     character_name VARCHAR(255) NOT NULL,
     character_class VARCHAR(255),
     character_level INT,
-    chacter_faction VARCHAR(255),
+    character_faction VARCHAR(255),
     character_gender VARCHAR(255),
     average_item_level INT,
     equipped_item_level INT,
@@ -81,14 +81,10 @@ CREATE TABLE IF NOT EXISTS "mounts" (
 
 CREATE TABLE IF NOT EXISTS "keystone_leaderboard" (
     leaderboard_id VARCHAR(255) PRIMARY KEY,
-    character_id INT REFERENCES characters(character_id) ON DELETE CASCADE,
     dungeon_id INT REFERENCES dungeons(dungeon_id) ON DELETE CASCADE,
     current_period_leaderboard INT,
-    group_ranking INT,
-    keystone_level INT,
-    mythic_rating DECIMAL,
-    mythic_rating_color JSON,
-    realm_id INT REFERENCES realms(realm_id),
+    leading_groups TEXT,
+    affixes TEXT,
     connected_realm_id INT,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

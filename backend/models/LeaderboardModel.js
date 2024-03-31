@@ -28,21 +28,11 @@ class WoWLeaderboardModel {
     static async getLeaderboardByConnectedRealmId(connectedRealmId) {
         try {
             const result = await db.query(`
-                SELECT 
-                    kl.leaderboard_id AS "leaderboardId",
-                    kl.dungeon_id AS "dungeonId",
-                    kl.group_ranking AS "groupRanking",
-                    kl.keystone_level AS "keystoneLevel",
-                    kl.mythic_rating AS "mythicRating",
-                    kl.mythic_rating_color AS "mythicRatingColor",
-                    c.character_name AS "characterName",
-                    r.realm_name AS "realmName",
-                    r.realm_slug AS "realmSlug"
+                SELECT * 
                 FROM keystone_leaderboard kl
                 INNER JOIN dungeons d ON kl.dungeon_id = d.dungeon_id
-                INNER JOIN characters c ON kl.character_id = c.character_id
-                INNER JOIN realms r ON kl.realm_id = r.realm_id
-                WHERE kl.connected_realm_id = $1
+                WHERE connected_realm_id = $1
+                ORDER BY d.dungeon_id
                 `, [connectedRealmId]);
             return result.rows;
         } catch (err) {
@@ -70,24 +60,13 @@ class WoWLeaderboardModel {
         }
     }
 
-    static async insertLeaderboard(dungeon_id, current_period, group_ranking, keystone_level, mythic_rating, mythic_rating_color, character_id, realm_id, leaderboard_id, connectedRealmId) {
+    static async insertLeaderboard(dungeonId, periodId, leadingGroups, affixes, leaderboardId, connectedRealmId) {
         try {
             await db.query(`
                 INSERT INTO keystone_leaderboard 
-                (dungeon_id, current_period_leaderboard, group_ranking, keystone_level, mythic_rating, mythic_rating_color, character_id, realm_id, leaderboard_id, connected_realm_id)
-                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
-                `, [
-                    dungeon_id,
-                    current_period,
-                    group_ranking,
-                    keystone_level,
-                    mythic_rating,
-                    mythic_rating_color,
-                    character_id,
-                    realm_id,
-                    leaderboard_id,
-                    connectedRealmId
-                ]);
+                (leaderboard_id, dungeon_id, current_period_leaderboard, leading_groups, affixes, connected_realm_id)
+                VALUES ($1, $2, $3, $4, $5, $6)
+                `, [leaderboardId, dungeonId, periodId, leadingGroups, affixes, connectedRealmId]);
             return 'Inserted Leaderboard';
         } catch (err) {
             console.log('LEADERBOARD INSERT ERROR: ', err);
@@ -95,13 +74,13 @@ class WoWLeaderboardModel {
         }
     }
 
-    static async updateLeaderboard(group_ranking, keystone_level, mythic_rating, mythic_rating_color, leaderboard_id) {
+    static async updateLeaderboard(leadingGroups, affixes, dungeonId, periodId, leaderboardId) {
         try {
             await db.query(`
                 UPDATE keystone_leaderboard 
-                SET group_ranking = $1, keystone_level = $2, mythic_rating = $3, mythic_rating_color = $4
+                SET leading_groups = $1, affixes = $2, dungeon_id = $3, current_period_leaderboard = $4
                 WHERE leaderboard_id = $5
-                `, [group_ranking, keystone_level, mythic_rating, mythic_rating_color, leaderboard_id]);
+                `, [leadingGroups, affixes, dungeonId, periodId, leaderboardId]);
             return 'Updated Leaderboard';
         } catch (err) {
             console.log('LEADERBOARD updateLeaderboard ERROR: ', err);
