@@ -4,7 +4,7 @@ import UserHome from '../../pages/user-page/UserHome';
 import HomePage from '../../pages/home-page/HomePage';
 import Register from '../../pages/register-page/Register';
 import Login from '../../pages/login-page/Login';
-import Guilds from '../../pages/guilds-page/Guilds';
+import PublicGuilds from '../../pages/guilds-page/PublicGuilds';
 import Mounts from '../../pages/mounts-page/Mounts';
 import Dungeons from '../../pages/dungeons-page/Dungeons';
 
@@ -14,7 +14,7 @@ const RoutesComponent = () => {
             <Route path='/' element={<HomePage />} />
             <Route path='/register' element={<Register />} />
             <Route path='/login' element={<Login />} />
-            <Route path='/guilds' element={<Guilds />} />
+            <Route path='/public-guilds' element={<PublicGuilds />} />
             <Route path='/mounts' element={<Mounts />} />
             <Route path='/dungeons' element={<Dungeons />} />
 

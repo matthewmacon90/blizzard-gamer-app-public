@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import AuthContext from "../../context/authContext";
-import logout from "../../helpers/logout";
+import logout from "../../utility/logout";
 import './NavbarStyles.css';
 
 const NavBar = () => {
@@ -11,7 +11,7 @@ const NavBar = () => {
   return (
     <nav className="navbar-container">
       <Link to="/" className="nav-link-styles" aria-label="Home Page">Home</Link>
-      <Link to="/guilds" className="nav-link-styles" aria-label="Guilds Page">Guilds</Link>
+      <Link to="/public-guilds" className="nav-link-styles" aria-label="Guilds Page">Guilds</Link>
       <Link to="/mounts" className="nav-link-styles" aria-label="Mounts Page">Mounts</Link>
       <Link to="/dungeons" className="nav-link-styles" aria-label="Mythic+ Leaderboard">Mythic+ Leaderboard</Link>
       { currentUser ? (

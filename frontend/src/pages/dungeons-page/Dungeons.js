@@ -11,6 +11,7 @@ const Dungeons = () => {
     async function fetchDungeonLeaderBoard(realmId) {
         try {
             const result = await Api.getDungeonByRealmId(realmId);
+            console.log('result dungeons: ', result);
             setDungeons(result);
         } catch (err) {
         }
