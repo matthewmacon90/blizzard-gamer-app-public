@@ -31,10 +31,24 @@ class WoWProfileData {
         }
     }
 
+    static async getCharactersByRealmId(realmId) {
+        try {
+            const result = await db.query(`
+                SELECT * 
+                FROM characters 
+                WHERE realm_id = $1
+                `, [realmId]);
+            return result.rows;
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    }
+
     static async insertCharacter(character_id, name, level, character_class, faction, gender, realm_id, realm_name, realm_slug, user_id) {
         try {
             await db.query(`
-                INSERT INTO characters (character_id, character_name, character_level, character_class, chacter_faction, character_gender, realm_id, realm_name, realm_slug, user_id)
+                INSERT INTO characters (character_id, character_name, character_level, character_class, character_faction, character_gender, realm_id, realm_name, realm_slug, user_id)
                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
             `, [character_id, name, level, character_class, faction, gender, realm_id, realm_name, realm_slug, user_id]);
         } catch (error) {
@@ -46,16 +60,16 @@ class WoWProfileData {
         }
     }
 
-    static async createCharacterLeaderboard(character_id, character_name, realm_id, chacter_faction) {
+    static async createCharacterLeaderboard(memberId, memberName, memberRealmId, memberRealmSlug, memberFaction) {
         try {
             await db.query(`
-                INSERT INTO characters (character_id, character_name, realm_id, chacter_faction)
-                VALUES ($1, $2, $3, $4)
-            `, [character_id, character_name, realm_id, chacter_faction]);
+                INSERT INTO characters (character_id, character_name, realm_id, realm_slug, character_faction)
+                VALUES ($1, $2, $3, $4, $5)
+            `, [memberId, memberName, memberRealmId, memberRealmSlug, memberFaction]);
         } catch (error) {
             console.log('ERROR CREATING CHARACTERS: ', error);
             if (error.code === '23505') {
-                return new ExpressError('Character already exists', 400);
+                throw new ExpressError('Character already exists', 400);
             }
             throw error;
         }
@@ -85,15 +99,42 @@ class WoWProfileData {
         }
     };
 
-    static async updateCharacterLeaderboard(character_id, character_name, realm_id, chacter_faction) {
+    static async updateCharacter(characterId, name, level, avgItem, equipItem, achievPoints, activeTitle, gender, faction, race, charClass, activeSpec, lastLogin, realmId, realmName) {
         try {
             await db.query(`
                 UPDATE characters 
-                SET character_name = $2, realm_id = $3, chacter_faction = $4
+                SET character_name = $2, character_level = $3, average_item_level = $4, equipped_item_level = $5, achievement_points = $6, active_title = $7, character_gender = $8, character_faction = $9, character_race = $10, character_class = $11, active_spec = $12, last_login = $13, realm_id = $14, realm_name = $15
                 WHERE character_id = $1
-            `, [character_id, character_name, realm_id, chacter_faction]);
+            `, [characterId, name, level, avgItem, equipItem, achievPoints, activeTitle, gender, faction, race, charClass, activeSpec, lastLogin, realmId, realmName]);
         } catch (error) {
             console.log('UPDATING ERROR', error);
+            throw error;
+        }
+    };
+
+    static async updateCharacterLeaderboard(memberId, memberName, memberRealmId, memberRealmSlug, memberFaction) {
+        try {
+            await db.query(`
+                UPDATE characters 
+                SET character_name = $2, realm_id = $3, realm_slug=$4, character_faction = $5
+                WHERE character_id = $1
+            `, [memberId, memberName, memberRealmId, memberRealmSlug, memberFaction]);
+        } catch (error) {
+            console.log('UPDATING updateCharacterLeaderboard ERROR', error);
+            throw error;
+        }
+    };
+
+    static async deleteCharacterByName(characterName) {
+        try {
+            await db.query(`
+                DELETE FROM characters
+                WHERE character_name = $1
+                RETURNING *
+            `, [characterName]);
+            return 'Character Deleted';
+        } catch (error) {
+            console.log('deleteCharacterByName ERROR', error);
             throw error;
         }
     };

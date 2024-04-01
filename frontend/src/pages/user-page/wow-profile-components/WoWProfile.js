@@ -1,6 +1,6 @@
 import WoWCharacters from "./WoWCharacters";
 import {useState, useEffect } from "react";
-import {checkTokenDate} from "../../../helpers/checkTokenDate";
+import {checkTokenDate} from "../../../utility/checkTokenDate";
 
 const WoWProfile = ({user, setUser}) => {
     const [isExpired, setIsExpired] = useState(false);

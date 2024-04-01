@@ -20,6 +20,15 @@ class WoWDungeonModel {
         }
     }
 
+    static async getDungeonById(dungeon_id) {
+        try {
+            const result = await db.query(`SELECT * FROM dungeons WHERE dungeon_id = $1`, [dungeon_id]);
+            return result.rows[0];
+        } catch (err) {
+            throw new NotFoundError('Dungeon Not Found', 404);
+        }
+    }
+
     static async insertDungeon(dungeon_id, dungeon_name, current_period) {
         try {
             await db.query(`
