@@ -19,7 +19,6 @@ class WoWGuildApi extends WoWApi {
         try {
             const realm = await WoWRealmModel.getRealmBySlug(realmSlug);
             const charactersByRealm = await WoWProfileData.getCharactersByRealmId(realm.realm_id);
-            console.log('charactersByRealm', charactersByRealm.length);
 
             for (let character of charactersByRealm) {
                 const characterLower = character.character_name.toLowerCase();
@@ -62,13 +61,7 @@ class WoWGuildApi extends WoWApi {
             }
 
             const guildsByRealm = await WoWGuildsModel.getGuildsByRealmId(realm.realm_id);
-            console.log('guildsByRealm', guildsByRealm, guildsByRealm.length);
-            // const characterData = await axios.get(`https://us.api.blizzard.com/profile/wow/character/area-52/zelrus?namespace=profile-us`, this.authorizationHeaders);
-
-            // const formattedCharacterData = cleanCharacterData(characterData.data);
-
-            // const data = await gatherData(this.authorizationHeaders, realmSlug, guildName);
-            // const periodIndex = await axios.get('https://us.api.blizzard.com/data/wow/mythic-keystone/period/index?namespace=dynamic-us', this.authorizationHeaders);
+            return guildsByRealm;
         } catch (error) {
             console.log('buildGuildProfile', error);
         }

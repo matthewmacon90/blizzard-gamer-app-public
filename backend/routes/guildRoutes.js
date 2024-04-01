@@ -13,8 +13,7 @@ router.get('/', verifyToken, async (req, res, next) => {
         const realm = await WoWRealmModel.getRealmBySlug(req.query.realmSlug);
         
         const guilds = await WoWGuildsModel.getGuildsByRealmId(realm.realm_id);
-        console.log('GUILD ROUTES', guilds);
-        
+
         //TODO: Implement the WoWGuildApi class to get guild data from Blizzard API
         // const wowGuildApi = new WoWGuildApi(decodedToken.btoken);
         // const result = await wowGuildApi.buildGuildProfile(req.query.realmSlug);

@@ -69,7 +69,7 @@ class WoWProfileData {
         } catch (error) {
             console.log('ERROR CREATING CHARACTERS: ', error);
             if (error.code === '23505') {
-                return new ExpressError('Character already exists', 400);
+                throw new ExpressError('Character already exists', 400);
             }
             throw error;
         }
@@ -120,7 +120,7 @@ class WoWProfileData {
                 WHERE character_id = $1
             `, [memberId, memberName, memberRealmId, memberRealmSlug, memberFaction]);
         } catch (error) {
-            console.log('UPDATING ERROR', error);
+            console.log('UPDATING updateCharacterLeaderboard ERROR', error);
             throw error;
         }
     };

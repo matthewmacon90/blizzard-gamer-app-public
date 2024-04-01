@@ -36,7 +36,7 @@ router.get('/:realmId', async (req, res, next) => {
 
         return res.status(200).json(formattedLeaderboardData);
     } catch (err) {
-        console.log('Dungeon Routes ERROR', err);
+        console.log('Dungeon Routes ID ERROR', err);
         next(err);
     }
 });
