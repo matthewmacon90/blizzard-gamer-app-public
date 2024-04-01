@@ -36,8 +36,11 @@ CREATE TABLE IF NOT EXISTS "dungeons" (
 
 CREATE TABLE IF NOT EXISTS "guilds" (
     guild_id INT PRIMARY KEY,
-    guild_name VARCHAR(30) UNIQUE NOT NULL,
-    guild_description TEXT NOT NULL,
+    guild_name VARCHAR(30),
+    guild_description TEXT,
+    guild_faction VARCHAR(255),
+    guild_realm_id INT REFERENCES realms(realm_id) ON DELETE CASCADE,
+    guild_realm_slug VARCHAR(255),
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -57,14 +60,18 @@ CREATE TABLE IF NOT EXISTS "characters" (
     character_class VARCHAR(255),
     character_level INT,
     character_faction VARCHAR(255),
+    character_race VARCHAR(255),
     character_gender VARCHAR(255),
     average_item_level INT,
     equipped_item_level INT,
+    active_title VARCHAR(255),
+    active_spec VARCHAR(255),
     achievement_points INT,
     mythic_rating DECIMAL,
     realm_id INT NOT NULL,
     realm_name VARCHAR(255),
     realm_slug VARCHAR(255),
+    last_login TIMESTAMP,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     is_favorite BOOLEAN NOT NULL DEFAULT FALSE
 );

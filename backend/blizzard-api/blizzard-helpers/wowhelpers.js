@@ -53,7 +53,6 @@ const compareDates = (currentDate, dbDate=null) => {
     return diffInDays === 2;
 };
 
-
 const cleanDungeonData = (data) => {
     return (
         data.map((dungeon) => {
@@ -189,6 +188,36 @@ const formatLeaderboardData = (data) => {
     });
 };
 
+const cleanCharacterData = (data) => {
+    const epochTime =  data.last_login_timestamp;
+    const date = new Date(epochTime);
+    const timestamp = date.toISOString();
+
+    const result = {
+        characterId: data.id,
+        name: data.name,
+        level: data.level,
+        averageItemLevel: data.average_item_level,
+        equippedItemLevel: data.equipped_item_level,
+        achievementPoints: data.achievement_points,
+        activeTitle: data.active_title ? data.active_title.name.en_US : null,
+        gender: data.gender.name.en_US,
+        faction: data.faction.name.en_US,
+        race: data.race.name.en_US,
+        characterClass: data.character_class.name.en_US,
+        activeSpec: data.active_spec.name.en_US,
+        lastLogin: timestamp,
+        realmId: data.realm.id,
+        realmName: data.realm.name.en_US,
+        guildId: data.guild ? data.guild.id : null,
+        guildName: data.guild ? data.guild.name : null,
+        guildRealmId: data.guild ? data.guild.realm.id : null,
+        guildRealmSlug: data.guild ? data.guild.realm.slug: null,
+        guildFaction: data.guild ? data.guild.faction.type : null,
+    };
+    return result;
+}
+
 module.exports = {
     getCurrentDate,
     filterCharacterData,
@@ -202,6 +231,7 @@ module.exports = {
     cleanMemberData,
     isCurrent,
     formatLeaderboardData,
+    cleanCharacterData
 };
 
 

@@ -154,7 +154,7 @@ class Api {
             const token = this.token;
             const headers = { 'authorization': `Bearer ${token}` };
             const result = await this.request(`guilds`, { realmSlug }, 'get', headers);
-            
+            return result;
         } catch (err) {
             throw err;
         }

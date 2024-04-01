@@ -27,10 +27,13 @@ router.get('/:realmId', async (req, res, next) => {
 
         const leaderboardData = await WoWLeaderboardModel.getLeaderboardByConnectedRealmId(realmData.connected_realm_id);
         const formattedLeaderboardData = formatLeaderboardData(leaderboardData);
+        
+        if (leaderboardData.length === 0) {
+            const wowDungeonApi = new WoWDungeonApi(decodedToken.btoken);
+            const dungeonLeaderBoard = await wowDungeonApi.getLeaderBoardIdx(realmData.connected_realm_id);
+            return res.status(200).json(dungeonLeaderBoard);
+        }
 
-        //TODO: I need to add this code back in to get other realms.
-        // const wowDungeonApi = new WoWDungeonApi(decodedToken.btoken);
-        // const dungeonLeaderBoard = await wowDungeonApi.getLeaderBoardIdx(realmData.connected_realm_id);
         return res.status(200).json(formattedLeaderboardData);
     } catch (err) {
         console.log('Dungeon Routes ERROR', err);

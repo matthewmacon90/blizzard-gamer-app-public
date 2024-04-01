@@ -1,7 +1,5 @@
 import LeaderboardTable from "./LeaderboardTable";
 const LeaderBoardCard = ({ dungeons }) => {
-    console.log('dungeons: ', dungeons);
-    // const dungeonData = dungeons.dungeonData;
     return (
         <div className="LeaderBoardCard-container">
             {dungeons ? dungeons.map((dungeon) => (

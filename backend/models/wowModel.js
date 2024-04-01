@@ -31,6 +31,20 @@ class WoWProfileData {
         }
     }
 
+    static async getCharactersByRealmId(realmId) {
+        try {
+            const result = await db.query(`
+                SELECT * 
+                FROM characters 
+                WHERE realm_id = $1
+                `, [realmId]);
+            return result.rows;
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    }
+
     static async insertCharacter(character_id, name, level, character_class, faction, gender, realm_id, realm_name, realm_slug, user_id) {
         try {
             await db.query(`
@@ -85,6 +99,19 @@ class WoWProfileData {
         }
     };
 
+    static async updateCharacter(characterId, name, level, avgItem, equipItem, achievPoints, activeTitle, gender, faction, race, charClass, activeSpec, lastLogin, realmId, realmName) {
+        try {
+            await db.query(`
+                UPDATE characters 
+                SET character_name = $2, character_level = $3, average_item_level = $4, equipped_item_level = $5, achievement_points = $6, active_title = $7, character_gender = $8, character_faction = $9, character_race = $10, character_class = $11, active_spec = $12, last_login = $13, realm_id = $14, realm_name = $15
+                WHERE character_id = $1
+            `, [characterId, name, level, avgItem, equipItem, achievPoints, activeTitle, gender, faction, race, charClass, activeSpec, lastLogin, realmId, realmName]);
+        } catch (error) {
+            console.log('UPDATING ERROR', error);
+            throw error;
+        }
+    };
+
     static async updateCharacterLeaderboard(memberId, memberName, memberRealmId, memberRealmSlug, memberFaction) {
         try {
             await db.query(`
@@ -94,6 +121,20 @@ class WoWProfileData {
             `, [memberId, memberName, memberRealmId, memberRealmSlug, memberFaction]);
         } catch (error) {
             console.log('UPDATING ERROR', error);
+            throw error;
+        }
+    };
+
+    static async deleteCharacterByName(characterName) {
+        try {
+            await db.query(`
+                DELETE FROM characters
+                WHERE character_name = $1
+                RETURNING *
+            `, [characterName]);
+            return 'Character Deleted';
+        } catch (error) {
+            console.log('deleteCharacterByName ERROR', error);
             throw error;
         }
     };

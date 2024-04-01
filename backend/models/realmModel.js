@@ -23,6 +23,15 @@ class WoWRealmModel {
         }
     }
 
+    static async getRealmBySlug(realmSlug) {
+        try {
+            const result = await db.query(`SELECT * FROM realms WHERE realm_slug = $1`, [realmSlug]);
+            return result.rows[0];
+        } catch (err) {
+            throw new NotFoundError('Realm not found', 404);
+        }
+    }
+
     static async insertRealm(realm_id, realm_name, connected_realm_id, realm_slug) {
         try {
             await db.query(`

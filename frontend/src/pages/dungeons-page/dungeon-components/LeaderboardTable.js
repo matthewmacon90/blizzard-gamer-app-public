@@ -1,9 +1,6 @@
 import Members from "./Members";
 
 const LeaderboardTable = ({groups}) => {
-    console.log('groups: ', groups); 
-    // const {leadingGroups} = groups;
-    // const dungeonGroups = leadingGroups;
     return (
         <>
             {groups.map((group, idx) => (

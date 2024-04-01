@@ -1,9 +1,8 @@
 const axios = require('axios');
-const {cleanDungeonLeaderBoardIdx, cleanKeyStoneData, cleanMemberData, isCurrent } = require('./blizzard-helpers/wowhelpers.js');
+const {cleanDungeonLeaderBoardIdx, cleanKeyStoneData, cleanMemberData } = require('./blizzard-helpers/wowhelpers.js');
 const WoWApi = require('./wowApi.js');
 const WoWDungeonModel = require('../models/dungeonModel.js');
 const WoWProfileData = require('../models/wowModel.js');
-const WoWRealmModel = require('../models/realmModel.js');
 const WoWLeaderboardModel = require('../models/leaderboardModel.js');
 
 class WoWDungeonApi extends WoWApi {
@@ -16,6 +15,7 @@ class WoWDungeonApi extends WoWApi {
 
     async getLeaderBoardIdx(connectedRealmId) {
         try {
+            //TODO:Implement a check to see if the data is current by using the date last pulled.
             // const checkDataDate = await WoWLeaderboardModel.getLeaderboardById();
             // const dbDate = checkDataDate.length > 0 ? checkDataDate[0].date : null;
             // const compareDatesResult = isCurrent(dbDate);
