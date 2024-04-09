@@ -2,12 +2,14 @@ import { useState, useEffect, useContext } from 'react';
 import Api from '../../api';
 import Profile from './user-components/Profile';
 import AuthContext from '../../context/authContext';
+import UserContext from '../../context/userContext';
 import './UserHomeStyles.css';
 
 const UserHome = () => {
     const auth = useContext(AuthContext);
     const [user, setUser] = useState(null);
     const [message, setMessage] = useState('');
+    console.log('user', user);
 
     useEffect(() => {
         async function fetchData() {
@@ -39,8 +41,10 @@ const UserHome = () => {
 
     return (
         <div className='UserHome-Container'>
-            <h1>Welcome to the User Profile Page</h1>
-            {user && <Profile user={user} setUser={setUser} />}
+            <UserContext.Provider value={{ user, setUser }}>
+                <h1>Welcome to the User Profile Page</h1>
+                {user && <Profile />}
+            </UserContext.Provider>
         </div>
     );
 };

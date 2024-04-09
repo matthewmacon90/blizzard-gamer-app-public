@@ -1,7 +1,10 @@
+import { useContext } from "react";
 import WoWProfile from "../wow-profile-components/WoWProfile";
+import UserContext from "../../../context/userContext";
 import'./CurrentProfileStyles.css';
 
-const CurrentProfileData = ({ user, setUser, edit, editProfile, deleteUser }) => {
+const CurrentProfileData = ({edit, editProfile, deleteUser }) => {
+    const { user, setUser } = useContext(UserContext);
     const { username, email, firstname, lastname, battletag = null, wow_characters } = user;
     return (
         <div className="CurrentProfile-Container">

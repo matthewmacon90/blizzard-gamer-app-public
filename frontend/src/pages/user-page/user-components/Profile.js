@@ -1,15 +1,16 @@
-import EditProfile from "./EditProfile";
-import { useState } from "react";
-import CurrentProfileData from "./CurrentProfileData";
-import Api from "../../../api";
+import { useState, useContext } from "react";
 import { useNavigate } from 'react-router-dom';
-import { useContext } from "react";
+import CurrentProfileData from "./CurrentProfileData";
+import EditProfile from "./EditProfile";
+import Api from "../../../api";
 import AuthContext from "../../../context/authContext";
+import UserContext from "../../../context/userContext";
 import './ProfileStyles.css'
 
-const Profile = ({ user, setUser }) => {
+const Profile = () => {
     const navigate = useNavigate();
     const auth = useContext(AuthContext);
+    const {user, setUser} = useContext(UserContext);
     const [edit, setEdit] = useState(false);
     const [message, setMessage] = useState('');
 
@@ -52,7 +53,7 @@ const Profile = ({ user, setUser }) => {
         <div className="Profile-Container">
             <h2>Profile Information</h2>
             {edit ? (<EditProfile user={user} edit={edit} editProfile={editProfile} updateUser={updateUser} />) :
-                (<CurrentProfileData user={user} setUser={setUser} edit={edit} editProfile={editProfile} deleteUser={deleteUser} />)}
+                (<CurrentProfileData edit={edit} editProfile={editProfile} deleteUser={deleteUser} />)}
             {message && <p>{message}</p>}
         </div>
     );
