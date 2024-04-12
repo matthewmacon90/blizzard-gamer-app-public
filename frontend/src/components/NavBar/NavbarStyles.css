@@ -1,8 +1,23 @@
-.nav-link-styles {
-    background-color: #555; 
+.navbar-container {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.navbar-list {
+    display: flex;
+    padding: 0;
+    gap: 10px
+}
+
+.navbar-list li {
+    list-style: none;
+}
+
+.navbar-list li a {
+  background-color: #555; 
     color: white; 
     padding: 10px 20px; 
-    margin: 0 10px; 
     border-radius: 5px; 
     text-decoration: none; 
     display: inline-block; 
@@ -10,17 +25,33 @@
     width: auto; 
     transition: background-color 0.3s; 
     cursor: pointer; 
-  }
+}
 
-  .nav-link-styles:hover {
+.navbar-list li a:hover {
     background-color: #666; 
-  }
+}
 
-  .nav-button-styles {
+.nav-link-styles {
     background-color: #555; 
     color: white; 
     padding: 10px 20px; 
-    margin: 0 10px; 
+    border-radius: 5px; 
+    text-decoration: none; 
+    display: inline-block; 
+    text-align: center; 
+    width: auto; 
+    transition: background-color 0.3s; 
+    cursor: pointer; 
+}
+
+.nav-link-styles:hover {
+    background-color: #666; 
+}
+
+.nav-button-styles {
+    background-color: #555; 
+    color: white; 
+    padding: 10px 20px; 
     border-radius: 5px; 
     border: none; 
     display: inline-block; 
@@ -30,13 +61,35 @@
     cursor: pointer; 
     text-decoration: none; 
     font: inherit; 
-  }
+    width: 100%;
+}
 
-  .nav-button-styles:hover {
+.nav-button-styles:hover {
     background-color: #666; 
-  }
+}
 
-.nav-link-styles:focus, .nav-button-styles:focus {
+.nav-list li:focus, .nav-button-styles:focus {
     outline: 2px solid #fff; 
     outline-offset: 2px;
-  }
+}
+
+            /* DROP DOWN/Private Container */
+.private-links-container {
+    position: relative;
+}
+.profile-dropdown-list {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+.profile-dropdown-list li{
+    width: 100%;
+}
+.private-links-container > *:not(:first-child) {
+    display: none;
+    position: absolute;
+    padding-top: 1px;
+}
+.private-links-container:hover > *:not(:first-child) {
+    display: flex;
+}

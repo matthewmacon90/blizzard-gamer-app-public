@@ -1,32 +1,27 @@
-import { Link } from "react-router-dom";
 import { useContext } from "react";
 import AuthContext from "../../context/authContext";
-import logout from "../../utility/logout";
+import PublicLinks from "./navbar-components/PublicLinks";
+import PrivateLinks from "./navbar-components/PrivateLinks";
+import RegisterLoginLinks from "./navbar-components/RegisterLoginLinks";
 import './NavbarStyles.css';
+
 
 const NavBar = () => {
   const auth = useContext(AuthContext);
   const currentUser = auth.currentUser;
+  const setCurrentUser = auth.setCurrentUser;
 
   return (
     <nav className="navbar-container">
-      <Link to="/" className="nav-link-styles" aria-label="Home Page">Home</Link>
-      <Link to="/public-guilds" className="nav-link-styles" aria-label="Guilds Page">Guilds</Link>
-      <Link to="/mounts" className="nav-link-styles" aria-label="Mounts Page">Mounts</Link>
-      <Link to="/dungeons" className="nav-link-styles" aria-label="Mythic+ Leaderboard">Mythic+ Leaderboard</Link>
-      { currentUser ? (
-          <>
-            <button className="nav-button-styles" onClick={() => logout(auth.setCurrentUser)} aria-label="Logout">Logout</button>
-            <Link to="/my-profile" className="nav-link-styles" aria-label="My Profile">My Profile</Link>
-          </>
-
+      <ul className="navbar-list">
+        <PublicLinks />
+        { currentUser ? (
+          <PrivateLinks setCurrentUser={setCurrentUser} />
         ) : (
-            <>
-              <Link to="/register" className="nav-link-styles" aria-label="Register">Register</Link>
-              <Link to="/login" className="nav-link-styles" aria-label="Login">Login</Link>
-            </>
+          <RegisterLoginLinks />
         )
       }
+      </ul>
     </nav>
   );
 };
