@@ -15,6 +15,9 @@ const PublicLinks = () => {
             <li>
                 <Link to="/dungeons" aria-label="Mythic+ Leaderboard">Mythic+ Leaderboard</Link>
             </li>
+            <li>
+                <Link to="/dungeons" aria-label="Mythic+ Leaderboard">World of Warcraft</Link>
+            </li>
         </>
     )
 };
