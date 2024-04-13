@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import Dropdown from "../../dropdown/Dropdown";
 
 const PublicLinks = () => {
     return (
@@ -17,6 +18,7 @@ const PublicLinks = () => {
             </li>
             <li>
                 <Link to="/dungeons" aria-label="Mythic+ Leaderboard">World of Warcraft</Link>
+                <Dropdown />
             </li>
         </>
     )
