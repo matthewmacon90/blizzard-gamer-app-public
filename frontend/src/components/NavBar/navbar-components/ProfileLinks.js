@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import ProfileDropdown from "./ProfileDropdown";
 
-const PrivateLinks = ({setCurrentUser}) => {
+const ProfileLinks = ({setCurrentUser}) => {
     const [showProfileDropdown, setShowProfileDropdown] = useState(false);
     const profileDropdownRef = useRef(null);
     const profileBtnClass =  showProfileDropdown ? `nav-button-styles profile-btn` : `nav-button-styles`;
@@ -21,11 +21,15 @@ const PrivateLinks = ({setCurrentUser}) => {
     }, []);
 
     return (
-        <div className="private-links-container" ref={profileDropdownRef}>
-            <button className={profileBtnClass} onClick={() => setShowProfileDropdown(!showProfileDropdown)}>Profile</button>
-            {showProfileDropdown && <ProfileDropdown setCurrentUser={setCurrentUser} />}
-        </div>
+        <>
+            <li>
+                <div className="profile-links-container" ref={profileDropdownRef}>
+                    <button className={profileBtnClass} onClick={() => setShowProfileDropdown(!showProfileDropdown)}>Profile</button>
+                    {showProfileDropdown && <ProfileDropdown setCurrentUser={setCurrentUser} />}
+                </div>
+            </li>
+        </>
     )
 };
 
-export default PrivateLinks;
+export default ProfileLinks;
