@@ -5,7 +5,7 @@ const ProfileDropdown = ({setCurrentUser}) => {
     return (
         <ul className="profile-dropdown-list">
             <li>
-                <Link to="/my-profile" className="nav-link-styles profile-btn" aria-label="My Profile">My Profile</Link>
+                <Link to="/my-profile" className="nav-link-styles" aria-label="My Profile">My Profile</Link>
             </li>
             <li>
                 <button className="nav-button-styles" onClick={() => logout(setCurrentUser)} aria-label="Logout">Logout</button>
