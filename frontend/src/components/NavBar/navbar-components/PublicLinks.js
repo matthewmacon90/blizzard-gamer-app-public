@@ -6,7 +6,6 @@ import links from '../../../data/links/publicLinks';
 const PublicLinks = () => {
     const [showDropdown, setShowDropdown] = useState(false);
     const dropdownRef = useRef(null);
-    console.log(dropdownRef);
 
     useEffect(() => {
         const handleClick = (e) => {
