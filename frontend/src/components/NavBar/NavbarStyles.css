@@ -14,19 +14,6 @@
     list-style: none;
 }
 
-.navbar-list li a {
-  background-color: #555; 
-    color: white; 
-    padding: 10px 20px; 
-    border-radius: 5px; 
-    text-decoration: none; 
-    display: inline-block; 
-    text-align: center; 
-    width: auto; 
-    transition: background-color 0.3s; 
-    cursor: pointer; 
-}
-
 .navbar-list li a:hover {
     background-color: #666; 
 }
