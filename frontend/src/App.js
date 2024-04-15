@@ -8,6 +8,7 @@ import Footer from './components/footer/Footer';
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
+  console.log('currentUser', currentUser);
 
   useEffect(() => {
     async function checkToken() {

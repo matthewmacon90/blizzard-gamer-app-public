@@ -8,16 +8,20 @@ const PublicLinks = () => {
     const dropdownRef = useRef(null);
 
     useEffect(() => {
-        const handleClick = (e) => {
+        const handleOutsideClick = (e) => {
             if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
                 setShowDropdown(false);
             }
         }
-        document.addEventListener('mousedown', handleClick);
+        document.addEventListener('mousedown', handleOutsideClick);
         return () => {
-            document.removeEventListener('mousedown', handleClick);
+            document.removeEventListener('mousedown', handleOutsideClick);
         }
     }, []);
+
+    const handleClick = () => {
+        setShowDropdown(!showDropdown);
+    }
 
     return (
         <>
@@ -26,7 +30,7 @@ const PublicLinks = () => {
             </li>
             <li>
                 <div className="dropdown-container"  ref={dropdownRef}>
-                    <button onClick={() => setShowDropdown(!showDropdown)} className="nav-button-styles">World of Warcraft</button>
+                    <button onClick={handleClick} className="nav-button-styles">World of Warcraft</button>
                     {showDropdown && <Dropdown links={links} />}
                 </div>
             </li>

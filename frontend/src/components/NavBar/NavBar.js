@@ -13,12 +13,7 @@ const NavBar = () => {
     <nav className="navbar-container">
       <ul className="navbar-list">
         <PublicLinks />
-        { auth.currentUser ? (
-          <ProfileLinks />
-        ) : (
-          <RegisterLoginLinks />
-        )
-      }
+        { auth.currentUser ? <ProfileLinks /> : <RegisterLoginLinks /> }
       </ul>
     </nav>
   );
