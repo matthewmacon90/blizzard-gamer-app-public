@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import ProfileDropdown from "./ProfileDropdown";
 
-const ProfileLinks = ({setCurrentUser}) => {
+const ProfileLinks = () => {
     const [showProfileDropdown, setShowProfileDropdown] = useState(false);
     const profileDropdownRef = useRef(null);
     const profileBtnClass =  showProfileDropdown ? `nav-button-styles profile-btn` : `nav-button-styles`;
@@ -25,7 +25,7 @@ const ProfileLinks = ({setCurrentUser}) => {
             <li>
                 <div className="profile-links-container" ref={profileDropdownRef}>
                     <button className={profileBtnClass} onClick={() => setShowProfileDropdown(!showProfileDropdown)}>Profile</button>
-                    {showProfileDropdown && <ProfileDropdown setCurrentUser={setCurrentUser} />}
+                    {showProfileDropdown && <ProfileDropdown />}
                 </div>
             </li>
         </>

@@ -8,15 +8,13 @@ import './NavbarStyles.css';
 
 const NavBar = () => {
   const auth = useContext(AuthContext);
-  const currentUser = auth.currentUser;
-  const setCurrentUser = auth.setCurrentUser;
 
   return (
     <nav className="navbar-container">
       <ul className="navbar-list">
         <PublicLinks />
-        { currentUser ? (
-          <ProfileLinks setCurrentUser={setCurrentUser} />
+        { auth.currentUser ? (
+          <ProfileLinks />
         ) : (
           <RegisterLoginLinks />
         )
