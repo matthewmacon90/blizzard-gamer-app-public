@@ -8,8 +8,6 @@ const Dropdown = ({links}) => {
     const auth = useContext(AuthContext);
     const { currentUser } = auth;
     console.log('currentUser', currentUser);
-// TODO: Add a check for currentUser to display the correct links if a user is logged in or not. Such as wow profile page.
-
 
     return (
         <ul className="dropdown-links-list">

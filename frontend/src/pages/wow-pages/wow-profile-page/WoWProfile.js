@@ -1,6 +1,7 @@
-import {useState, useEffect, useContext } from 'react';
+import {useState, useEffect } from 'react';
 import Api from '../../../api';
 import WoWUserContext from '../../../context/wowContext';
+import WoWCharacters from '../wow-components/characters-components/WoWChacters';
 
 const WoWProfile = () => {
     const [wowProfile, setWoWProfile] = useState(null);
@@ -23,6 +24,7 @@ const WoWProfile = () => {
         <div className="wow-profile-container">
             <WoWUserContext.Provider value={{wowProfile, setWoWProfile}}>
                 <h1>WoW Profile</h1>
+                <WoWCharacters />
             </WoWUserContext.Provider>
         </div>
 
