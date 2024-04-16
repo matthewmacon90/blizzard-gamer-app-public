@@ -4,6 +4,7 @@ import WoWUserContext from '../../../context/wowContext';
 import WoWCharacters from '../wow-components/characters-components/WoWChacters';
 
 const WoWProfile = () => {
+    // TODO: When user refreshed page it redirects to login/profile page. User should remain on the same page.
     const [wowProfile, setWoWProfile] = useState(null);
     console.log('wowProfile', wowProfile);
 
