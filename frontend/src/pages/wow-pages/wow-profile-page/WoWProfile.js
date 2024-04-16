@@ -5,25 +5,27 @@ import WoWUserContext from '../../../context/wowContext';
 const WoWProfile = () => {
     const [wowProfile, setWoWProfile] = useState(null);
     console.log('wowProfile', wowProfile);
-    const WoWUserData = useContext(WoWUserContext);
 
     useEffect(() => {
         async function fetchWoWProfile() {
             try {
                 const result = await Api.getWoWProfile();
+                console.log('result', result);
                 setWoWProfile(result);
             } catch (err) {
+                console.log('fetchWoWProfile', err);
             }
         }
         fetchWoWProfile();
     }, []);
 
     return (
-        <WoWUserData.Provider value={{wowProfile, setWoWProfile}}>
-            <div className="wow-profile-container">
+        <div className="wow-profile-container">
+            <WoWUserContext.Provider value={{wowProfile, setWoWProfile}}>
                 <h1>WoW Profile</h1>
-            </div>
-        </WoWUserData.Provider>
+            </WoWUserContext.Provider>
+        </div>
+
     );
 };
 

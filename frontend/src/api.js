@@ -1,5 +1,4 @@
 import axios from "axios";
-import { formatLeadboardData } from "./utility/formatData"; 
 
 const BASE_URL = "http://localhost:3001";
 
