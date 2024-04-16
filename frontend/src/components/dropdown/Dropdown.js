@@ -1,7 +1,8 @@
 import { useContext } from "react";
-import { Link } from "react-router-dom";
-import './DropdownStyles.css';
 import AuthContext from "../../context/authContext";
+import AuthenticatedLinks from "./dropdown-components/AuthenticatedLinks";
+import UnauthenticatedLinks from "./dropdown-components/UnauthenticatedLinks";
+import './DropdownStyles.css';
 
 const Dropdown = ({links}) => {
     const auth = useContext(AuthContext);
@@ -12,13 +13,13 @@ const Dropdown = ({links}) => {
 
     return (
         <ul className="dropdown-links-list">
-            {links.map((link) => {
-                return (
-                    <li className="dropdown-links-list-li" key={link.id}>
-                        <Link className="dropdown-links-styles" to={link.link}>{link.name}</Link>
-                    </li>
+
+            {currentUser ? (
+                    <AuthenticatedLinks links={links} />
+                ) : (
+                    <UnauthenticatedLinks links={links} />
                 )
-            })}
+            }
         </ul>
     )
 };

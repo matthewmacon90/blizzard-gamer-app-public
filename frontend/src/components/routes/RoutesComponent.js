@@ -7,6 +7,7 @@ import Login from '../../pages/login-page/Login';
 import PublicGuilds from '../../pages/guilds-page/PublicGuilds';
 import Mounts from '../../pages/mounts-page/Mounts';
 import Dungeons from '../../pages/dungeons-page/Dungeons';
+import WoWProfile from '../../pages/wow-pages/wow-profile-page/WoWProfile';
 
 const RoutesComponent = () => {
     return (
@@ -21,6 +22,7 @@ const RoutesComponent = () => {
             {/* Protected Routes */}
             <Route element={<PrivateRoutes />} >
                 <Route path='/my-profile' element={<UserHome />} />
+                <Route path='/wow-profile' element={<WoWProfile />} />
             </Route>
         </Routes>
     );

@@ -4,10 +4,10 @@ const RegisterLoginLinks = () => {
     return (
         <>
             <li>
-              <Link to="/register" aria-label="Register">Register</Link>
+              <Link className="nav-link-styles" to="/register" aria-label="Register">Register</Link>
             </li>
             <li>
-                <Link to="/login" aria-label="Login">Login</Link>
+                <Link className="nav-link-styles" to="/login" aria-label="Login">Login</Link>
             </li>
         </>
     )

@@ -31,3 +31,8 @@
     cursor: pointer; 
 }
 
+.drop-down-hr {
+    margin: 0px;
+    border: 0;
+    border-top: 1px solid #FFF;
+}
