@@ -8,8 +8,8 @@ const WoWCharacters = () => {
         <div className="wow-character-container">
             <h2 className="WoWCharacter-Heading">WoW Characters</h2>
             <div className="WoWCharacterCard-Container">
-                {characters && characters.map((character) =>
-                    <div className="wow-charcter" key={character.character_id}>
+                {characters && characters.map((character, index) =>
+                    <div className="wow-charcter" key={index}>
                         <div className="favorite-star-container">
                             <span className="favorite-star">&#9733;</span>
                         </div>

@@ -1,15 +1,17 @@
-import {useState, useEffect } from 'react';
+import {useState, useEffect, useContext } from 'react';
 import Api from '../../../api';
+import AuthContext from '../../../context/authContext';
 import WoWUserContext from '../../../context/wowContext';
 import WoWCharacters from '../wow-components/characters-components/WoWChacters';
 
 const WoWProfile = () => {
     // TODO: When user refreshed page it redirects to login/profile page. User should remain on the same page.
+    const auth = useContext(AuthContext);
     const [wowProfile, setWoWProfile] = useState(null);
     console.log('wowProfile', wowProfile);
 
     useEffect(() => {
-        async function fetchWoWProfile() {
+        async function fetchData() {
             try {
                 const result = await Api.getWoWProfile();
                 console.log('result', result);
@@ -18,8 +20,8 @@ const WoWProfile = () => {
                 console.log('fetchWoWProfile', err);
             }
         }
-        fetchWoWProfile();
-    }, []);
+        fetchData();
+    }, [auth.currentUser]);
 
     return (
         <div className="wow-profile-container">
