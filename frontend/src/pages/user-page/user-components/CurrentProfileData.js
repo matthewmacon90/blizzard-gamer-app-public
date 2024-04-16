@@ -25,10 +25,6 @@ const CurrentProfileData = ({edit, editProfile, deleteUser }) => {
             <div className="CurrentProfileGame-Container">
                 <h2>Game Profiles</h2>
             </div>
-
-            <div className="CurrentProfileWoW-Container">
-                <WoWProfile user={user} setUser={setUser} characters={wow_characters} />
-            </div>
         </div>
     );
 };
