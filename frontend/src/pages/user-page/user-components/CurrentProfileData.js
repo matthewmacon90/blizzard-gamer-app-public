@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import WoWProfile from "../wow-profile-components/WoWProfile";
+import BattleNetLink from "../wow-profile-components/BattleNetLink";
 import UserContext from "../../../context/userContext";
 import'./CurrentProfileStyles.css';
 
@@ -21,9 +22,9 @@ const CurrentProfileData = ({edit, editProfile, deleteUser }) => {
                 <button onClick={editProfile}>{edit ? 'Cancel' : 'Edit Profile'}</button>
                 <button onClick={deleteUser}>Delete Profile</button>
             </div>
-
             <div className="CurrentProfileGame-Container">
                 <h2>Game Profiles</h2>
+                <BattleNetLink />
             </div>
         </div>
     );

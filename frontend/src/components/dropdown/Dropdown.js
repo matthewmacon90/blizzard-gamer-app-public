@@ -6,13 +6,10 @@ import './DropdownStyles.css';
 
 const Dropdown = ({links}) => {
     const auth = useContext(AuthContext);
-    const { currentUser } = auth;
-    console.log('currentUser', currentUser);
 
     return (
         <ul className="dropdown-links-list">
-
-            {currentUser ? (
+            {auth.currentUser ? (
                     <AuthenticatedLinks links={links} />
                 ) : (
                     <UnauthenticatedLinks links={links} />

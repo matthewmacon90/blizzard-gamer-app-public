@@ -3,12 +3,13 @@ import WoWUserContext from '../../../../context/wowContext';
 import './WoWCharacterStyles.css';
 
 const WoWCharacters = () => {
-    const {wowProfile: characters} = useContext(WoWUserContext);
+    const {user} = useContext(WoWUserContext);
+    console.log('WoWCharacters user', user, typeof user);
     return (
         <div className="wow-character-container">
             <h2 className="WoWCharacter-Heading">WoW Characters</h2>
             <div className="WoWCharacterCard-Container">
-                {characters && characters.map((character, index) =>
+                {user && user.wowCharacters.map((character, index) =>
                     <div className="wow-charcter" key={index}>
                         <div className="favorite-star-container">
                             <span className="favorite-star">&#9733;</span>
