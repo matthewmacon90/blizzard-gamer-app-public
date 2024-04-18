@@ -4,7 +4,6 @@ import './WoWCharacterStyles.css';
 
 const WoWCharacters = () => {
     const {user} = useContext(WoWUserContext);
-    console.log('WoWCharacters user', user, typeof user);
     return (
         <div className="wow-character-container">
             <h2 className="WoWCharacter-Heading">WoW Characters</h2>

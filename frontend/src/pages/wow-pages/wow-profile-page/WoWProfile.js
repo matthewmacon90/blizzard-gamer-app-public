@@ -6,15 +6,15 @@ import WoWCharacters from '../wow-components/characters-components/WoWChacters';
 
 const WoWProfile = () => {
     // TODO: When user refreshed page it redirects to login/profile page. User should remain on the same page.
-    // const auth = useContext(AuthContext);
-    const { user, setIsCurrent } = useUser();
-    console.log('user', user,);
+    const auth = useContext(AuthContext);
+    const { user, setIsCurrent, setLoading } = useUser();
+    console.log('user', user);
+    console.log('auth.currentUser', auth.currentUser);
 
 
-    // useEffect(() => {
-    //     setIsCurrent(true);
-    //     setWowCharacters(user?.wowCharacters);
-    // }, [user]);
+    useEffect(() => {
+        setLoading(true);
+    }, []);
 
     return (
         <div className="wow-profile-container">
