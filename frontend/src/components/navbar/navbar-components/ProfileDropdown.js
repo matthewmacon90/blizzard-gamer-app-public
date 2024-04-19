@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../../../context/authContext";
-import logout from "../../../utility/logout";
+import Logout from "../../logout/Logout";
 
 const ProfileDropdown = () => {
     const auth = useContext(AuthContext);
@@ -11,7 +11,7 @@ const ProfileDropdown = () => {
                 <Link to="/my-profile" className="nav-link-styles" aria-label="My Profile">My Profile</Link>
             </li>
             <li>
-                <button className="nav-button-styles" onClick={() => logout(auth.setCurrentUser)} aria-label="Logout">Logout</button>
+                <Logout setCurrentUser={auth.setCurrentUser} />
             </li>
         </ul>
     )

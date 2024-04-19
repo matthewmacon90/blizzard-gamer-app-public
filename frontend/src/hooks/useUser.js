@@ -5,7 +5,6 @@ import AuthContext from '../context/authContext';
 const useUser = () => {
     const auth = useContext(AuthContext);
     const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         async function fetchData() {
@@ -25,18 +24,20 @@ const useUser = () => {
                     auth.setCurrentUser(refeshData);
                     const result = await Api.getMyProfile();
                     const wowProfile = await Api.getWoWProfile();
+                    sessionStorage.setItem('wowCharacters', JSON.stringify(wowProfile));
                     const userProfile = { ...result, wowCharacters: wowProfile };
                     return setUser(userProfile);
                 }
+                sessionStorage.setItem('wowCharacters', JSON.stringify(wowProfile));
                 const userProfile = { ...result, wowCharacters: wowProfile };
                 setUser(userProfile);
             } catch (err) {
             }
         }
         fetchData();
-    }, [loading]);
+    }, []);
 
-    return {user, setUser, setLoading};
+    return {user, setUser};
 };
 
 export default useUser;
