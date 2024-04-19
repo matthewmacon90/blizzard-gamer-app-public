@@ -6,16 +6,16 @@ import'./CurrentProfileStyles.css';
 
 const CurrentProfileData = ({edit, editProfile, deleteUser }) => {
     const { user, setUser } = useContext(UserContext);
-    const { username, email, firstname, lastname, battletag = null, wow_characters } = user;
+    const { username, email, firstName, lastName, battleTag = null, wow_characters } = user;
     return (
         <div className="CurrentProfile-Container">
             <div className="CurrentProfileInformation-Container">
                 <ul className="CurrentProfile-List">
                     <li>Username: {username}</li>
                     <li>Email: {email}</li>
-                    <li>First Name: {firstname}</li>
-                    <li>Last Name: {lastname}</li>
-                    {battletag && <li>Battle Tag: {battletag}</li>}
+                    <li>First Name: {firstName}</li>
+                    <li>Last Name: {lastName}</li>
+                    {battleTag && <li>Battle Tag: {battleTag}</li>}
                 </ul>
             </div>
             <div className="CurrentProfileBtn-Container">

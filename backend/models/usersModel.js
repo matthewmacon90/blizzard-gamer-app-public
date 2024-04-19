@@ -9,7 +9,7 @@ class User {
             const result = await db.query(
                 `INSERT INTO users (username, password, email, first_name, last_name, battle_tag) 
                  VALUES ($1, $2, $3, $4, $5, $6) 
-                 RETURNING username, email, first_name AS firstName, last_name AS lastName, battle_tag AS battletag`, 
+                 RETURNING username, email, first_name AS "firstName", last_name AS "lastName", battle_tag AS "battleTag"`, 
                  [username, hashedPassword, email, firstName, lastName, battletag]);
             return result.rows[0]
         } catch (err) {
@@ -21,7 +21,19 @@ class User {
     static async getAuthenticatedUserInfo(id) {
         try {
             const result = await db.query(`
-                SELECT username, email, first_name AS firstName, last_name AS lastName, battle_tag AS battletag, battlenet_token AS btoken, btoken_expires AS btokenexpires
+                SELECT 
+                user_id AS "userId",
+                username,
+                first_name AS "firstName",
+                last_name AS "lastName",
+                email,
+                role,
+                guild_role AS "guildRole",
+                guild_access_level AS "guildAccessLevel",
+                battle_tag AS "battleTag", 
+                battlenet_token AS "btoken", 
+                btoken_expires AS "btokenExpires", 
+                user_premium_level_access AS "premiumLevelAccess"
                 FROM users 
                 WHERE user_id = $1`, [id]);
             return result.rows[0];
@@ -43,7 +55,19 @@ class User {
 
     static async getUserById(id) {
         try {
-            const result = await db.query(`SELECT user_id, username, battle_tag AS battletag, battlenet_token AS btoken
+            const result = await db.query(`
+            SELECT 
+                user_id AS "userId",
+                first_name AS "firstName",
+                last_name AS "lastName",
+                username,
+                role,
+                guild_role AS "guildRole",
+                guild_access_level AS "guildAccessLevel",
+                battle_tag AS "battleTag", 
+                battlenet_token AS "btoken", 
+                btoken_expires AS "btokenExpires", 
+                user_premium_level_access AS "premiumLevelAccess"
             FROM users 
             WHERE user_id = $1`, [id]);
             return result.rows[0] ? result.rows[0] : new Error('No user found with that id');

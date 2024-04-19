@@ -5,7 +5,27 @@ class WoWProfileData {
     static async getCharactersByUserId(user_id) {
         try {
             const result = await db.query(`
-                SELECT * 
+                SELECT 
+                    character_id AS "characterId", 
+                    character_name AS "characterName", 
+                    character_level AS "characterLevel", 
+                    character_class AS "characterClass", 
+                    character_gender AS "characterGender",
+                    character_faction AS "characterFaction",
+                    character_race AS "characterRace",
+                    realm_id AS "realmId",
+                    realm_name AS "realmName",
+                    realm_slug AS "realmSlug",
+                    mythic_rating AS "mythic+Rating",
+                    is_favorite AS "isFavorite",
+                    is_main AS "isMain",
+                    created_at AS "createdAt",
+                    average_item_level AS "averageItemLevel",
+                    equipped_item_level AS "equippedItemLevel",
+                    achievement_points AS "achievementPoints",
+                    active_title AS "activeTitle",
+                    active_spec AS "activeSpec",
+                    last_login AS "lastLogin" 
                 FROM characters 
                 WHERE user_id = $1
                 ORDER BY character_level DESC
@@ -71,6 +91,19 @@ class WoWProfileData {
             if (error.code === '23505') {
                 throw new ExpressError('Character already exists', 400);
             }
+            throw error;
+        }
+    }
+
+    static async connectCharacterToUser(character_id, user_id) {
+        try {
+            await db.query(`
+                UPDATE characters 
+                SET user_id = $2
+                WHERE character_id = $1
+            `, [character_id, user_id]);
+        } catch (error) {
+            console.log('ERROR CONNECTING CHARACTERS: ', error);
             throw error;
         }
     }

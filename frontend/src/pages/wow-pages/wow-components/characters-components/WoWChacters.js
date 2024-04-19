@@ -13,10 +13,10 @@ const WoWCharacters = () => {
                         <div className="favorite-star-container">
                             <span className="favorite-star">&#9733;</span>
                         </div>
-                        <p>Name: {character.character_name}</p>
-                        <p>Level: {character.character_level}</p>
-                        <p>Class: {character.character_class}</p>
-                        <p>Realm: {character.realm_name}</p>
+                        <p>Name: {character.characterName}</p>
+                        <p>Level: {character.characterLevel}</p>
+                        <p>Class: {character.characterClass}</p>
+                        <p>Realm: {character.realmName}</p>
                     </div>
                 )}
             </div>

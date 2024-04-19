@@ -19,10 +19,12 @@ class WoWApi {
             if(fetchData.length === 0) {
                 const result = await axios.get('https://us.api.blizzard.com/profile/user/wow?namespace=profile-us', this.authorizationHeaders);
                 const response = filterCharacterData(this.user_id, result.data);
-                
-                for(let char of response.characters) {
+
+                for (let char of response.characters) {
                     const {character_id, name, level, character_class, faction, gender, realm_id, realm_name, realm_slug} = char;
-                    await WoWProfileData.insertCharacter(character_id, name, level, character_class, faction, gender, realm_id, realm_name, realm_slug, response.user_id);
+                    const charExists = await WoWProfileData.getCharacterById(char.character_id);
+                    charExists.character_id === character_id ? await WoWProfileData.connectCharacterToUser(character_id, this.user_id) : 
+                        await WoWProfileData.insertCharacter(character_id, name, level, character_class, faction, gender, realm_id, realm_name, realm_slug, response.user_id);
                 }
 
                 const userProfile = await WoWProfileData.getCharactersByUserId(this.user_id);

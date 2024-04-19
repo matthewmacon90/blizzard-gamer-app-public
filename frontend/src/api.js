@@ -110,14 +110,15 @@ class Api {
             const token = this.token;
             const headers = { 'authorization': `Bearer ${token}` };
             const result = await this.request(`users/profile`, {}, 'get', headers);
+            console.log('getMyProfile', result);
             const profile = {
                 username: result.username,
                 email: result.email,
-                firstname: result.firstname,
-                lastname: result.lastname,
-                battletag: result.battletag,
+                firstName: result.firstName,
+                lastName: result.lastName,
+                battleTag: result.battleTag,
                 btoken :  result.btoken ? true : false,
-                bTokenExpires: result.btokenexpires
+                bTokenExpires: result.btokenExpires
             };
             return profile;
         } catch (err) {
