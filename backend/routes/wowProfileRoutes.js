@@ -16,5 +16,17 @@ router.get('/', verifyToken, async (req, res, next) => {
     }
 });
 
+router.get('/char', verifyToken, async (req, res, next) => {
+    try {
+        const decodedToken = await decodeToken(req.headers.authorization.split(' ')[1]);
+        const wowapi = new WoWApi(decodedToken.btoken, decodedToken.id);
+        const result = await wowapi.getCharProfile(req.query.characterId);
+        return res.status(200).json(result);
+    } catch (error) {
+        console.log('WOW PROFILE ROUTES ERROR', error);
+        next(error);
+    }
+});
+
 
 module.exports = router;

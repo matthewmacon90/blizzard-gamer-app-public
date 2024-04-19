@@ -110,7 +110,6 @@ class Api {
             const token = this.token;
             const headers = { 'authorization': `Bearer ${token}` };
             const result = await this.request(`users/profile`, {}, 'get', headers);
-            console.log('getMyProfile', result);
             const profile = {
                 username: result.username,
                 email: result.email,
@@ -125,7 +124,7 @@ class Api {
             throw err;
         }
     }
-
+    //***************************WoW Profile Section of the API***************************
     static async getWoWProfile() {
         try {
             const token = this.token;
@@ -147,6 +146,17 @@ class Api {
             throw err;
         }
     };
+
+    static async getWoWCharacterData(characterId) {
+        try {
+            const token = this.token;
+            const headers = { 'authorization': `Bearer ${token}` };
+            const result = await this.request(`my-wow/char`, {characterId}, 'get', headers);
+            return result;
+        } catch (err) {
+            throw err;
+        }
+    }
 
     //***************************Guild Section of the API***************************
     static async getGuilds(realmSlug) {

@@ -10,24 +10,18 @@ const useUser = () => {
         async function fetchData() {
             try {
                 const result = await Api.getMyProfile();
-                console.log('useUser result', result)
                 if (!result.btoken) {
-                    console.log('useUser result', result)
                     return setUser(result)
                 }
-
                 const wowProfile = await Api.getWoWProfile();
-                console.log('useUser wowProfile', wowProfile);
 
                 if (wowProfile[0] === 'Request failed with status code 401') {
                     const refeshData = await Api.refreshToken();
-                    console.log('refeshData', refeshData);
                     sessionStorage.clear();
                     sessionStorage.setItem('token', refeshData);
                     auth.setCurrentUser(refeshData);
                     const result = await Api.getMyProfile();
                     const wowProfile = await Api.getWoWProfile();
-                    console.log('useUser wowProfile', wowProfile);
                     sessionStorage.setItem('wowCharacters', JSON.stringify(wowProfile));
                     const userProfile = { ...result, wowCharacters: wowProfile };
                     return setUser(userProfile);

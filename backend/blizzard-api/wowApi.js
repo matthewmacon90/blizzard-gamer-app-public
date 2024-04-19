@@ -44,6 +44,50 @@ class WoWApi {
             throw error;
         }
     };
+
+    async getCharProfile(characterId) {
+        try {
+            // console.log('getCharProfile CHAR ID: ', characterId);
+            const character = await WoWProfileData.getCharacterById(characterId);
+            console.log('CHARACTER: ', character);
+            const {realm_slug: realmSlug, character_name: characterName} = character;
+
+            //Protected Character Current Money is here, could use it to add all Gold up for all characters.
+            // const result = await axios.get(`https://us.api.blizzard.com/profile/user/wow/protected-character/${character.realm_id}-${characterId}?namespace=profile-us`, this.authorizationHeaders);
+            // console.log('result: ', result.data);
+
+            // Specific Character Profile of most things such as guild, total achievements, lastLogin etc.
+            // const result = await axios.get(`https://us.api.blizzard.com/profile/wow/character/area-52/zelrus?namespace=profile-us`, this.authorizationHeaders);
+            // console.log('CHAR PROFILE: ', result.data);
+            
+            // const result = await axios.get(`https://us.api.blizzard.com/profile/wow/character/${character.realm_slug}/${character.character_name.toLowerCase()}/achievements/statistics?namespace=profile-us`, this.authorizationHeaders);
+            
+            //All the periods
+            // const periods = await axios.get(`https://us.api.blizzard.com/data/wow/mythic-keystone/period/index?namespace=dynamic-us`, this.authorizationHeaders);
+            // console.log('SEASON: ', season.data);
+            
+            
+            //DIFFERENT SEASONS FOR CHAR
+            // const result = await axios.get(`https://us.api.blizzard.com/profile/wow/character/${realmSlug}/${characterName.toLowerCase()}/mythic-keystone-profile?namespace=profile-us`, this.authorizationHeaders);
+            // console.log('CHAR PROFILE: ', result.data);
+
+            // for (let season of result.data.seasons) {
+            //     console.log('SEASON: ', season);
+            // }
+
+            // BEST RUNS FOR THIS SEASON
+            // const result = await axios.get(`https://us.api.blizzard.com/profile/wow/character/area-52/zelrus/mythic-keystone-profile/season/8?namespace=profile-us`, this.authorizationHeaders);
+            // console.log('CHAR PROFILE: ', result.data);
+           
+           
+            //Dungeon/Raids is 14807
+
+
+        } catch (error) {
+            console.log('ERROR GET CHAR PROFILE: ',error);
+            throw error;
+        }
+    }
 }
 
 module.exports = WoWApi;

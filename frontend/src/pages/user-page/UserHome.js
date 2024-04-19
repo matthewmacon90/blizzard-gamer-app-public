@@ -5,7 +5,6 @@ import './UserHomeStyles.css';
 
 const UserHome = () => {
     const { user, setUser } = useUser();
-    console.log('UserHome user', user);
 
     return (
         <div className='UserHome-Container'>

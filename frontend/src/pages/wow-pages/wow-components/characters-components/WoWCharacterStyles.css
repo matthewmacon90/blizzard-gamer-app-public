@@ -7,7 +7,7 @@
   }
   
 
-  .wow-charcter {
+  .wow-character {
     background: #ffffff; 
     border: 1px solid #e0e0e0; 
     border-radius: 12px; 
@@ -19,26 +19,26 @@
     transition: all 0.3s ease; 
   }
   
-  .wow-charcter:hover {
+  .wow-character:hover {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     transform: translateY(-5px); 
   }
   
 
   @media (max-width: 768px) {
-    .wow-charcter {
+    .wow-character {
       width: calc(50% - 20px);
     }
   }
   
   @media (max-width: 480px) {
-    .wow-charcter {
+    .wow-character {
       width: 100%;
     }
   }
   
 
-  .wow-charcter p {
+  .wow-character p {
     color: #333; 
     font-size: 16px; 
     line-height: 1.6; 
