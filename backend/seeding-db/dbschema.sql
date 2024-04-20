@@ -73,8 +73,10 @@ CREATE TABLE IF NOT EXISTS "characters" (
     realm_slug VARCHAR(255),
     last_login TIMESTAMP,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    is_favorite BOOLEAN NOT NULL DEFAULT FALSE
+    is_favorite BOOLEAN NOT NULL DEFAULT FALSE,
+    is_main BOOLEAN NOT NULL DEFAULT FALSE
 );
+CREATE UNIQUE INDEX unique_main_character ON characters (user_id) WHERE is_main IS TRUE;
 
 CREATE TABLE IF NOT EXISTS "mounts" (
     mount_id INT PRIMARY KEY,
@@ -92,6 +94,25 @@ CREATE TABLE IF NOT EXISTS "keystone_leaderboard" (
     current_period_leaderboard INT,
     leading_groups TEXT,
     affixes TEXT,
+    connected_realm_id INT,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS "mythic+_runs" (
+    id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(user_id) ON DELETE CASCADE,
+    character_id INT REFERENCES characters(character_id) ON DELETE CASCADE,
+    dungeon_id INT REFERENCES dungeons(dungeon_id) ON DELETE CASCADE,
+    mythic+_season INT,
+    period INT,
+    completed_in_time BOOLEAN,
+    duration INT,
+    time_completed_duration TIMESTAMP,
+    keystone_level INT,
+    affixes TEXT,
+    mythic_rating DECIMAL,
+    other_members TEXT,
+    realm_id INT,
     connected_realm_id INT,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

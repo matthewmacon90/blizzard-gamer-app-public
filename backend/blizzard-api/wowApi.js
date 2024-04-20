@@ -23,7 +23,7 @@ class WoWApi {
                 for (let char of response.characters) {
                     const {character_id, name, level, character_class, faction, gender, realm_id, realm_name, realm_slug} = char;
                     const charExists = await WoWProfileData.getCharacterById(char.character_id);
-                    charExists.character_id === character_id ? await WoWProfileData.connectCharacterToUser(character_id, this.user_id) : 
+                    charExists && charExists.character_id === character_id ? await WoWProfileData.connectCharacterToUser(character_id, this.user_id) : 
                         await WoWProfileData.insertCharacter(character_id, name, level, character_class, faction, gender, realm_id, realm_name, realm_slug, response.user_id);
                 }
 
@@ -78,8 +78,23 @@ class WoWApi {
             // BEST RUNS FOR THIS SEASON
             // const result = await axios.get(`https://us.api.blizzard.com/profile/wow/character/area-52/zelrus/mythic-keystone-profile/season/8?namespace=profile-us`, this.authorizationHeaders);
             // console.log('CHAR PROFILE: ', result.data);
+
+            // Character Profile Summary:   Contains overall data with various links
+            // const result = await axios.get(`https://us.api.blizzard.com/profile/wow/character/${realmSlug}/${characterName.toLowerCase()}?namespace=profile-us`, this.authorizationHeaders);
+            // console.log('CHAR PROFILE: ', result.data);
            
-           
+        //    Character Profile Mythic+ lists all the different seasons
+        // const result = await axios.get(`https://us.api.blizzard.com/profile/wow/character/${realmSlug}/${characterName.toLowerCase()}/mythic-keystone-profile?namespace=profile-us`, this.authorizationHeaders);
+        // console.log('CHAR PROFILE: ', result.data);
+        // for(let season of result.data.seasons) {  //This gets all the seasons
+        //     console.log('SEASON: ', season);
+        // }
+
+        // Mythic+ Specific Season contains best runs within that season
+        const result = await axios.get(`https://us.api.blizzard.com/profile/wow/character/${realmSlug}/${characterName.toLowerCase()}/mythic-keystone-profile/season/9?namespace=profile-us`, this.authorizationHeaders);
+        console.log('CHAR PROFILE: ', result.data);
+
+
             //Dungeon/Raids is 14807
 
 
