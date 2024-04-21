@@ -20,14 +20,25 @@ const WoWCharacters = () => {
             <h2 className="WoWCharacter-Heading">WoW Characters</h2>
             <div className="WoWCharacterCard-Container">
                 {wowCharacters && wowCharacters.map((character) =>
-                    <div onClick={() => updateCharacter(character.characterId)} className="wow-character" key={character.characterId}>
-                        <div className="favorite-star-container">
+                    <div onClick={() => updateCharacter(character.characterId)} className="wow-character-card" key={character.characterId}>
+                        {/* <div className="favorite-star-container">
                             <span className="favorite-star">&#9733;</span>
+                        </div> */}
+                        <div className='wow-character-card-left'>
+                            <p>Name: {character.characterName}</p>
+                            <p>Level: {character.characterLevel}</p>
+                            <p>Class: {character.characterClass}</p>
+                            <p>Realm: {character.realmName}</p>
                         </div>
-                        <p>Name: {character.characterName}</p>
-                        <p>Level: {character.characterLevel}</p>
-                        <p>Class: {character.characterClass}</p>
-                        <p>Realm: {character.realmName}</p>
+                        <div className='wow-character-card-middle'>
+                            <h3>Character Avatar</h3>
+                        </div>
+                        <div className='wow-character-card-right'>
+                            <p>Raider IO: {character['mythic+Rating'] ? character['mythic+Rating'] : `N/A`}</p>
+                            <p>Raid Progress:</p>
+                            <p>iLevel: {character.equippedItemLevel ? character.equippedItemLevel : `N/A`}</p>
+                            <p>Guild:</p>
+                        </div>
                     </div>
                 )}
             </div>

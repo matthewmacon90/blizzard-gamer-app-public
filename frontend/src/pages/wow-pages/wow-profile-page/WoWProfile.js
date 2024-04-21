@@ -18,7 +18,9 @@ const WoWProfile = () => {
         <div className="wow-profile-container">
             <WoWUserContext.Provider value={{wowCharacters, setWowCharacters}}>
                 <h1>WoW Profile</h1>
-                <WoWCharacters />
+                <div className='wow-profile-character-container'>
+                    <WoWCharacters />
+                </div>
             </WoWUserContext.Provider>
         </div>
     );

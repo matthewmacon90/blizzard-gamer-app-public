@@ -12,8 +12,8 @@ const WoWClassCard = () => {
                         <div className='wowhead-card-bottom'>
                             <p className='wowhead-card-class-info'>{wowClass.classInfo}</p>
                             <div className='wowhead-card-link-container'>
-                                {wowClass.playableSpecs.map((spec) => (
-                                    <a className='wowhead-card-class-links' target='_blank' href={spec.classGuide}>{spec.specName}</a>
+                                {wowClass.playableSpecs.map((spec, index) => (
+                                    <a key={index} className='wowhead-card-class-links' target='_blank' href={spec.classGuide}>{spec.specName}</a>
                                 ))}
                             </div>
                         </div>

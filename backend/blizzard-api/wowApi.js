@@ -80,8 +80,8 @@ class WoWApi {
             // console.log('CHAR PROFILE: ', result.data);
 
             // Character Profile Summary:   Contains overall data with various links
-            // const result = await axios.get(`https://us.api.blizzard.com/profile/wow/character/${realmSlug}/${characterName.toLowerCase()}?namespace=profile-us`, this.authorizationHeaders);
-            // console.log('CHAR PROFILE: ', result.data);
+            const result = await axios.get(`https://us.api.blizzard.com/profile/wow/character/${realmSlug}/${characterName.toLowerCase()}?namespace=profile-us`, this.authorizationHeaders);
+            console.log('CHAR PROFILE: ', result.data);
            
         //    Character Profile Mythic+ lists all the different seasons
         // const result = await axios.get(`https://us.api.blizzard.com/profile/wow/character/${realmSlug}/${characterName.toLowerCase()}/mythic-keystone-profile?namespace=profile-us`, this.authorizationHeaders);
