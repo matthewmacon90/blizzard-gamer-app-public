@@ -91,10 +91,18 @@ class WoWApi {
         // }
 
         // Mythic+ Specific Season contains best runs within that season
-        const result = await axios.get(`https://us.api.blizzard.com/profile/wow/character/${realmSlug}/${characterName.toLowerCase()}/mythic-keystone-profile/season/9?namespace=profile-us`, this.authorizationHeaders);
-        console.log('CHAR PROFILE: ', result.data);
+        // const result = await axios.get(`https://us.api.blizzard.com/profile/wow/character/${realmSlug}/${characterName.toLowerCase()}/mythic-keystone-profile/season/9?namespace=profile-us`, this.authorizationHeaders);
+        // console.log('CHAR PROFILE: ', result.data);
 
+        //Get all the periods for the season
+        // const result = await axios.get(`https://us.api.blizzard.com/data/wow/mythic-keystone/season/9?namespace=dynamic-us`, this.authorizationHeaders);
+        // console.log('SEASON: ', result.data);
+        // for(let period of result.data.periods) {
+        //     console.log('PERIOD: ', period);
+        // }
 
+        // const result = await axios.get(`https://us.api.blizzard.com/data/wow/mythic-keystone/period/905?namespace=dynamic-us`, this.authorizationHeaders);
+        // console.log('SEASON: ', result.data);
             //Dungeon/Raids is 14807
 
 

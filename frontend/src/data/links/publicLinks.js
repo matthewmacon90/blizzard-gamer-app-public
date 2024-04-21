@@ -16,5 +16,11 @@ export default [
         name: `Mounts`,
         link: `/mounts`,
         isFeatured: false
+    },
+    {
+        id: 3,
+        name: `Resources`,
+        link: `/resources`,
+        isFeatured: false
     }
 ];

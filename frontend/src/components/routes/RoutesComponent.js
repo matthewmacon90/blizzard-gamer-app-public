@@ -8,9 +8,9 @@ import PublicGuilds from '../../pages/guilds-page/PublicGuilds';
 import Mounts from '../../pages/mounts-page/Mounts';
 import Dungeons from '../../pages/dungeons-page/Dungeons';
 import WoWProfile from '../../pages/wow-pages/wow-profile-page/WoWProfile';
+import Resources from '../../pages/wow-pages/wow-components/resource-comonents/Resources';
 
 const RoutesComponent = () => {
-    // TODO: Commented out to test WoWProfile page because the user is redirected to login page when the page is refreshed.
     return (
         <Routes>
             <Route path='/' element={<HomePage />} />
@@ -19,12 +19,12 @@ const RoutesComponent = () => {
             <Route path='/public-guilds' element={<PublicGuilds />} />
             <Route path='/mounts' element={<Mounts />} />
             <Route path='/dungeons' element={<Dungeons />} />
+            <Route path='/resources' element={<Resources />} />
             <Route path='/wow-profile' element={<WoWProfile />} />
 
             {/* Protected Routes */}
             <Route element={<PrivateRoutes />} >
                 <Route path='/my-profile' element={<UserHome />} />
-                {/* <Route path='/wow-profile' element={<WoWProfile />} /> */}
             </Route>
         </Routes>
     );
