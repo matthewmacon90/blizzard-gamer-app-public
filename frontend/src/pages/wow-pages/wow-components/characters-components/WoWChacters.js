@@ -1,10 +1,12 @@
 import { useContext } from 'react';
 import WoWUserContext from '../../../../context/wowContext';
 import './WoWCharacterStyles.css';
+import sonsAvatar from '../../../../pictures/sons-picture.png'
 import Api from '../../../../api';
 
 const WoWCharacters = () => {
     const {wowCharacters} = useContext(WoWUserContext);
+
     const updateCharacter = async (characterId) => {
         try {
             console.log('updateCharacter CHARACTER ID: ', characterId);
@@ -31,11 +33,11 @@ const WoWCharacters = () => {
                             <p>Realm: {character.realmName}</p>
                         </div>
                         <div className='wow-character-card-middle'>
-                            <h3>Character Avatar</h3>
+                            <img className='wow-character-avatar' src={character.characterAvatar ? character.characterAvatar : sonsAvatar} alt="Character Avatar" />
                         </div>
                         <div className='wow-character-card-right'>
                             <p>Raider IO: {character['mythic+Rating'] ? character['mythic+Rating'] : `N/A`}</p>
-                            <p>Raid Progress:</p>
+                            <p>Raid Progress: N/A</p>
                             <p>iLevel: {character.equippedItemLevel ? character.equippedItemLevel : `N/A`}</p>
                             <p>Guild:</p>
                         </div>

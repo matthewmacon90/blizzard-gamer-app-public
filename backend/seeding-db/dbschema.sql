@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS "users" (
     battle_tag VARCHAR(255) UNIQUE,
     battlenet_token VARCHAR(255),
     btoken_expires TIMESTAMP,
+    accepted_privacy_policy BOOLEAN NOT NULL DEFAULT FALSE,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     last_login TIMESTAMP
 );
@@ -62,6 +63,7 @@ CREATE TABLE IF NOT EXISTS "characters" (
     character_faction VARCHAR(255),
     character_race VARCHAR(255),
     character_gender VARCHAR(255),
+    character_avatar VARCHAR(255),
     average_item_level INT,
     equipped_item_level INT,
     active_title VARCHAR(255),
