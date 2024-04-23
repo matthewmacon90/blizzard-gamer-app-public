@@ -83,11 +83,11 @@ class Api {
             const profile = {
                 username: result.username,
                 email: result.email,
-                firstName: result.firstname,
-                lastName: result.lastname,
-                battleTag: result.battletag,
+                firstName: result.firstName,
+                lastName: result.lastName,
+                battleTag: result.battleTag,
                 btoken :  result.btoken ? true : false,
-                bTokenExpires: result.btokenexpires
+                bTokenExpires: result.btokenExpires
             };
             return profile;
         } catch (err) {
