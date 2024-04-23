@@ -28,12 +28,11 @@ class User {
                 last_name AS "lastName",
                 email,
                 role,
-                guild_role AS "guildRole",
-                guild_access_level AS "guildAccessLevel",
+                discord_name AS "discordName",
                 battle_tag AS "battleTag", 
                 battlenet_token AS "btoken", 
                 btoken_expires AS "btokenExpires", 
-                user_premium_level_access AS "premiumLevelAccess"
+                premium_account_level AS "premiumAccountLevel"
                 FROM users 
                 WHERE user_id = $1`, [id]);
             return result.rows[0];
