@@ -72,20 +72,20 @@ class Api {
         try {
             const token = this.token;
             const headers = { 'authorization': `Bearer ${token}` };
-            let { username, email, firstname, lastname, battletag } = user;
+            let { username, email, firstName, lastName, battleTag } = user;
             username = username.trim().toLowerCase();
             email = email.trim().toLowerCase();
-            firstname = firstname.trim().toLowerCase();
-            lastname = lastname.trim().toLowerCase();
-            battletag = battletag.trim().toLowerCase();
+            firstName = firstName.trim().toLowerCase();
+            lastName = lastName.trim().toLowerCase();
+            battleTag = battleTag.trim().toLowerCase();
 
-            const result = await this.request(`users/profile/update/`, { username, email, firstname, lastname, battletag }, 'patch', headers);
+            const result = await this.request(`users/profile/update/`, { username, email, firstName, lastName, battleTag }, 'patch', headers);
             const profile = {
                 username: result.username,
                 email: result.email,
-                firstname: result.firstname,
-                lastname: result.lastname,
-                battletag: result.battletag,
+                firstName: result.firstname,
+                lastName: result.lastname,
+                battleTag: result.battletag,
                 btoken :  result.btoken ? true : false,
                 bTokenExpires: result.btokenexpires
             };

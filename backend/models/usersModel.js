@@ -124,7 +124,7 @@ class User {
                 UPDATE users 
                 SET username = $1, email = $2, first_name = $3, last_name = $4, battle_tag = $5
                 WHERE user_id = $6 
-                RETURNING username, email, first_name AS firstName, last_name AS lastName, battle_tag AS battleTag, battlenet_token AS btoken, btoken_expires AS btokenexpires`, 
+                RETURNING username, email, first_name AS firstName, last_name AS lastName, battle_tag AS battleTag, battlenet_token AS btoken, btoken_expires AS btokenExpires`, 
                 [username, email, firstName, lastName, battletag, id]);
             return result.rows[0];
         } catch (err) {
