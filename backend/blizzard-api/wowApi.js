@@ -1,5 +1,5 @@
 const axios = require('axios');
-const {filterCharacterData, getCurrentDate, compareDates, cleanCharData} = require('./blizzard-helpers/wowhelpers.js');
+const {filterCharacterData, getCurrentDate, compareDates, cleanCharData, lastUpdatedCheck} = require('./blizzard-helpers/wowhelpers.js');
 const WoWProfileData = require('../models/wowModel.js');
 const WoWGuildsModel = require('../models/guildsModel.js');
 
@@ -24,22 +24,22 @@ class WoWApi {
                 const response = filterCharacterData(this.user_id, result.data);
 
                 for (let char of response.characters) {
-                    const {character_id, name, level, character_class, faction, gender, realm_id, realm_name, realm_slug} = char;
-                    const charExists = await WoWProfileData.getCharacterById(char.character_id);
-                    charExists && charExists.characterId === character_id ? await WoWProfileData.connectCharacterToUser(character_id, this.user_id) : 
-                        await WoWProfileData.insertCharacter(character_id, name, level, character_class, faction, gender, realm_id, realm_name, realm_slug, response.user_id);
+                    const {characterId, name, level, characterClass, faction, gender, realmId, realmName, realmSlug} = char;
+                    const charExists = await WoWProfileData.getCharacterById(characterId);
+                    charExists && charExists.characterId === characterId ? await WoWProfileData.connectCharacterToUser(characterId, this.user_id) : 
+                        await WoWProfileData.insertCharacter(characterId, name, level, characterClass, faction, gender, realmId, realmName, realmSlug, response.userId);
                 }
 
                 const userProfile = await WoWProfileData.getCharactersByUserId(this.user_id);
                 return userProfile;
             }
 
-            if (compareDatesResult) {
-                const result = await axios.get('https://us.api.blizzard.com/profile/user/wow?namespace=profile-us', this.authorizationHeaders);
-                const response = filterCharacterData(this.user_id, result.data, date);
-                const userProfile = await WoWProfileData.updateCharactersMass(response);
-                return userProfile;
-            }
+            // if (compareDatesResult) {
+            //     const result = await axios.get('https://us.api.blizzard.com/profile/user/wow?namespace=profile-us', this.authorizationHeaders);
+            //     const response = filterCharacterData(this.user_id, result.data, date);
+            //     const userProfile = await WoWProfileData.updateCharactersMass(response);
+            //     return userProfile;
+            // }
 
             return fetchData;
         } catch (error) {
@@ -58,7 +58,14 @@ class WoWApi {
                 media: null
             };
             const character = await WoWProfileData.getCharacterById(characterId);
-            const {realmSlug, characterName} = character;
+            const {realmSlug, characterName, lastUpdated} = character;
+            const lastUpdatedCheckResult = lastUpdatedCheck(lastUpdated);
+            console.log('LAST UPDATED CHECK: ', lastUpdatedCheckResult)
+
+            if(!lastUpdatedCheckResult) {
+                console.log(`lastUpdatedCheckResult: IS NOT greater than 5 days`)
+                return character;
+            };
 
             const characterSummary = await axios.get(`https://us.api.blizzard.com/profile/wow/character/${realmSlug}/${characterName.toLowerCase()}?namespace=profile-us`, this.authorizationHeaders);
             const protectedCharacter = await axios.get(`https://us.api.blizzard.com/profile/user/wow/protected-character/${character.realmId}-${characterId}?namespace=profile-us`, this.authorizationHeaders);
@@ -106,7 +113,8 @@ class WoWApi {
                     stringifyMythicRaidColor,
                     data.currMythicRating,
                     data.guildId,
-                    stringifyRaidProfile
+                    stringifyRaidProfile,
+                    data.lastUpdated
                 );
 
             const currentCharacter = await WoWProfileData.getCharacterById(characterId);

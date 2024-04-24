@@ -110,6 +110,7 @@ class Api {
             const token = this.token;
             const headers = { 'authorization': `Bearer ${token}` };
             const result = await this.request(`users/profile`, {}, 'get', headers);
+            console.log('getMyProfile', result)
             const profile = {
                 username: result.username,
                 email: result.email,

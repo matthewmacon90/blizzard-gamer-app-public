@@ -68,6 +68,7 @@ class User {
                 premium_account_level AS "premiumLevelAccess"
             FROM users 
             WHERE user_id = $1`, [id]);
+            console.log('getUserById', result.rows[0])
             return result.rows[0] ? result.rows[0] : new Error('No user found with that id');
         } catch (err) {
             console.log(err);
@@ -88,7 +89,7 @@ class User {
     static async getUserByUsername(username) {
         try {
             const result = await db.query(`
-                SELECT user_id, username, password, battlenet_token AS "btoken", battle_tag AS "battleTag" 
+                SELECT user_id AS "userId", username, password, battlenet_token AS "btoken", battle_tag AS "battleTag" 
                 FROM users WHERE username = $1`, 
                 [username]);
             return result.rows[0];
@@ -149,7 +150,7 @@ class User {
                 UPDATE users
                 SET battlenet_id = $1, battlenet_token = $2, btoken_expires = CURRENT_TIMESTAMP + INTERVAL '24 hours'
                 WHERE battle_tag = $3
-                RETURNING user_id, username, battlenet_token, battle_tag AS battletag, btoken_expires AS expires
+                RETURNING user_id AS "userId", username, battlenet_token AS "btoken", battle_tag AS "battleTag", btoken_expires AS "btokenExpires"
                 `, [battlenetID, accessToken, battletag]);
             return result.rows[0];
         } catch (err) {
@@ -162,9 +163,9 @@ class User {
         try {
             const result = await User.getUserById(id);
             const payload = {
-                id: result.user_id,
+                id: result.userId,
                 username: result.username,
-                battletag: result.battletag,
+                battleTag: result.battleTag,
                 btoken: result.btoken
             };
             const token = await signToken(payload);
@@ -183,7 +184,7 @@ class User {
             if(!userFound.username || !passwordMatch) throw new ExpressError('Authentication failed.', 401);
 
             const payload = {
-                id: userFound.user_id,
+                id: userFound.userId,
                 username: userFound.username,
                 battletag: userFound.battletag,
                 btoken: userFound.btoken

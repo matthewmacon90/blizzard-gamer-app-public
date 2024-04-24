@@ -85,9 +85,10 @@ CREATE TABLE IF NOT EXISTS "characters" (
     realm_name VARCHAR(255),
     realm_slug VARCHAR(255),
     last_login TIMESTAMP,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     is_favorite BOOLEAN NOT NULL DEFAULT FALSE,
-    is_main BOOLEAN NOT NULL DEFAULT FALSE
+    is_main BOOLEAN NOT NULL DEFAULT FALSE,
+    last_updated TIMESTAMP DEFAULT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 CREATE UNIQUE INDEX unique_main_character ON characters (user_id) WHERE is_main IS TRUE;
 

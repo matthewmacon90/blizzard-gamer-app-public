@@ -13,7 +13,7 @@ const filterCharacterData = (user_id, data, date=null) => {
     }
     const characters = mapCharacterData(results);
     const userProfile = {
-        user_id,
+        userId: user_id,
         date: date && date,
         characters
     };
@@ -24,16 +24,16 @@ const filterCharacterData = (user_id, data, date=null) => {
 const mapCharacterData = (data) => {
     const result = data.map(character => {
         return {
-            character_id: character.id,
+            characterId: character.id,
             name: character.name,
             level: character.level,
             faction: character.faction.name.en_US,
             race: character.playable_race.name.en_US,
             gender: character.gender.name.en_US,
-            character_class: character.playable_class.name.en_US,
-            realm_id: character.realm.id,
-            realm_name: character.realm.name.en_US,
-            realm_slug: character.realm.slug,
+            characterClass: character.playable_class.name.en_US,
+            realmId: character.realm.id,
+            realmName: character.realm.name.en_US,
+            realmSlug: character.realm.slug,
         }
     });
     return result;
@@ -50,7 +50,7 @@ const compareDates = (currentDate, dbDate=null) => {
     const diffInMilliseconds = Math.abs(currentDate - dbDate);
     const diffInDays = Math.ceil(diffInMilliseconds / millisecondsPerDay);
 
-    return diffInDays === 2;
+    return diffInDays > 5;
 };
 
 const cleanDungeonData = (data) => {
@@ -219,6 +219,7 @@ const cleanCharacterData = (data) => {
 }
 
 const cleanCharData = (data) => {
+    const currDate = getCurrentDate();
     const epochTime =  data.overAllSummary.last_login_timestamp;
     const date = new Date(epochTime);
     const timestamp = date.toISOString();
@@ -254,6 +255,7 @@ const cleanCharData = (data) => {
         guildRealmId: data.overAllSummary.guild ? data.overAllSummary.guild.realm.id : null,
         guildRealmSlug: data.overAllSummary.guild ? data.overAllSummary.guild.realm.slug: null,
         guildFaction: data.overAllSummary.guild ? data.overAllSummary.guild.faction.type : null,
+        lastUpdated: currDate,
     };
 
     return result;
@@ -277,6 +279,15 @@ const cleanRaidProfileData = (data) => {
     return raidData;
 };
 
+const lastUpdatedCheck = (date) => {
+    console.log('lastUpdatedCheck DATE: ', date)
+    if(!date) return true;
+    const currentDate = getCurrentDate();
+    const compareDatesResult = compareDates(currentDate, date);
+    console.log('lastUpdatedCheck COMPARE DATES: ', compareDatesResult);
+    return compareDatesResult;
+};
+
 
 module.exports = {
     getCurrentDate,
@@ -292,5 +303,6 @@ module.exports = {
     isCurrent,
     formatLeaderboardData,
     cleanCharacterData,
-    cleanCharData
+    cleanCharData,
+    lastUpdatedCheck
 };

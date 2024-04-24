@@ -62,7 +62,6 @@ router.patch('/profile/update', verifyToken, async (req, res, next) => {
         const { id } = decodedToken;
         const { username, email, firstName, lastName, battleTag } = req.body;
         const result = await User.updateUser(id, username, email, firstName, lastName, battleTag);
-        console.log(result);
 
         return res.status(200).json(result);
     } catch (err) {
