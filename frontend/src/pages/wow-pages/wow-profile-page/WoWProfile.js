@@ -10,7 +10,7 @@ const WoWProfile = () => {
     console.log('wowCharacters: ', wowCharacters);
 
     useEffect(() => {
-        const wowCharacters = JSON.parse(sessionStorage.getItem('wowCharacters') || user?.wowCharacters);
+        const wowCharacters = user?.wowCharacters || JSON.parse(sessionStorage.getItem('wowCharacters'));
         setWowCharacters(wowCharacters);
     }, []);
 

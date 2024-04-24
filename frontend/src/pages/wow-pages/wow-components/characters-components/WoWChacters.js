@@ -36,7 +36,7 @@ const WoWCharacters = () => {
                             <img className='wow-character-avatar' src={character.characterAvatar ? character.characterAvatar : sonsAvatar} alt="Character Avatar" />
                         </div>
                         <div className='wow-character-card-right'>
-                            <p>Raider IO: {character['mythic+Rating'] ? character['mythic+Rating'] : `N/A`}</p>
+                            <p>Raider IO: {character.mythicRating ? character.mythicRating : `N/A`}</p>
                             <p>Raid Progress: N/A</p>
                             <p>iLevel: {character.equippedItemLevel ? character.equippedItemLevel : `N/A`}</p>
                             <p>Guild:</p>
