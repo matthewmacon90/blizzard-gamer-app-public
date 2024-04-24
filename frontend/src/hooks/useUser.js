@@ -11,6 +11,7 @@ const useUser = () => {
         async function fetchData() {
             try {
                 const result = await Api.getMyProfile();
+                console.log('useUser', result)
                 if (!result.btoken) {
                     return setUser(result)
                 }

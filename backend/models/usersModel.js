@@ -35,6 +35,7 @@ class User {
                 premium_account_level AS "premiumAccountLevel"
                 FROM users 
                 WHERE user_id = $1`, [id]);
+                console.log(result.rows[0]);
             return result.rows[0];
         } catch (err) {
             console.log('ERROR GETTING AUTHENTICATED USER', err);
@@ -61,12 +62,10 @@ class User {
                 last_name AS "lastName",
                 username,
                 role,
-                guild_role AS "guildRole",
-                guild_access_level AS "guildAccessLevel",
                 battle_tag AS "battleTag", 
                 battlenet_token AS "btoken", 
                 btoken_expires AS "btokenExpires", 
-                user_premium_level_access AS "premiumLevelAccess"
+                premium_account_level AS "premiumLevelAccess"
             FROM users 
             WHERE user_id = $1`, [id]);
             return result.rows[0] ? result.rows[0] : new Error('No user found with that id');
@@ -78,7 +77,7 @@ class User {
 
     static async getUserByBattleTag(battletag) {
         try {
-            const result = await db.query('SELECT battle_tag AS battletag FROM users WHERE battle_tag = $1', [battletag]);
+            const result = await db.query('SELECT battle_tag AS "battleTag" FROM users WHERE battle_tag = $1', [battletag]);
             return result.rows[0];
         } catch (err) {
             console.log(err);
@@ -89,7 +88,7 @@ class User {
     static async getUserByUsername(username) {
         try {
             const result = await db.query(`
-                SELECT user_id, username, password, battlenet_token AS btoken, battle_tag AS battletag 
+                SELECT user_id, username, password, battlenet_token AS "btoken", battle_tag AS "battleTag" 
                 FROM users WHERE username = $1`, 
                 [username]);
             return result.rows[0];

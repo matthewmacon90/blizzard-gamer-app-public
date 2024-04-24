@@ -152,6 +152,7 @@ class Api {
             const token = this.token;
             const headers = { 'authorization': `Bearer ${token}` };
             const result = await this.request(`my-wow/char`, {characterId}, 'get', headers);
+            console.log('getWoWCharacterData', result);
             return result;
         } catch (err) {
             throw err;

@@ -1,6 +1,7 @@
 const axios = require('axios');
-const {filterCharacterData, getCurrentDate, compareDates} = require('./blizzard-helpers/wowhelpers.js');
+const {filterCharacterData, getCurrentDate, compareDates, cleanCharData} = require('./blizzard-helpers/wowhelpers.js');
 const WoWProfileData = require('../models/wowModel.js');
+const WoWGuildsModel = require('../models/guildsModel.js');
 
 class WoWApi {
     constructor(token = '', user_id = null) {
@@ -13,17 +14,19 @@ class WoWApi {
         try {
             const date = getCurrentDate();
             const fetchData = await WoWProfileData.getCharactersByUserId(this.user_id);
+            console.log('FETCH DATA: ', fetchData)
             const dbDate = fetchData.length > 0 ? fetchData[0].date : null;
             const compareDatesResult = compareDates(date, dbDate);
 
             if(fetchData.length === 0) {
                 const result = await axios.get('https://us.api.blizzard.com/profile/user/wow?namespace=profile-us', this.authorizationHeaders);
+                console.log('RESULT: ', result.data)
                 const response = filterCharacterData(this.user_id, result.data);
 
                 for (let char of response.characters) {
                     const {character_id, name, level, character_class, faction, gender, realm_id, realm_name, realm_slug} = char;
                     const charExists = await WoWProfileData.getCharacterById(char.character_id);
-                    charExists && charExists.character_id === character_id ? await WoWProfileData.connectCharacterToUser(character_id, this.user_id) : 
+                    charExists && charExists.characterId === character_id ? await WoWProfileData.connectCharacterToUser(character_id, this.user_id) : 
                         await WoWProfileData.insertCharacter(character_id, name, level, character_class, faction, gender, realm_id, realm_name, realm_slug, response.user_id);
                 }
 
@@ -47,64 +50,67 @@ class WoWApi {
 
     async getCharProfile(characterId) {
         try {
-            // console.log('getCharProfile CHAR ID: ', characterId);
+            const characterApiData = {
+                overAllSummary: null,
+                protectedSummary: null,
+                mythicProfile: null,
+                raidProfile: null,
+                media: null
+            };
             const character = await WoWProfileData.getCharacterById(characterId);
-            console.log('CHARACTER: ', character);
-            const {realm_slug: realmSlug, character_name: characterName} = character;
+            const {realmSlug, characterName} = character;
 
-            //Protected Character Current Money is here, could use it to add all Gold up for all characters.
-            // const result = await axios.get(`https://us.api.blizzard.com/profile/user/wow/protected-character/${character.realm_id}-${characterId}?namespace=profile-us`, this.authorizationHeaders);
-            // console.log('result: ', result.data);
-
-            // Specific Character Profile of most things such as guild, total achievements, lastLogin etc.
-            // const result = await axios.get(`https://us.api.blizzard.com/profile/wow/character/area-52/zelrus?namespace=profile-us`, this.authorizationHeaders);
-            // console.log('CHAR PROFILE: ', result.data);
+            const characterSummary = await axios.get(`https://us.api.blizzard.com/profile/wow/character/${realmSlug}/${characterName.toLowerCase()}?namespace=profile-us`, this.authorizationHeaders);
+            const protectedCharacter = await axios.get(`https://us.api.blizzard.com/profile/user/wow/protected-character/${character.realmId}-${characterId}?namespace=profile-us`, this.authorizationHeaders);
+            const mythicKeystoneProfile = await axios.get(`https://us.api.blizzard.com/profile/wow/character/${realmSlug}/${characterName.toLowerCase()}/mythic-keystone-profile?namespace=profile-us`, this.authorizationHeaders);
+            const raidProfile = await axios.get(`https://us.api.blizzard.com/profile/wow/character/${realmSlug}/${characterName.toLowerCase()}/encounters/raids?namespace=profile-us`, this.authorizationHeaders);
+            // Character Media: Contains the character's avatar, main image, and other images BUT DOES NOT WORK
+            // const characterMedia = await axios.get(`https://us.api.blizzard.com/profile/wow/character/${realmSlug}/${characterName.toLowerCase()}/character-media?namespace=profile-us`, this.authorizationHeaders);
             
-            // const result = await axios.get(`https://us.api.blizzard.com/profile/wow/character/${character.realm_slug}/${character.character_name.toLowerCase()}/achievements/statistics?namespace=profile-us`, this.authorizationHeaders);
-            
-            //All the periods
-            // const periods = await axios.get(`https://us.api.blizzard.com/data/wow/mythic-keystone/period/index?namespace=dynamic-us`, this.authorizationHeaders);
-            // console.log('SEASON: ', season.data);
-            
-            
-            //DIFFERENT SEASONS FOR CHAR
-            // const result = await axios.get(`https://us.api.blizzard.com/profile/wow/character/${realmSlug}/${characterName.toLowerCase()}/mythic-keystone-profile?namespace=profile-us`, this.authorizationHeaders);
-            // console.log('CHAR PROFILE: ', result.data);
+            characterApiData.overAllSummary = characterSummary.data;
+            characterApiData.protectedSummary = protectedCharacter.data;
+            characterApiData.mythicProfile = mythicKeystoneProfile.data;
+            characterApiData.raidProfile = raidProfile.data;
 
-            // for (let season of result.data.seasons) {
-            //     console.log('SEASON: ', season);
-            // }
+            const data = cleanCharData(characterApiData);
+            const stringifyMythicRaidColor = data.currMythicRatingColor ? JSON.stringify(data.currMythicRatingColor) : null;
+            const stringifyRaidProfile = data.raidProfile ? JSON.stringify(data.raidProfile) : null;
 
-            // BEST RUNS FOR THIS SEASON
-            // const result = await axios.get(`https://us.api.blizzard.com/profile/wow/character/area-52/zelrus/mythic-keystone-profile/season/8?namespace=profile-us`, this.authorizationHeaders);
-            // console.log('CHAR PROFILE: ', result.data);
+            if(data.guildId !== null) {
+                const isGuild = await WoWGuildsModel.getGuildById(data.guildId);
+                console.log('IS GUILD: ', isGuild)
+    
+                isGuild ? await WoWGuildsModel.updateGuild(data.guildId, data.guildName, null, data.guildRealmId, data.guildRealmSlug, data.guildFaction) :
+                    await WoWGuildsModel.insertGuild(data.guildId, data.guildName, null, data.guildRealmId, data.guildRealmSlug, data.guildFaction);
+            }
+ 
+            await WoWProfileData.updateCharacter(
+                    characterId,
+                    data.name,
+                    data.level,
+                    data.avgItem,
+                    data.equipItem,
+                    data.achievementPoints=null,
+                    data.activeTitle,
+                    data.characterGender,
+                    data.characterFaction,
+                    data.characterRace,
+                    data.characterClass,
+                    data.activeSpec,
+                    data.lastLogin,
+                    data.realmId,
+                    data.realmName,
+                    data.characterMoney,
+                    data.currentLevelDeaths,
+                    data.totalCharacterDeaths,
+                    stringifyMythicRaidColor,
+                    data.currMythicRating,
+                    data.guildId,
+                    stringifyRaidProfile
+                );
 
-            // Character Profile Summary:   Contains overall data with various links
-            const result = await axios.get(`https://us.api.blizzard.com/profile/wow/character/${realmSlug}/${characterName.toLowerCase()}?namespace=profile-us`, this.authorizationHeaders);
-            console.log('CHAR PROFILE: ', result.data);
-           
-        //    Character Profile Mythic+ lists all the different seasons
-        // const result = await axios.get(`https://us.api.blizzard.com/profile/wow/character/${realmSlug}/${characterName.toLowerCase()}/mythic-keystone-profile?namespace=profile-us`, this.authorizationHeaders);
-        // console.log('CHAR PROFILE: ', result.data);
-        // for(let season of result.data.seasons) {  //This gets all the seasons
-        //     console.log('SEASON: ', season);
-        // }
-
-        // Mythic+ Specific Season contains best runs within that season
-        // const result = await axios.get(`https://us.api.blizzard.com/profile/wow/character/${realmSlug}/${characterName.toLowerCase()}/mythic-keystone-profile/season/9?namespace=profile-us`, this.authorizationHeaders);
-        // console.log('CHAR PROFILE: ', result.data);
-
-        //Get all the periods for the season
-        // const result = await axios.get(`https://us.api.blizzard.com/data/wow/mythic-keystone/season/9?namespace=dynamic-us`, this.authorizationHeaders);
-        // console.log('SEASON: ', result.data);
-        // for(let period of result.data.periods) {
-        //     console.log('PERIOD: ', period);
-        // }
-
-        // const result = await axios.get(`https://us.api.blizzard.com/data/wow/mythic-keystone/period/905?namespace=dynamic-us`, this.authorizationHeaders);
-        // console.log('SEASON: ', result.data);
-            //Dungeon/Raids is 14807
-
+            const currentCharacter = await WoWProfileData.getCharacterById(characterId);
+            return currentCharacter;
 
         } catch (error) {
             console.log('ERROR GET CHAR PROFILE: ',error);

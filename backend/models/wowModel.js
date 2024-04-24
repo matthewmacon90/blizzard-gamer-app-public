@@ -40,13 +40,38 @@ class WoWProfileData {
     static async getCharacterById(character_id) {
         try {
             const result = await db.query(`
-                SELECT * 
-                FROM characters 
-                WHERE character_id = $1
+                SELECT 
+                    c.character_id AS "characterId", 
+                    c.character_name AS "characterName", 
+                    c.character_level AS "characterLevel", 
+                    c.character_class AS "characterClass", 
+                    c.character_gender AS "characterGender",
+                    c.character_faction AS "characterFaction",
+                    c.character_race AS "characterRace",
+                    c.realm_id AS "realmId",
+                    c.realm_name AS "realmName",
+                    c.realm_slug AS "realmSlug",
+                    c.mythic_rating AS "mythicRating",
+                    c.mythic_rating_color AS "mythicRatingColor",
+                    c.is_favorite AS "isFavorite",
+                    c.is_main AS "isMain",
+                    c.created_at AS "createdAt",
+                    c.average_item_level AS "averageItemLevel",
+                    c.equipped_item_level AS "equippedItemLevel",
+                    c.achievement_points AS "achievementPoints",
+                    c.active_title AS "activeTitle",
+                    c.active_spec AS "activeSpec",
+                    c.last_login AS "lastLogin",
+                    c.guild_id AS "guildId",
+                    c.raid_profile AS "raidProfile",
+                    c.current_gold AS "characterMoney"
+                FROM characters c
+                WHERE c.character_id = $1
                 `, [character_id]);
+                console.log('getCharacterById', result.rows[0]);
             return result.rows[0];
         } catch (error) {
-            console.log(error);
+            console.log('getCharacterById error:', error);
             throw error;
         }
     }
@@ -132,13 +157,42 @@ class WoWProfileData {
         }
     };
 
-    static async updateCharacter(characterId, name, level, avgItem, equipItem, achievPoints, activeTitle, gender, faction, race, charClass, activeSpec, lastLogin, realmId, realmName) {
+    static async updateCharacter(
+        characterId, 
+        name = null, 
+        level = null, 
+        avgItem = null, 
+        equipItem = null, 
+        achievPoints = null, 
+        activeTitle = null, 
+        gender = null, 
+        faction = null, 
+        race = null, 
+        charClass = null, 
+        activeSpec = null, 
+        lastLogin = null, 
+        realmId = null, 
+        realmName = null,
+        characterMoney = null,
+        currentLevelDeaths = null,
+        totalCharacterDeaths = null,
+        currMythicRatingColor = null,
+        currMythicRating = null,
+        guildId = null,
+        raidProfile = null
+    ) {
         try {
             await db.query(`
                 UPDATE characters 
-                SET character_name = $2, character_level = $3, average_item_level = $4, equipped_item_level = $5, achievement_points = $6, active_title = $7, character_gender = $8, character_faction = $9, character_race = $10, character_class = $11, active_spec = $12, last_login = $13, realm_id = $14, realm_name = $15
+                SET character_name = $2, character_level = $3, average_item_level = $4, 
+                    equipped_item_level = $5, achievement_points = $6, active_title = $7, 
+                    character_gender = $8, character_faction = $9, character_race = $10, 
+                    character_class = $11, active_spec = $12, last_login = $13, realm_id = $14, 
+                    realm_name = $15, current_gold = $16, current_level_deaths = $17, 
+                    total_deaths = $18, mythic_rating_color = $19, 
+                    mythic_rating = $20, guild_id = $21, raid_profile = $22
                 WHERE character_id = $1
-            `, [characterId, name, level, avgItem, equipItem, achievPoints, activeTitle, gender, faction, race, charClass, activeSpec, lastLogin, realmId, realmName]);
+            `, [characterId, name, level, avgItem, equipItem, achievPoints, activeTitle, gender, faction, race, charClass, activeSpec, lastLogin, realmId, realmName, characterMoney, currentLevelDeaths, totalCharacterDeaths, currMythicRatingColor, currMythicRating, guildId, raidProfile]);
         } catch (error) {
             console.log('UPDATING ERROR', error);
             throw error;
