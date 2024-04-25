@@ -14,13 +14,11 @@ class WoWApi {
         try {
             const date = getCurrentDate();
             const fetchData = await WoWProfileData.getCharactersByUserId(this.user_id);
-            console.log('FETCH DATA: ', fetchData)
             const dbDate = fetchData.length > 0 ? fetchData[0].date : null;
             const compareDatesResult = compareDates(date, dbDate);
 
             if(fetchData.length === 0) {
                 const result = await axios.get('https://us.api.blizzard.com/profile/user/wow?namespace=profile-us', this.authorizationHeaders);
-                console.log('RESULT: ', result.data)
                 const response = filterCharacterData(this.user_id, result.data);
 
                 for (let char of response.characters) {
@@ -60,10 +58,8 @@ class WoWApi {
             const character = await WoWProfileData.getCharacterById(characterId);
             const {realmSlug, characterName, lastUpdated} = character;
             const lastUpdatedCheckResult = lastUpdatedCheck(lastUpdated);
-            console.log('LAST UPDATED CHECK: ', lastUpdatedCheckResult)
 
             if(!lastUpdatedCheckResult) {
-                console.log(`lastUpdatedCheckResult: IS NOT greater than 5 days`)
                 return character;
             };
 
@@ -85,7 +81,6 @@ class WoWApi {
 
             if(data.guildId !== null) {
                 const isGuild = await WoWGuildsModel.getGuildById(data.guildId);
-                console.log('IS GUILD: ', isGuild)
     
                 isGuild ? await WoWGuildsModel.updateGuild(data.guildId, data.guildName, null, data.guildRealmId, data.guildRealmSlug, data.guildFaction) :
                     await WoWGuildsModel.insertGuild(data.guildId, data.guildName, null, data.guildRealmId, data.guildRealmSlug, data.guildFaction);

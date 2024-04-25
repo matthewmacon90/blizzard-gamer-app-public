@@ -10,7 +10,6 @@ router.get('/callback', passport.authenticate('bnet', { failureRedirect: '/' }),
         try{
             const { id, battletag, accessToken } = req.user;
             const result = await User.getUserByBattleTag(battletag);
-            console.log('result callback blizzard', result, accessToken);
 
             if(result) {
                 await User.linkBattleTag(id, battletag, accessToken);

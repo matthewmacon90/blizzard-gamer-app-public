@@ -30,7 +30,6 @@ class WoWProfileData {
                 WHERE user_id = $1
                 ORDER BY character_level DESC
                 `, [user_id]);
-                console.log('getCharactersByUserId', result.rows)
             return result.rows;
         } catch (error) {
             console.log(error);
@@ -70,7 +69,6 @@ class WoWProfileData {
                 FROM characters c
                 WHERE c.character_id = $1
                 `, [character_id]);
-                console.log('getCharacterById', result.rows[0]);
             return result.rows[0];
         } catch (error) {
             console.log('getCharacterById error:', error);

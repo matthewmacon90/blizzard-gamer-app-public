@@ -35,7 +35,6 @@ class User {
                 premium_account_level AS "premiumAccountLevel"
                 FROM users 
                 WHERE user_id = $1`, [id]);
-                console.log(result.rows[0]);
             return result.rows[0];
         } catch (err) {
             console.log('ERROR GETTING AUTHENTICATED USER', err);
@@ -68,7 +67,6 @@ class User {
                 premium_account_level AS "premiumLevelAccess"
             FROM users 
             WHERE user_id = $1`, [id]);
-            console.log('getUserById', result.rows[0])
             return result.rows[0] ? result.rows[0] : new Error('No user found with that id');
         } catch (err) {
             console.log(err);

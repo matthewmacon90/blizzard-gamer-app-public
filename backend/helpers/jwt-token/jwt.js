@@ -51,8 +51,6 @@ const decodeToken = async (token) => {
         audience: 'sons-app'
       });
 
-      console.log(verifiedToken.payload)
-
       const payload = {
         id: verifiedToken.payload.id,
         username: verifiedToken.payload.username, 

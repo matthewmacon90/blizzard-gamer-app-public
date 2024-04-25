@@ -224,8 +224,6 @@ const cleanCharData = (data) => {
     const date = new Date(epochTime);
     const timestamp = date.toISOString();
     const raidData = data.raidProfile ? cleanRaidProfileData(data.raidProfile) : null;
-    console.log(data);
-
 
     const result = {
         characterId: data.overAllSummary.id,
@@ -280,11 +278,9 @@ const cleanRaidProfileData = (data) => {
 };
 
 const lastUpdatedCheck = (date) => {
-    console.log('lastUpdatedCheck DATE: ', date)
     if(!date) return true;
     const currentDate = getCurrentDate();
     const compareDatesResult = compareDates(currentDate, date);
-    console.log('lastUpdatedCheck COMPARE DATES: ', compareDatesResult);
     return compareDatesResult;
 };
 

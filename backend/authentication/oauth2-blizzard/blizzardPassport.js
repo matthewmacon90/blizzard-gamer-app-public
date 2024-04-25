@@ -13,7 +13,6 @@ passport.use(new BnetStrategy({
     function(accessToken, refreshToken, profile, done) {
         profile.refreshToken = refreshToken;
         profile.accessToken = accessToken;
-        console.log('profile', profile, 'accesstoken', accessToken, 'refreshtoken', refreshToken);
         return done(null, profile);
     }
 ));
