@@ -54,7 +54,7 @@ const decodeToken = async (token) => {
       const payload = {
         id: verifiedToken.payload.id,
         username: verifiedToken.payload.username, 
-        battletag: verifiedToken.payload.battletag,
+        battleTag: verifiedToken.payload.battleTag,
         btoken: verifiedToken.payload.btoken
     };
 

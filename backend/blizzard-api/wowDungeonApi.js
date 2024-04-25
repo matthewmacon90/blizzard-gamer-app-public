@@ -3,7 +3,7 @@ const {cleanDungeonLeaderBoardIdx, cleanKeyStoneData, cleanMemberData } = requir
 const WoWApi = require('./wowApi.js');
 const WoWDungeonModel = require('../models/dungeonModel.js');
 const WoWProfileData = require('../models/wowModel.js');
-const WoWLeaderboardModel = require('../models/leaderboardModel.js');
+const WoWLeaderboardModel = require('../models/LeaderboardModel.js');
 
 class WoWDungeonApi extends WoWApi {
     constructor(token = '', user_id = null) {

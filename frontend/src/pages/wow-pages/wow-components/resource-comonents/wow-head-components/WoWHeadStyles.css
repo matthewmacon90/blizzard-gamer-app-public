@@ -1,0 +1,73 @@
+.wowhead-container {
+    width: 100%;
+}
+
+.wowhead-class-guide-heading {
+    text-align: center;
+}
+
+.wowhead-class-note {
+    text-align: center;
+}
+
+.wowhead-class-card-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 0px 30px;
+    gap: 20px;
+}
+
+.wowhead-class-card {
+    border: 1px solid #e5e5e5;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px 0px #e5e5e5;
+    margin: 5px;
+    width: 300px;
+}
+
+.wowhead-card-top {
+    display: flex;
+    justify-content: center;
+}
+
+.wowhead-card-bottom {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0px 10px;
+    gap: 10px;
+}
+
+.wowhead-card-class-info {
+    width: 100%;
+}
+
+.wowhead-card-link-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    gap: 10px;
+    width: 100%;
+}
+
+.wowhead-card-class-links {
+    border: 1px solid #e5e5e5;
+    border-radius: 5px;
+    width: 100%;
+    text-align: center;
+    text-decoration: none;
+    background-color: #555;
+    color: #FFF;
+    padding: 5px;
+}
+.wowhead-card-class-links:hover {
+    background-color: #007bff;
+}
+.wowhead-card-class-links:active {
+    background-color: #0056b3;
+}

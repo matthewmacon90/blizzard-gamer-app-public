@@ -9,7 +9,8 @@ const RegisterForm = ({submit}) => {
         password: '',
         email: '',
         firstName: '',
-        lastName: ''
+        lastName: '',
+        battleTag: ''
     };
     const methods = useForm({defaultValues: initalState});
     const {handleSubmit, reset} = methods;
@@ -45,8 +46,8 @@ const RegisterForm = ({submit}) => {
                     <label htmlFor="lastName">Last Name</label>
                     <Input id="lastName" type="text" placeholder="Last Name" validationRules={lastNameSchema} />
                     
-                    <label htmlFor="battletag">Battle Tag</label>
-                    <Input id="battletag" type="text" placeholder="battletag#1234" validationRules={battleTagSchema} />
+                    <label htmlFor="battleTag">Battle Tag</label>
+                    <Input id="battleTag" type="text" placeholder="battletag#1234" validationRules={battleTagSchema} />
 
                     <button type="submit">Register</button>
                 </form>

@@ -3,15 +3,15 @@ import { useForm, FormProvider } from "react-hook-form";
 import { usernameSchema, emailSchema, battleTagSchema } from "../../../form-schema/updateUserSchema";
 
 const EditProfileForm = ({ user, editProfile, edit, updateUser }) => {
-    const { username, email, firstname, lastname, battletag = null } = user;
+    const { username, email, firstName, lastName, battleTag } = user;
 
     const methods = useForm({
         defaultValues: {
             username: username,
             email: email,
-            firstname: firstname,
-            lastname: lastname,
-            battletag: battletag
+            firstName: firstName,
+            lastName: lastName,
+            battleTag: battleTag ? battleTag : ''
         }
     });
     const { handleSubmit } = methods;
@@ -30,17 +30,11 @@ const EditProfileForm = ({ user, editProfile, edit, updateUser }) => {
                 <label htmlFor={'email'}>{'Email'}:</label>
                 <Input id={'email'} placeholder={email} type={'email'} validationRules={emailSchema} />
 
-                {battletag ? (
-                    <p>Battle Tag: {battletag}</p>
-                ) : (
-                    <div>
-                        <label htmlFor={'battletag'}>{'Battle Tag'}:</label>
-                        <Input id={'battletag'} placeholder={'Battletag#1234'} type={'text'} validationRules={battleTagSchema} />
-                    </div>
-                )
-                }
-                <p>First Name: {firstname}</p>
-                <p>Last Name: {lastname}</p>
+                <label htmlFor={'battletag'}>{'Battle Tag'}:</label>
+                <Input id={'battleTag'} placeholder={battleTag} type={'text'} validationRules={battleTagSchema} />
+                
+                <p>First Name: {firstName}</p>
+                <p>Last Name: {lastName}</p>
 
                 {edit &&
                     <div>
