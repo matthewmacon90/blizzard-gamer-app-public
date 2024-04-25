@@ -1,17 +1,15 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import WoWUserContext from '../../../../context/wowContext';
 import './WoWCharacterStyles.css';
 import sonsAvatar from '../../../../pictures/sons-picture.png'
 import Api from '../../../../api';
 
-const WoWCharacters = () => {
+const WoWCharactersCard = () => {
     const {wowCharacters} = useContext(WoWUserContext);
 
     const updateCharacter = async (characterId) => {
         try {
-            console.log('updateCharacter CHARACTER ID: ', characterId);
-            const result = await Api.getWoWCharacterData(characterId);
-            console.log('UPDATE CHARACTER: ', result);
+            await Api.getWoWCharacterData(characterId);
         } catch (error) {
             console.log('ERROR UPDATING CHARACTER: ', error);
         }
@@ -48,4 +46,4 @@ const WoWCharacters = () => {
     );
 };
 
-export default WoWCharacters;
+export default WoWCharactersCard;
