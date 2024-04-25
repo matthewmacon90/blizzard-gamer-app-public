@@ -58,12 +58,11 @@
                 "Secure*Pass123"
             ]
         },
-        "battletag": {
+        "battleTag": {
             "type": "string",
             "default": "",
             "title": "The battle tag Schema",
             "maxLength": 100,
-            "pattern": "^[^#]*#.*$",
             "examples": [
                 "battleTag#1234"
             ]
@@ -76,6 +75,6 @@
         "lastName": "User",
         "email": "testuser@email.com",
         "password": "Secure*Pass123",
-        "battletag": "battleTag#1234"
+        "battleTag": "battleTag#1234"
     }]
 }

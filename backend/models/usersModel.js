@@ -4,7 +4,7 @@ const {ExpressError, NotFoundError} = require('../error-handling/ExpressError.js
 const {signToken} = require('../helpers/jwt-token/jwt.js');
 
 class User {
-    static async registerUser(username, hashedPassword, email, firstName, lastName, battletag) {
+    static async registerUser(username, hashedPassword, email, firstName, lastName, battletag=null) {
         try {
             const result = await db.query(
                 `INSERT INTO users (username, password, email, first_name, last_name, battle_tag) 
