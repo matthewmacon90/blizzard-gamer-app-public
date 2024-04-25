@@ -13,7 +13,7 @@ const filterCharacterData = (user_id, data, date=null) => {
     }
     const characters = mapCharacterData(results);
     const userProfile = {
-        user_id,
+        userId: user_id,
         date: date && date,
         characters
     };
@@ -24,16 +24,16 @@ const filterCharacterData = (user_id, data, date=null) => {
 const mapCharacterData = (data) => {
     const result = data.map(character => {
         return {
-            character_id: character.id,
+            characterId: character.id,
             name: character.name,
             level: character.level,
             faction: character.faction.name.en_US,
             race: character.playable_race.name.en_US,
             gender: character.gender.name.en_US,
-            character_class: character.playable_class.name.en_US,
-            realm_id: character.realm.id,
-            realm_name: character.realm.name.en_US,
-            realm_slug: character.realm.slug,
+            characterClass: character.playable_class.name.en_US,
+            realmId: character.realm.id,
+            realmName: character.realm.name.en_US,
+            realmSlug: character.realm.slug,
         }
     });
     return result;
@@ -50,7 +50,7 @@ const compareDates = (currentDate, dbDate=null) => {
     const diffInMilliseconds = Math.abs(currentDate - dbDate);
     const diffInDays = Math.ceil(diffInMilliseconds / millisecondsPerDay);
 
-    return diffInDays === 2;
+    return diffInDays > 5;
 };
 
 const cleanDungeonData = (data) => {
@@ -218,6 +218,73 @@ const cleanCharacterData = (data) => {
     return result;
 }
 
+const cleanCharData = (data) => {
+    const currDate = getCurrentDate();
+    const epochTime =  data.overAllSummary.last_login_timestamp;
+    const date = new Date(epochTime);
+    const timestamp = date.toISOString();
+    const raidData = data.raidProfile ? cleanRaidProfileData(data.raidProfile) : null;
+
+    const result = {
+        characterId: data.overAllSummary.id,
+        name: data.overAllSummary.name,
+        level: data.overAllSummary.level,
+        avgItem: data.overAllSummary.average_item_level,
+        equipItem: data.overAllSummary.equipped_item_level,
+        lastLogin: timestamp,
+        achievementPoints: data.overAllSummary.achievement_points ? data.overAllSummary.achievement_points : null,
+        characterClass: data.overAllSummary.character_class.name.en_US,
+        characterGender: data.overAllSummary.gender.name.en_US,
+        activeSpec: data.overAllSummary.active_spec.name.en_US,
+        characterFaction: data.overAllSummary.faction.name.en_US,
+        characterRace: data.overAllSummary.race.name.en_US,
+        characterMoney: data.protectedSummary.money,
+        totalCharacterDeaths: data.protectedSummary.protected_stats.total_number_deaths,
+        currentLevelDeaths: data.protectedSummary.protected_stats.level_number_deaths,
+        activeTitle: data.overAllSummary.active_title ? data.overAllSummary.active_title.name.en_US : null,
+        currMythicRating: data.mythicProfile.current_mythic_rating ? data.mythicProfile.current_mythic_rating.rating : null,
+        currMythicRatingColor: data.mythicProfile.current_mythic_rating ? data.mythicProfile.current_mythic_rating.color : null,
+        raidProfile: raidData,
+        realmId: data.overAllSummary.realm.id,
+        realmName: data.overAllSummary.realm.name.en_US,
+        realmSlug: data.overAllSummary.realm.slug,
+        guildId: data.overAllSummary.guild ? data.overAllSummary.guild.id : null,
+        guildName: data.overAllSummary.guild ? data.overAllSummary.guild.name : null,
+        guildRealmId: data.overAllSummary.guild ? data.overAllSummary.guild.realm.id : null,
+        guildRealmSlug: data.overAllSummary.guild ? data.overAllSummary.guild.realm.slug: null,
+        guildFaction: data.overAllSummary.guild ? data.overAllSummary.guild.faction.type : null,
+        lastUpdated: currDate,
+    };
+
+    return result;
+};
+
+const cleanRaidProfileData = (data) => {
+    const raidData = [];
+    const raidExpansions = [];
+
+    if(!data.expansions) return null;
+
+    for(let xpac of data.expansions) {
+        raidExpansions.push({expansionName: xpac.expansion.name, expansionId: xpac.expansion.id, expansionRaids: xpac.instances});
+    }
+
+    const currentSeason = raidExpansions.length - 1;
+    for(let raid of raidExpansions[currentSeason].expansionRaids) {
+        raidData.push({raidId: raid.instance.id, raidName: raid.instance.name, raidModes: raid.modes});
+    }
+
+    return raidData;
+};
+
+const lastUpdatedCheck = (date) => {
+    if(!date) return true;
+    const currentDate = getCurrentDate();
+    const compareDatesResult = compareDates(currentDate, date);
+    return compareDatesResult;
+};
+
+
 module.exports = {
     getCurrentDate,
     filterCharacterData,
@@ -231,5 +298,7 @@ module.exports = {
     cleanMemberData,
     isCurrent,
     formatLeaderboardData,
-    cleanCharacterData
+    cleanCharacterData,
+    cleanCharData,
+    lastUpdatedCheck
 };

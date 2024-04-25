@@ -5,7 +5,7 @@ const {decodeToken} = require('../helpers/jwt-token/jwt.js');
 const WoWDungeonApi = require('../blizzard-api/wowDungeonApi.js');
 const WoWDungeonModel = require('../models/dungeonModel.js');
 const WoWRealmModel = require('../models/realmModel.js');
-const WoWLeaderboardModel = require('../models/leaderboardModel.js');
+const WoWLeaderboardModel = require('../models/LeaderboardModel.js');
 const {formatLeaderboardData} = require('../blizzard-api/blizzard-helpers/wowhelpers.js');
 
 router.get('/', async (req, res, next) => { 

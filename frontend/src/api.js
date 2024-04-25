@@ -1,5 +1,4 @@
 import axios from "axios";
-import { formatLeadboardData } from "./utility/formatData"; 
 
 const BASE_URL = "http://localhost:3001";
 
@@ -44,14 +43,15 @@ class Api {
 
     static async registerUser(newUser) {
         try {
-            let { username, email, password, firstName, lastName, battletag } = newUser;
+            console.log('registerUser', newUser);
+            let { username, email, password, firstName, lastName, battleTag } = newUser;
             username = username.trim().toLowerCase();
             email = email.trim().toLowerCase();
             firstName = firstName.trim().toLowerCase();
             lastName = lastName.trim().toLowerCase();
-            battletag = battletag.trim().toLowerCase();
+            battleTag = battleTag ? battleTag.trim().toLowerCase() : '';
 
-            await this.request(`register`, { username, email, password, firstName, lastName, battletag }, 'post');
+            await this.request(`register`, { username, email, password, firstName, lastName, battleTag }, 'post');
             return 'You have successfully registered! Please log in to continue.';
         } catch (err) {
             throw err;
@@ -73,22 +73,22 @@ class Api {
         try {
             const token = this.token;
             const headers = { 'authorization': `Bearer ${token}` };
-            let { username, email, firstname, lastname, battletag } = user;
+            let { username, email, firstName, lastName, battleTag } = user;
             username = username.trim().toLowerCase();
             email = email.trim().toLowerCase();
-            firstname = firstname.trim().toLowerCase();
-            lastname = lastname.trim().toLowerCase();
-            battletag = battletag.trim().toLowerCase();
+            firstName = firstName.trim().toLowerCase();
+            lastName = lastName.trim().toLowerCase();
+            battleTag = battleTag.trim().toLowerCase();
 
-            const result = await this.request(`users/profile/update/`, { username, email, firstname, lastname, battletag }, 'patch', headers);
+            const result = await this.request(`users/profile/update/`, { username, email, firstName, lastName, battleTag }, 'patch', headers);
             const profile = {
                 username: result.username,
                 email: result.email,
-                firstname: result.firstname,
-                lastname: result.lastname,
-                battletag: result.battletag,
+                firstName: result.firstName,
+                lastName: result.lastName,
+                battleTag: result.battleTag,
                 btoken :  result.btoken ? true : false,
-                bTokenExpires: result.btokenexpires
+                bTokenExpires: result.btokenExpires
             };
             return profile;
         } catch (err) {
@@ -111,21 +111,22 @@ class Api {
             const token = this.token;
             const headers = { 'authorization': `Bearer ${token}` };
             const result = await this.request(`users/profile`, {}, 'get', headers);
+            console.log('getMyProfile', result)
             const profile = {
                 username: result.username,
                 email: result.email,
-                firstname: result.firstname,
-                lastname: result.lastname,
-                battletag: result.battletag,
+                firstName: result.firstName,
+                lastName: result.lastName,
+                battleTag: result.battleTag,
                 btoken :  result.btoken ? true : false,
-                bTokenExpires: result.btokenexpires
+                bTokenExpires: result.btokenExpires
             };
             return profile;
         } catch (err) {
             throw err;
         }
     }
-
+    //***************************WoW Profile Section of the API***************************
     static async getWoWProfile() {
         try {
             const token = this.token;
@@ -147,6 +148,18 @@ class Api {
             throw err;
         }
     };
+
+    static async getWoWCharacterData(characterId) {
+        try {
+            const token = this.token;
+            const headers = { 'authorization': `Bearer ${token}` };
+            const result = await this.request(`my-wow/char`, {characterId}, 'get', headers);
+            console.log('getWoWCharacterData', result);
+            return result;
+        } catch (err) {
+            throw err;
+        }
+    }
 
     //***************************Guild Section of the API***************************
     static async getGuilds(realmSlug) {

@@ -4,12 +4,12 @@ const {ExpressError, NotFoundError} = require('../error-handling/ExpressError.js
 const {signToken} = require('../helpers/jwt-token/jwt.js');
 
 class User {
-    static async registerUser(username, hashedPassword, email, firstName, lastName, battletag) {
+    static async registerUser(username, hashedPassword, email, firstName, lastName, battletag=null) {
         try {
             const result = await db.query(
                 `INSERT INTO users (username, password, email, first_name, last_name, battle_tag) 
                  VALUES ($1, $2, $3, $4, $5, $6) 
-                 RETURNING username, email, first_name AS firstName, last_name AS lastName, battle_tag AS battletag`, 
+                 RETURNING username, email, first_name AS "firstName", last_name AS "lastName", battle_tag AS "battleTag"`, 
                  [username, hashedPassword, email, firstName, lastName, battletag]);
             return result.rows[0]
         } catch (err) {
@@ -21,7 +21,18 @@ class User {
     static async getAuthenticatedUserInfo(id) {
         try {
             const result = await db.query(`
-                SELECT username, email, first_name AS firstName, last_name AS lastName, battle_tag AS battletag, battlenet_token AS btoken, btoken_expires AS btokenexpires
+                SELECT 
+                user_id AS "userId",
+                username,
+                first_name AS "firstName",
+                last_name AS "lastName",
+                email,
+                role,
+                discord_name AS "discordName",
+                battle_tag AS "battleTag", 
+                battlenet_token AS "btoken", 
+                btoken_expires AS "btokenExpires", 
+                premium_account_level AS "premiumAccountLevel"
                 FROM users 
                 WHERE user_id = $1`, [id]);
             return result.rows[0];
@@ -43,7 +54,17 @@ class User {
 
     static async getUserById(id) {
         try {
-            const result = await db.query(`SELECT user_id, username, battle_tag AS battletag, battlenet_token AS btoken
+            const result = await db.query(`
+            SELECT 
+                user_id AS "userId",
+                first_name AS "firstName",
+                last_name AS "lastName",
+                username,
+                role,
+                battle_tag AS "battleTag", 
+                battlenet_token AS "btoken", 
+                btoken_expires AS "btokenExpires", 
+                premium_account_level AS "premiumLevelAccess"
             FROM users 
             WHERE user_id = $1`, [id]);
             return result.rows[0] ? result.rows[0] : new Error('No user found with that id');
@@ -55,7 +76,7 @@ class User {
 
     static async getUserByBattleTag(battletag) {
         try {
-            const result = await db.query('SELECT battle_tag AS battletag FROM users WHERE battle_tag = $1', [battletag]);
+            const result = await db.query('SELECT battle_tag AS "battleTag" FROM users WHERE battle_tag = $1', [battletag]);
             return result.rows[0];
         } catch (err) {
             console.log(err);
@@ -66,7 +87,7 @@ class User {
     static async getUserByUsername(username) {
         try {
             const result = await db.query(`
-                SELECT user_id, username, password, battlenet_token AS btoken, battle_tag AS battletag 
+                SELECT user_id AS "userId", username, password, battlenet_token AS "btoken", battle_tag AS "battleTag" 
                 FROM users WHERE username = $1`, 
                 [username]);
             return result.rows[0];
@@ -101,7 +122,7 @@ class User {
                 UPDATE users 
                 SET username = $1, email = $2, first_name = $3, last_name = $4, battle_tag = $5
                 WHERE user_id = $6 
-                RETURNING username, email, first_name AS firstName, last_name AS lastName, battle_tag AS battleTag, battlenet_token AS btoken, btoken_expires AS btokenexpires`, 
+                RETURNING username, email, first_name AS "firstName", last_name AS "lastName", battle_tag AS "battleTag", battlenet_token AS "btoken", btoken_expires AS "btokenExpires"`, 
                 [username, email, firstName, lastName, battletag, id]);
             return result.rows[0];
         } catch (err) {
@@ -127,7 +148,7 @@ class User {
                 UPDATE users
                 SET battlenet_id = $1, battlenet_token = $2, btoken_expires = CURRENT_TIMESTAMP + INTERVAL '24 hours'
                 WHERE battle_tag = $3
-                RETURNING user_id, username, battlenet_token, battle_tag AS battletag, btoken_expires AS expires
+                RETURNING user_id AS "userId", username, battlenet_token AS "btoken", battle_tag AS "battleTag", btoken_expires AS "btokenExpires"
                 `, [battlenetID, accessToken, battletag]);
             return result.rows[0];
         } catch (err) {
@@ -140,9 +161,9 @@ class User {
         try {
             const result = await User.getUserById(id);
             const payload = {
-                id: result.user_id,
+                id: result.userId,
                 username: result.username,
-                battletag: result.battletag,
+                battleTag: result.battleTag,
                 btoken: result.btoken
             };
             const token = await signToken(payload);
@@ -161,7 +182,7 @@ class User {
             if(!userFound.username || !passwordMatch) throw new ExpressError('Authentication failed.', 401);
 
             const payload = {
-                id: userFound.user_id,
+                id: userFound.userId,
                 username: userFound.username,
                 battletag: userFound.battletag,
                 btoken: userFound.btoken

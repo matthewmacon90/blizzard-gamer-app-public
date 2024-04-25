@@ -7,6 +7,8 @@ import Login from '../../pages/login-page/Login';
 import PublicGuilds from '../../pages/guilds-page/PublicGuilds';
 import Mounts from '../../pages/mounts-page/Mounts';
 import Dungeons from '../../pages/dungeons-page/Dungeons';
+import WoWProfile from '../../pages/wow-pages/wow-profile-page/WoWProfile';
+import Resources from '../../pages/wow-pages/wow-components/resource-comonents/Resources';
 
 const RoutesComponent = () => {
     return (
@@ -17,6 +19,8 @@ const RoutesComponent = () => {
             <Route path='/public-guilds' element={<PublicGuilds />} />
             <Route path='/mounts' element={<Mounts />} />
             <Route path='/dungeons' element={<Dungeons />} />
+            <Route path='/resources' element={<Resources />} />
+            <Route path='/wow-profile' element={<WoWProfile />} />
 
             {/* Protected Routes */}
             <Route element={<PrivateRoutes />} >

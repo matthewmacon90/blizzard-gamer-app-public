@@ -26,8 +26,7 @@ class WoWGuildApi extends WoWApi {
                     await axios.get(`https://us.api.blizzard.com/profile/wow/character/${realmSlug}/${characterLower}/status?namespace=profile-us`, this.authorizationHeaders);
                 } catch (error) {
                     if (error.response.status === 404) {
-                        const deletedChar = await WoWProfileData.deleteCharacterByName(character.character_name);
-                        console.log('deletedChar', deletedChar);
+                        await WoWProfileData.deleteCharacterByName(character.character_name);
                     }
                 }
             }

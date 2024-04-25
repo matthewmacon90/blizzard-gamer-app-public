@@ -1,0 +1,96 @@
+
+.WoWCharacterCard-Container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    background-color: #f7f7f7;
+  }
+  
+
+  .wow-character-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    background: #ffffff; 
+    border: 1px solid #e0e0e0; 
+    border-radius: 12px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    margin: 10px;
+    padding: 20px;
+    width: 500px;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    gap: 5px;
+  }
+  
+  .wow-character-card:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px); 
+  }
+
+  .wow-character-card-left {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .wow-character-card-middle {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .wow-character-card-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: end;
+  }
+
+  .wow-character-avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .wow-character p {
+    color: #333; 
+    font-size: 16px; 
+    line-height: 1.6; 
+    margin-bottom: 10px;
+  }
+  
+
+  .WoWCharacter-Heading {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px; 
+  }
+
+  /* .favorite-star-container{
+    display: flex;
+    justify-content: flex-end;
+    width: 100%
+  } */
+
+/* .favorite-star {
+    display: flex;
+    justify-content: flex-end;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    font-size: 2.0rem;
+    color: #ccc;
+  }
+  
+  .is-favorite {
+    color: #ffd700; 
+  } */
+
+  .WoWCharacterBtn-Container{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }

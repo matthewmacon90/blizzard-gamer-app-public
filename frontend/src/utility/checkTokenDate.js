@@ -1,8 +1,9 @@
 const checkTokenDate = (tokenDate) => {
-    const currentDate = new Date();
-    const tokenDateNumber = Date.parse(tokenDate);
-    const difference = Math.abs(currentDate - tokenDateNumber);
-    return difference >= 23 * 60 * 60 * 1000;
+    let currentDate = new Date();
+    currentDate = currentDate.getTime();
+    tokenDate = new Date(tokenDate).getTime();
+    const isCurrentDateGreater = currentDate > tokenDate;
+    return isCurrentDateGreater;
   };
 
   export { checkTokenDate };

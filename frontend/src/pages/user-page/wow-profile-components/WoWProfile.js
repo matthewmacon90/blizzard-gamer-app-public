@@ -14,7 +14,7 @@ const WoWProfile = ({user, setUser}) => {
 
     return (
         <div>
-            {user.battletag && <WoWCharacters isExpired={isExpired} user={user} setUser={setUser}/> }
+            {user.battletag && <WoWCharacters isExpired={isExpired} user={user} setUser={setUser} />}
         </div>
     );
 };
