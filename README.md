@@ -2,6 +2,8 @@
 
 Welcome to the Sons-of-Thunder project! This platform is designed for the passionate gamers of World of Warcraft and other games, offering a personalized space to showcase your gaming achievements, stats, characters, and more. Join us in fostering a vibrant community built by gamers, for gamers.
 
+***Please Note:*** This codebase is not being maintained here as I am developing this app within an organzation I have created on github. Once the app has launched there will be a public access link. Lastly, the app is currently undergoing updates to switch to mongodb instead of SQL for faster development. 
+
 ## Getting Started
 
 Follow these instructions to set up the project locally and embark on your development journey.
